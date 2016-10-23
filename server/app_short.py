@@ -11,7 +11,7 @@ from flask import Flask, Response
 
 app = Flask(__name__)
 #app.add_url_rule('/', 'root', lambda: app.send_static_file('index.html'))
-app.config.from_pyfile('config.py')
+#app.config.from_pyfile('config.py')
 #db = SQLAlchemy(app)
 
    
