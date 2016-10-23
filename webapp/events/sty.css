@@ -61,6 +61,13 @@ body {
     padding: 9px;
     color: #333;
 }
+.form-section{
+	background:rgba(0,0,0,0.7);
+	border: 2px solid #414141;
+	border-radius: 5px;
+	padding: 10px;
+}
+
 
 footer {
     margin: 50px 0;
