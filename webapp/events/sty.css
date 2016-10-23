@@ -4,10 +4,8 @@ body {
 
 .col-centered {
     float: none;
-    display: inline-block;
     margin: 0 auto;
 }
-
 .slide-image {
     width: 100%;
 }
@@ -66,7 +64,6 @@ body {
 }
 
 .form-section{
-    padding-top: 20px;
     margin-left: auto ;
     margin-right: auto ;
 }
