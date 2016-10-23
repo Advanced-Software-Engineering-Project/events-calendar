@@ -63,6 +63,10 @@ body {
     color: #333;
 }
 
+.form-section{
+    margin-left: auto ;
+    margin-right: auto ;
+}
 
 
 footer {
