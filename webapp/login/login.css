@@ -1,7 +1,13 @@
 *, *:before, *:after {
   box-sizing: border-box;
 }
-
+h1 {
+  text-align: center;
+  color: #ffffff;
+  font-size: 40px;
+  font-weight: 300;
+  margin: 0 0 40px;
+}
 html {
   overflow-y: scroll;
 }
@@ -67,7 +73,7 @@ a:hover {
   display: none;
 }
 
-h1 {
+h2 {
   text-align: center;
   color: #ffffff;
   font-weight: 300;

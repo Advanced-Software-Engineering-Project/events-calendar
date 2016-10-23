@@ -1,7 +1,11 @@
 <head>
+    <h1>What's up, Columbia?</h1>
+    
     <link href='http://fonts.googleapis.com/css?family=Titillium+Web:400,300,600' rel='stylesheet' type='text/css'>
     <link href="login.css" rel="stylesheet"/>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+    
     <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 
@@ -13,7 +17,7 @@
       
       <div class="tab-content">
         <div id="signup">   
-          <h1>Sign Up for Free</h1>
+          <h2>Sign Up for Free</h2>
           
           <form action="/" method="post">
           
@@ -22,14 +26,14 @@
               <label>
                 First Name<span class="req">*</span>
               </label>
-              <input type="text" required autocomplete="off" />
+              <input type="text" required autocomplete="off" id="firstname"/>
             </div>
         
             <div class="field-wrap">
               <label>
                 Last Name<span class="req">*</span>
               </label>
-              <input type="text"required autocomplete="off"/>
+              <input type="text"required autocomplete="off" id="lastname"/>
             </div>
           </div>
 
@@ -37,24 +41,24 @@
             <label>
               Email Address<span class="req">*</span>
             </label>
-            <input type="email"required autocomplete="off"/>
+            <input type="email"required autocomplete="off" id="email"/>
           </div>
           
           <div class="field-wrap">
             <label>
               Set A Password<span class="req">*</span>
             </label>
-            <input type="password"required autocomplete="off"/>
+            <input type="password"required autocomplete="off" id="password"/>
           </div>
           
-          <button type="submit" class="button button-block"/>Get Started</button>
+          <button type="submit" class="button button-block" onclick = "new_account()"/>Get Started</button>
           
           </form>
 
         </div>
         
         <div id="login">   
-          <h1>Welcome Back!</h1>
+          <h2>Welcome Back!</h2>
           
           <form action="/" method="post">
           
@@ -62,19 +66,19 @@
             <label>
               Email Address<span class="req">*</span>
             </label>
-            <input type="email"required autocomplete="off"/>
+            <input type="email"required autocomplete="off" id="exist_email"/>
           </div>
           
           <div class="field-wrap">
             <label>
               Password<span class="req">*</span>
             </label>
-            <input type="password"required autocomplete="off"/>
+            <input type="password"required autocomplete="off" id="exist_password"/>
           </div>
           
           <p class="forgot"><a href="#">Forgot Password?</a></p>
           
-          <button class="button button-block"/>Log In</button>
+          <button class="button button-block" onclick = "login()"/>Log In</button>
           
           </form>
 

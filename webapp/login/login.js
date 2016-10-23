@@ -41,3 +41,30 @@ $('.tab a').on('click', function (e) {
   $(target).fadeIn(600);
   
 });
+
+function new_account(){
+    var obj ={};
+    obj[firstname] = $("#firstname").val();
+    obj[lastname] = $("#lastname").val();
+    obj[email] = $("#email").val();
+    obj[password] = $("#password").val();
+    $.ajax({
+			type: "POST",
+			url: 'http://localhost:5000/alarms',
+			data: obj,
+			contentType:"application/json; charset=utf-8",
+			dataType:"json"
+    });
+}
+
+function login(){
+    var obj ={};
+    obj[exist_email] = $("#exist_email").val();
+    obj[exist_password] = $("#exist_password").val();
+    $.post( 
+        "http://localhost:5000/login/", {username: username, password: password},
+        function(data) {
+            console.log(data.user_id);
+            $.cookie('columbia_events_user_id', data.user_id);
+        });
+}
