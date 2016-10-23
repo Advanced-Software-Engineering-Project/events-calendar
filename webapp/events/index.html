@@ -13,7 +13,6 @@
 
     <!-- Bootstrap Core CSS -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css" />
     <!-- Custom CSS -->
     <link href="sty.css" rel="stylesheet">
 
@@ -85,21 +84,25 @@
                     <form role="form">
                       <div class="col-md-4">
                         <div class="form-group">
-                          <label class="sr-only" for="location">Event</label>
+                          <label class="sr-only" for="eventname">Event</label>
                           <input type="text" class="form-control" id="eventname"/>
                         </div>
                       </div>
                       <div class="col-md-2">
                         <div class="form-group">
-                          <label class="sr-only" for="checkin">Date</label>
-                            <input type="text" name="daterange" value="01/01/2015 - 01/31/2015" />
+                          <label class="sr-only" for="daterange">Date</label>
+                            <div class="input-group">
+                            <input type="text" class="form-control" name="daterange" />
+                            </div>
                         
                         </div>
                       </div>
                       <div class="col-md-2">
                         <div class="form-group">
-                          <label class="sr-only" for="checkout">Time</label>
-                            <input type="text" name="daterange" value="01/01/2015 - 01/31/2015" />
+                          <label class="sr-only" for="timerange">Time</label>
+                            <div class="input-group">
+                            <input type="text" class="form-control" name="timerange"/>
+                            </div>
                         </div>
                         </div>
                     <div class="col-md-2">
@@ -250,6 +253,7 @@
     <!-- Bootstrap Core JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="//cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css" />
     <script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
     <script src="script.js"></script>
 </body>
