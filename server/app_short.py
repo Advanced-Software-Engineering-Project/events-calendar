@@ -6,7 +6,7 @@ Created on Sun Oct 23 17:58:19 2016
 """
 
 import os
-from flask import Flask, Response
+from flask import Flask, Response, request, jsonify
 #from flask.ext.sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
@@ -26,13 +26,28 @@ def hello():
 def hello_name(name):
     return "Hello {}!".format(name)
     
-@app.route('/signup')
-def signup(email, password):
-    return Response('success')
+@app.route('/signup', methods=['POST', 'OPTIONS'])
+def signup():
+	print(request.data)
+	return jsonify(user_id=123)
 
-@app.route('/login')
-def login(email, password):
-    return Response('success')
+@app.route('/login', methods=['POST', 'OPTIONS'])
+def login():
+	print(request)
+	return "error"
+
+
+
+
+# Temporary local development solution for CORS
+@app.after_request
+def after_request(response):
+  response.headers.add('Access-Control-Allow-Origin', '*')
+  response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+  response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
+  return response
+
+
 
 
 if __name__ == '__main__':

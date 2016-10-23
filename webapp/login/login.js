@@ -59,31 +59,41 @@ confirm_password.onkeyup = validatePassword;
 
 function new_account(){
     var obj ={};
-    obj[firstname] = $("#firstname").val();
-    obj[lastname] = $("#lastname").val();
-    obj[email] = $("#email").val();
-    obj[password] = $("#password").val();
+    obj.firstname = $("#firstname").val();
+    obj.lastname = $("#lastname").val();
+    obj.email = $("#email").val();
+    obj.password = $("#password").val();
+    console.log(obj)
     $.ajax({
-			type: "POST",
-			url: 'http://localhost:5000/alarms',
-			data: obj,
-			contentType:"application/json; charset=utf-8",
-			dataType:"json"
+        method: 'POST',
+        url: 'http://localhost:5000/signup',
+        data: obj,
+        contentType:"application/json; charset=utf-8",
+        dataType: 'json'
     });
 }
 
 function login(){
     var obj ={};
-    obj[exist_email] = $("#exist_email").val();
-    obj[exist_password] = $("#exist_password").val();
-    $.post( 
-        "http://localhost:5000/login/", {username: username, password: password},
-        function(data) {
-            if(data === "error"){
+    obj.exist_email = $("#exist_email").val();
+    obj.exist_password = $("#exist_password").val();
+    
+    $.ajax({
+        url:  "http://localhost:5000/login",
+        method: 'POST',
+        data: obj,
+        contentType:"application/json; charset=utf-8",
+        dataType:"json",
+        success: function(response) {
+            if(response === "error"){
                 exist_email.setCustomValidity("Invalid email or password");
-                
-            };
-            console.log(data.user_id);
-            $.cookie('columbia_events_user_id', data.user_id);
-        });
+            }
+            else{
+                console.log(response.user_id);
+                $.cookie('columbia_events_user_id', response.user_id);
+                // Route to events page
+                window.location.href = '/events';
+            }
+        }
+    });
 }
