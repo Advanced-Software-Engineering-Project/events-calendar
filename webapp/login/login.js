@@ -44,6 +44,7 @@ $('.tab a').on('click', function (e) {
 
 var password = document.getElementById("password")
   , confirm_password = document.getElementById("confirm_password");
+var exist_email = document.getElementById("exist_email");
 
 function validatePassword(){
   if(password.value != confirm_password.value) {
@@ -78,6 +79,10 @@ function login(){
     $.post( 
         "http://localhost:5000/login/", {username: username, password: password},
         function(data) {
+            if(data === "error"){
+                exist_email.setCustomValidity("Invalid email or password");
+                
+            };
             console.log(data.user_id);
             $.cookie('columbia_events_user_id', data.user_id);
         });
