@@ -27,14 +27,30 @@ body {
     white-space: nowrap;
 }
 
+.event-date-time {
+    color: #79797a;
+}
+
+.organizer {
+    color: #79797a;
+}
+
+
 .thumbnail img {
     width: 100%;
 }
 
-.ratings {
+.ratings-favorites {
     padding-right: 10px;
     padding-left: 10px;
-    color: #d17581;
+}
+
+.ratings-favorites .favorites{
+    color: #E0523D;
+}
+
+.ratings-favorites .ratings {
+    color: #FDCC40;
 }
 
 .thumbnail {
