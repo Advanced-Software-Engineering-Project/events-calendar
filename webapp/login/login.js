@@ -69,7 +69,16 @@ function new_account(){
         url: 'http://localhost:5000/signup',
         data: obj,
         contentType:"application/json; charset=utf-8",
-        dataType: 'json'
+        dataType: 'json',
+        success: function(response) {
+            if(response !== "Signup Error"){
+
+                console.log(response.user_id);
+                $.cookie('columbia_events_user_id', response.user_id);
+                // Route to events page
+                window.location.href = "../events";
+            }
+        }
     });
 }
 
@@ -85,14 +94,14 @@ function login(){
         contentType:"application/json; charset=utf-8",
         dataType:"json",
         success: function(response) {
-            if(response === "error"){
+            if(response === "Login Error"){
                 exist_email.setCustomValidity("Invalid email or password");
             }
             else{
                 console.log(response.user_id);
                 $.cookie('columbia_events_user_id', response.user_id);
                 // Route to events page
-                window.location.href = '/events';
+                window.location.href = "../events";
             }
         }
     });

@@ -10,7 +10,7 @@ from flask import Flask, Response, request, jsonify
 #from flask.ext.sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
-#app.add_url_rule('/', 'root', lambda: app.send_static_file('index.html'))
+#app.add_url_rule('/', 'root', lambda: app.send_static_file('../webapp/login/index.html'))
 #app.config.from_pyfile('config.py')
 #db = SQLAlchemy(app)
 
@@ -29,12 +29,36 @@ def hello_name(name):
 @app.route('/signup', methods=['POST', 'OPTIONS'])
 def signup():
 	print(request.data)
-	return jsonify(user_id=123)
+	return jsonify(user_id=4)
 
 @app.route('/login', methods=['POST', 'OPTIONS'])
 def login():
 	print(request)
-	return "error"
+	return jsonify(user_id=456)
+
+@app.route('/events', methods=['GET', 'OPTIONS'])
+def events():
+	events = [{
+	    'id': '1009214592509511',
+	    'datetime': '2016-02-25T19:00:00-0500',
+	    'location': 'Fairchild 700',
+	    'group': 'Columbia Bioinformatics',
+	    'title': 'Bioinformatics Student Research Panel',
+	    'url': 'https://www.facebook.com/events/563717810449699/',
+	    'rating': 3,
+	    'favorite': 1
+	}, {
+	    'id': '1009214592509511',
+	    'datetime': '2016-02-25T19:00:00-0500',
+	    'location': 'Fairchild 700',
+	    'group': 'Columbia Bioinformatics',
+	    'title': 'Bioinformatics Student Research Panel',
+	    'url': 'https://www.facebook.com/events/563717810449699/',
+	    'rating': 5,
+	    'favorite': 0
+	}]
+	print(request)
+	return jsonify(events=events)
 
 
 

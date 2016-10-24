@@ -115,114 +115,8 @@
         </div>
               
         <div class="row-fluid">
-            <div class="col-sm-4 col-lg-4 col-md-4">
-                <div class="thumbnail">
-                    <img src="http://placehold.it/320x150" alt="">
-                    <div class="caption">
-                        <p class="event-date-time">Thur, Oct 13, 7:00pm</p>
-                        <h4><a href="#">First Event</a></h4>
-                        <p class="organizer">First Event Organizer</p>
-                    </div>
-                    <div class="ratings-favorites">
-                        <p class="pull-right favorites">
-                            <span class="glyphicon glyphicon-heart-empty"></span>
-                        </p>
-                        <p class="ratings">
-                            <span class="glyphicon glyphicon-star"></span>
-                            <span class="glyphicon glyphicon-star"></span>
-                            <span class="glyphicon glyphicon-star"></span>
-                            <span class="glyphicon glyphicon-star"></span>
-                            <span class="glyphicon glyphicon-star"></span>
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-sm-4 col-lg-4 col-md-4">
-                <div class="thumbnail">
-                    <img src="http://placehold.it/320x150" alt="">
-                    <div class="caption">
-                        <p class="event-date-time">Thur, Oct 13, 7:00pm</p>
-                        <h4><a href="#">Second Event</a>
-                        </h4>
-                        <p class="organizer">Second Event Organizer</p>
-                    </div>
-                    <div class="ratings-favorites">
-                        <p class="pull-right favorites"><span class="glyphicon glyphicon-heart-empty"></span></p>
-                        <p class="ratings">
-                            <span class="glyphicon glyphicon-star"></span>
-                            <span class="glyphicon glyphicon-star"></span>
-                            <span class="glyphicon glyphicon-star"></span>
-                            <span class="glyphicon glyphicon-star"></span>
-                            <span class="glyphicon glyphicon-star-empty"></span>
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-sm-4 col-lg-4 col-md-4">
-                <div class="thumbnail">
-                    <img src="http://placehold.it/320x150" alt="">
-                    <div class="caption">
-                        <p class="event-date-time">Thur, Oct 13, 7:00pm</p>
-                        <h4><a href="#">Third Event</a>
-                        </h4>
-                        <p class="organizer">Third Event Organizer</p>
-                    </div>
-                    <div class="ratings-favorites">
-                        <p class="pull-right favorites"><span class="glyphicon glyphicon-heart"></span></p>
-                        <p class="ratings">
-                            <span class="glyphicon glyphicon-star"></span>
-                            <span class="glyphicon glyphicon-star"></span>
-                            <span class="glyphicon glyphicon-star"></span>
-                            <span class="glyphicon glyphicon-star"></span>
-                            <span class="glyphicon glyphicon-star-empty"></span>
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-sm-4 col-lg-4 col-md-4">
-                <div class="thumbnail">
-                    <img src="http://placehold.it/320x150" alt="">
-                    <div class="caption">
-                        <p class="event-date-time">Thur, Oct 13, 7:00pm</p>
-                        <h4><a href="#">Fourth Event</a></h4>
-                        <p class="organizer">Fourth Event Organizer</p>
-                    </div>
-                    <div class="ratings-favorites">
-                        <p class="pull-right favorites"><span class="glyphicon glyphicon-heart"></span></p>
-                        <p class="ratings">
-                            <span class="glyphicon glyphicon-star"></span>
-                            <span class="glyphicon glyphicon-star"></span>
-                            <span class="glyphicon glyphicon-star"></span>
-                            <span class="glyphicon glyphicon-star-empty"></span>
-                            <span class="glyphicon glyphicon-star-empty"></span>
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-sm-4 col-lg-4 col-md-4">
-                <div class="thumbnail">
-                    <img src="http://placehold.it/320x150" alt="">
-                    <div class="caption">
-                        <p class="event-date-time">Thur, Oct 13, 7:00pm</p>
-                        <h4><a href="#">Fifth Event</a></h4>
-                        <p class="organizer">Fifth Event Organizer</p>
-                    </div>
-                    <div class="ratings-favorites">
-                        <p class="pull-right favorites"><span class="glyphicon glyphicon-heart-empty"></span></p>
-                        <p class="ratings">
-                            <span class="glyphicon glyphicon-star"></span>
-                            <span class="glyphicon glyphicon-star"></span>
-                            <span class="glyphicon glyphicon-star"></span>
-                            <span class="glyphicon glyphicon-star"></span>
-                            <span class="glyphicon glyphicon-star-empty"></span>
-                        </p>
-                    </div>
-                </div>
-            </div>
+            <div id="eventlist"></div>
+            
         </div>
     </div>
 
@@ -237,7 +131,7 @@
         <footer>
             <div class="row">
                 <div class="col-lg-12">
-                    <p>Copyright &copy; Your Website 2014</p>
+                    <p>Copyright &copy; What's up columbia 2016</p>
                 </div>
             </div>
         </footer>
@@ -247,12 +141,33 @@
 
     <!-- jQuery -->
     <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
-
     <!-- Bootstrap Core JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="http://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
     <link rel="stylesheet" type="text/css" href="http://cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css" />
     <script type="text/javascript" src="http://cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
+    <script src="dateformat.js"></script>
+    <script id="eventTemplate" type="text/x-jQuery-tmpl">
+    <div id=${id} class="col-sm-4 col-lg-4 col-md-4">
+        <div class="thumbnail">
+            <img src="http://placehold.it/320x150" alt=""/>
+                <div class="caption">
+                    <p class="event-date-time">${formatDate(datetime)}</p>
+                    <h4><a href="#">${title}</a></h4>
+                    <p class="organizer">${group}</p>
+                </div>
+                <div class="ratings-favorites">
+                    <p class="pull-right favorites">
+                        {{html favor(favorite, id)}}
+                    </p>
+                    <p class="ratings">
+                        {{html eventRating(rating, id)}}
+                    </p>
+                </div>
+        </div>
+    </div>
+    </script>
+    <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.templates/beta1/jquery.tmpl.js"></script>
     <script src="script.js"></script>
 </body>
 
