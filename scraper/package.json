@@ -1,0 +1,17 @@
+{
+  "name": "columbia-events",
+  "version": "1.0.0",
+  "description": "",
+  "main": "script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cheerio": "^0.22.0",
+    "express": "^4.14.0",
+    "form-data": "^2.1.1",
+    "request": "^2.75.0"
+  }
+}
