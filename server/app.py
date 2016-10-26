@@ -8,7 +8,7 @@ from datetime import datetime
 import os
 import time
 
-from flask import Flask, Response, request
+from flask import Flask, Response, request, jsonify
 from flask.ext.sqlalchemy import SQLAlchemy
 
 app = Flask(__name__, static_url_path='', static_folder='../webapp/login/')
