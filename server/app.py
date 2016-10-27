@@ -8,13 +8,14 @@ from datetime import datetime
 import os
 import time
 
-from flask import Flask, Response, request, jsonify
+from flask import Flask, render_template, Response, request, jsonify
 from flask.ext.sqlalchemy import SQLAlchemy
 
-app = Flask(__name__, static_url_path='', static_folder='../webapp/login/')
-app.add_url_rule('/', 'root', lambda: app.send_static_file('index.html'))
+app = Flask(__name__, static_url_path='', static_folder='../webapp/login/',
+            template_folder='../webapp/login/')
 app.config.from_pyfile('config.py')
 db = SQLAlchemy(app)
+
 
 #%% <DATABASE SCHEMA>
 """
@@ -100,10 +101,10 @@ class Event(db.Model):
 CODE SECTION: SERVER API
 IN USE: signup, login, calendar
 """
-
+#app.add_url_rule('/', 'root', lambda: app.send_static_file('index.html'))
 @app.route('/')
-def hello():
-    return "Hello Index!"
+def roots():
+    return render_template('index.html')
 
 @app.route('/<name>')
 def hello_name(name):
@@ -150,12 +151,12 @@ def event_handler(request_method):
         return Event.query.all()
         
 # Temporary local development solution for CORS
-@app.after_request
-def after_request(response):
-  response.headers.add('Access-Control-Allow-Origin', '*')
-  response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
-  response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
-  return response
+#@app.after_request
+#def after_request(response):
+#  response.headers.add('Access-Control-Allow-Origin', '*')
+#  response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+#  response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
+#  return response
 
 if __name__ == '__main__':
     app.run(port=int(os.environ.get("PORT", 5000)), debug=True)
