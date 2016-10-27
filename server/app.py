@@ -133,6 +133,18 @@ def signup():
 #    db.session.commit()
 #    flash('You were successfully logged in.')
 #    return "userid:{}".format(new_user.userid)
+
+    print('here')
+    new_user = Person(request.form['email'], 
+                      request.form['password'], 
+                      request.form['firstname'],
+                      request.form['lastname'])
+    db.session.add(new_user)
+    #try:
+    db.session.commit()
+    flash('You were successfully logged in.')
+    return "userid:{}".format(new_user.userid)
+
 #    except sqlalchemy.exc.IntegrityError:
 #        print "Integrity Error: Conflict email address!!!"
 #        flash('This email address has been used.')

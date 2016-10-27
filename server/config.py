@@ -1,7 +1,7 @@
 """
 flask_sqlalchemy: config.py
 """
-SQLALCHEMY_DATABASE_URI = "postgresql://dbpeng:dbpass@localhost/flaskr"
+SQLALCHEMY_DATABASE_URI = "postgresql://shanqingtan:dbpass@localhost/eventscalendar"
 #Flask-SQLAlchemy will log all the statements issued to stderr
 SQLALCHEMY_ECHO = True
 #Flask-SQLAlchemy will track modifications of objects and emit signals.
