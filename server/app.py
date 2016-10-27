@@ -1,6 +1,10 @@
+#!/usr/bin/env python2.7
 # -*- coding: utf-8 -*-
+
 """
-Created on Sun Oct 23 12:31:56 2016
+To run locally
+    python server.py
+Go to http://localhost:5000 in your browser
 
 @author: peng
 """
@@ -8,14 +12,16 @@ from datetime import datetime
 import os
 import time
 
-from flask import Flask, render_template, Response, request, jsonify
-from flask.ext.sqlalchemy import SQLAlchemy
+import sqlalchemy
+from flask import Flask, render_template, Response, request, jsonify,\
+                session, flash
+from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__, static_url_path='', static_folder='../webapp/login/',
             template_folder='../webapp/login/')
 app.config.from_pyfile('config.py')
+app.secret_key = 'super secret key'
 db = SQLAlchemy(app)
-
 
 #%% <DATABASE SCHEMA>
 """
@@ -46,15 +52,19 @@ class Person(db.Model):
     userid = db.Column(db.String(40), primary_key=True)
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(80), nullable=False)
-    username = db.Column(db.String(80), unique=True)
+    firstname = db.Column(db.String(40))
+    lastname = db.Column(db.String(40))
+    username = db.Column(db.String(80), unique=True)    
     created_at = db.Column(db.DateTime)
 
-    def __init__(self, userid, email, password, created_at):
-        self.userid = userid
+    def __init__(self, email, password, firstname, lastname):
+        self.userid = "{}".format(int(time.time() * 1000))
         self.email = email
         self.password = password
+        self.firstname = firstname
+        self.lastname = lastname
         self.username = None
-        self.created_at = created_at
+        self.created_at = datetime.now()
 
     def __repr__(self):
         return '<User %r>' % self.email
@@ -101,48 +111,53 @@ class Event(db.Model):
 CODE SECTION: SERVER API
 IN USE: signup, login, calendar
 """
+db.create_all()
+
 #app.add_url_rule('/', 'root', lambda: app.send_static_file('index.html'))
 @app.route('/')
-def roots():
+def root():
     return render_template('index.html')
 
 @app.route('/<name>')
 def hello_name(name):
     return "Hello {}!".format(name)
     
-@app.route('/signup')
-def signup(email, password):
-    #data = request.form.to_dict()
-    not_signed = Person.query.filter(Person.email == email).one_or_none() == None
-    if not_signed:
-        db.create_all()
-        new_id = "{}".format(int(time.time() * 1000))
-        new_user = Person(new_id, email, password, datetime.now())
-        db.session.add(new_user)
-        db.session.commit()
-        print "Signed up successfully."
-        return "userid:{}".format(new_id)
-    else:
-        print "The email address has been used."
-        return "Signup error"
+@app.route('/signup', methods=['POST'])
+def signup():
+    new_user = Person(request.form['email'], 
+                      request.form['password'], 
+                      request.form['firstname'],
+                      request.form['lastname'])
+    db.session.add(new_user)
+    #try:
+    db.session.commit()
+    flash('You were successfully logged in.')
+    return "userid:{}".format(new_user.userid)
+#    except sqlalchemy.exc.IntegrityError:
+#        print "Integrity Error: Conflict email address!!!"
+#        flash('This email address has been used.')
+#        db.session.rollback()
+#        return "Signup error"
 
-@app.route('/login')
-def login(email, password):
-    res = Person.query.filter(Person.email == email,
-                        Person.password == password).all()
-    if len(res)!= 0:
-        print "Login successfully."
-        return "{}".format(res[0].userid)
-    else:
-        print "Wrong email-password combination."
-        return "Login Error"
-        
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        res = Person.query.filter(Person.email == request.form['email'],
+                                  Person.password == request.form['password']
+                                  ).all()
+        if len(res)!= 0:
+            #session['logged_in']=True
+            print "Login successfully."
+            return "{}".format(res[0].userid)
+            #return redirect(url_for('events_handler'))
+        else:
+            print "Invalid email-password combination."
+            return "Login error"   
 
-@app.route('/calendar', methods=['POST', 'OPTIONS'])
-def event_handler(request_method):
+@app.route('/events', methods=['GET', 'POST'])
+def events_handler(request_method):
     #if request.method == 'POST':
     if request_method == 'POST':
-        db.create_all()
         new_event = dict([('eventid','#facebook123'), ('title', 'Ballroom Dance')])
         db.session.add(Event(new_event['eventid'], new_event['title']))
         db.session.commit()
