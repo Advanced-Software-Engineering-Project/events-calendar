@@ -114,6 +114,7 @@ IN USE: signup, login, calendar
 db.create_all()
 
 #app.add_url_rule('/', 'root', lambda: app.send_static_file('index.html'))
+
 @app.route('/')
 def root():
     return render_template('index.html')
