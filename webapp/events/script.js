@@ -9,16 +9,16 @@ $(function() {
     });
 });
 var dummy;
-$.get( 
-        "http://localhost:5000/events",
+$.get(
+        "http://localhost:5000/eventss",
         function(data) {
             render(data.events);
         });
 
 function render(events){
-    $("#eventTemplate").tmpl(events).appendTo("#eventlist");   
+    $("#eventTemplate").tmpl(events).appendTo("#eventlist");
 }
- 
+
 function formatDate(datetime) {
     var time = new Date(datetime);
     return time.format();

@@ -17,8 +17,8 @@ from flask import Flask, render_template, Response, request, jsonify,\
                 session, flash
 from flask_sqlalchemy import SQLAlchemy
 
-app = Flask(__name__, static_url_path='', static_folder='../webapp/',
-            template_folder='../webapp/')
+app = Flask(__name__, static_url_path='', static_folder='../webapp/')
+            #template_folder='../webapp/')
 app.config.from_pyfile('config.py')
 app.secret_key = 'super secret key'
 db = SQLAlchemy(app)
@@ -115,26 +115,34 @@ db.create_all()
 
 #app.add_url_rule('/', 'root', lambda: app.send_static_file('index.html'))
 
-@app.route('/')
-def root():
-    return render_template('./login/index.html')
+#@app.route('/')
+#def root():
+#    return render_template('./login/index.html')
     
 @app.route('/signup', methods=['POST'])
 def signup():
-    new_user = Person(request.form['email'], 
-                      request.form['password'], 
-                      request.form['firstname'],
-                      request.form['lastname'])
-    db.session.add(new_user)
-    #try:
-    db.session.commit()
-    flash('You were successfully logged in.')
-    return "userid:{}".format(new_user.userid)
+    print('!!!!!!!!!!!!!!')
+    print(request.data)
+    return jsonify(user_id=4) 
+#    new_user = Person(request.form['email'], 
+#                      request.form['password'], 
+#                      request.form['firstname'],
+#                      request.form['lastname'])
+#    db.session.add(new_user)
+#    #try:
+#    db.session.commit()
+#    flash('You were successfully logged in.')
+#    return "userid:{}".format(new_user.userid)
 #    except sqlalchemy.exc.IntegrityError:
 #        print "Integrity Error: Conflict email address!!!"
 #        flash('This email address has been used.')
 #        db.session.rollback()
 #        return "Signup error"
+
+#app.add_url_rule('/events', 'events', lambda: app.send_static_file('index.html'))
+#@app.route('/events')
+#def events():
+#    return render_template('./events/index.html')
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -151,24 +159,47 @@ def login():
             print "Invalid email-password combination."
             return "Login error"   
 
-@app.route('/events', methods=['GET', 'POST'])
-def events_handler(request_method):
-    #if request.method == 'POST':
-    if request_method == 'POST':
-        new_event = dict([('eventid','#facebook123'), ('title', 'Ballroom Dance')])
-        db.session.add(Event(new_event['eventid'], new_event['title']))
-        db.session.commit()
-        return 'New event posted'
-    else:
-        return Event.query.all()
+@app.route('/eventss', methods=['GET', 'POST'])
+def events_handler():
+    	events = [{
+	    'id': '1009214592509511',
+	    'datetime': '2016-02-25T19:00:00-0500',
+	    'location': 'Fairchild 700',
+	    'group': 'Columbia Bioinformatics',
+	    'title': 'Bioinformatics Student Research Panel',
+	    'url': 'https://www.facebook.com/events/563717810449699/',
+	    'rating': 3,
+	    'favorite': 1
+	}, {
+	    'id': '1009214592509511',
+	    'datetime': '2016-02-25T19:00:00-0500',
+	    'location': 'Fairchild 700',
+	    'group': 'Columbia Bioinformatics',
+	    'title': 'Bioinformatics Student Research Panel',
+	    'url': 'https://www.facebook.com/events/563717810449699/',
+	    'rating': 5,
+	    'favorite': 0
+	}]
+	print(request)
+	return jsonify(events=events)
+#    if request.method == 'POST':
+#        new_event = dict([('eventid','#facebook123'), ('title', 'Ballroom Dance')])
+#        db.session.add(Event(new_event['eventid'], new_event['title']))
+#        db.session.commit()
+#        return 'New event posted'
+#    else:
+#        print "##############"
+#        print request.data
+#        return Event.query.all()
+
         
-# Temporary local development solution for CORS
-#@app.after_request
-#def after_request(response):
-#  response.headers.add('Access-Control-Allow-Origin', '*')
-#  response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
-#  response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
-#  return response
+##Temporary local development solution for CORS
+@app.after_request
+def after_request(response):
+  response.headers.add('Access-Control-Allow-Origin', '*')
+  response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+  response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
+  return response
 
 if __name__ == '__main__':
     app.run(port=int(os.environ.get("PORT", 5000)), debug=True)
