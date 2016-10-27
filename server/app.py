@@ -17,7 +17,7 @@ from flask import Flask, render_template, Response, request, jsonify,\
                 session, flash
 from flask_sqlalchemy import SQLAlchemy
 
-app = Flask(__name__, static_url_path='', static_folder='../webapp/login/',
+app = Flask(__name__, static_url_path='', static_folder='../webapp/',
             template_folder='../webapp/')
 app.config.from_pyfile('config.py')
 app.secret_key = 'super secret key'
