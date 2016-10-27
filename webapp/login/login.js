@@ -72,11 +72,10 @@ function new_account(){
         dataType: 'json',
         success: function(response) {
             if(response !== "Signup Error"){
-
                 console.log(response.user_id);
                 $.cookie('columbia_events_user_id', response.user_id);
                 // Route to events page
-                window.location.href = "../events";
+                // window.location.href = "../events";
             }
         }
     });
@@ -102,7 +101,7 @@ function login(){
                 console.log(response.user_id);
                 $.cookie('columbia_events_user_id', response.user_id);
                 // Route to events page
-                window.location.href = "../events";
+                window.location.href = "../events/index.html";
             }
         }
     });
