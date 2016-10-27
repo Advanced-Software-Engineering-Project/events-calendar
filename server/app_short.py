@@ -6,10 +6,12 @@ Created on Sun Oct 23 17:58:19 2016
 """
 
 import os
-from flask import Flask, Response, request, jsonify
+from flask import Flask, Response, request, jsonify, render_template
 #from flask.ext.sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
+app = Flask(__name__, static_url_path='', static_folder='../webapp/login/',
+            template_folder='../webapp/login/')
 #app.add_url_rule('/', 'root', lambda: app.send_static_file('../webapp/login/index.html'))
 #app.config.from_pyfile('config.py')
 #db = SQLAlchemy(app)
@@ -19,8 +21,8 @@ app = Flask(__name__)
 
 
 @app.route('/')
-def hello():
-    return "Hello Index!"
+def root():
+    return render_template('index.html')
 
 @app.route('/<name>')
 def hello_name(name):
