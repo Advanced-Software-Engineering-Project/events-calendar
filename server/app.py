@@ -18,7 +18,7 @@ from flask import Flask, render_template, Response, request, jsonify,\
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__, static_url_path='', static_folder='../webapp/login/',
-            template_folder='../webapp/login/')
+            template_folder='../webapp/')
 app.config.from_pyfile('config.py')
 app.secret_key = 'super secret key'
 db = SQLAlchemy(app)
@@ -117,11 +117,7 @@ db.create_all()
 
 @app.route('/')
 def root():
-    return render_template('index.html')
-
-@app.route('/<name>')
-def hello_name(name):
-    return "Hello {}!".format(name)
+    return render_template('./login/index.html')
     
 @app.route('/signup', methods=['POST'])
 def signup():
