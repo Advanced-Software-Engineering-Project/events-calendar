@@ -63,13 +63,14 @@ function new_account(){
     obj.lastname = $("#lastname").val();
     obj.email = $("#email").val();
     obj.password = $("#password").val();
-    console.log(obj)
+
     $.ajax({
-        method: 'POST',
         url: '/signup',
-        data: obj,
-        contentType:"application/json; charset=utf-8",
-        dataType: 'json',
+        method: 'POST',
+        contentType: "application/json; charset=utf-8",
+        //data: obj,
+        data: JSON.stringify(obj),
+        dataType : "json",
         success: function(response) {
             if(response !== "Signup Error"){
                 console.log(response.user_id);
@@ -88,10 +89,11 @@ function login(){
     obj.exist_password = $("#exist_password").val();
 
     $.ajax({
-        url:  "http://localhost:5000/login",
+        url:  "/login",
         method: 'POST',
-        data: obj,
         contentType:"application/json; charset=utf-8",
+        //data: obj,
+        data: JSON.stringify(obj),
         dataType:"json",
         success: function(response) {
             if(response === "Login Error"){

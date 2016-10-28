@@ -11,10 +11,9 @@ Go to http://localhost:5000 in your browser
 from datetime import datetime
 import os
 import time
-
+import json
 import sqlalchemy
-from flask import Flask, render_template, Response, request, jsonify,\
-                session, flash
+from flask import Flask, Response, request, jsonify, session
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__, static_url_path='', static_folder='../webapp/')
@@ -114,64 +113,44 @@ IN USE: signup, login, calendar
 db.create_all()
 
 #app.add_url_rule('/', 'root', lambda: app.send_static_file('index.html'))
-
-#@app.route('/')
-#def root():
-#    return render_template('./login/index.html')
     
 @app.route('/signup', methods=['POST'])
 def signup():
-    print('!!!!!!!!!!!!!!')
-    print(request.data)
-    return jsonify(user_id=4) 
-#    new_user = Person(request.form['email'], 
-#                      request.form['password'], 
-#                      request.form['firstname'],
-#                      request.form['lastname'])
-#    db.session.add(new_user)
-#    #try:
-#    db.session.commit()
-#    flash('You were successfully logged in.')
-#    return "userid:{}".format(new_user.userid)
-
-    print('here')
-    new_user = Person(request.form['email'], 
-                      request.form['password'], 
-                      request.form['firstname'],
-                      request.form['lastname'])
+    request_form = json.loads(request.data)    
+    new_user = Person(request_form['email'], 
+                      request_form['password'], 
+                      request_form['firstname'],
+                      request_form['lastname'])    
     db.session.add(new_user)
-    #try:
-    db.session.commit()
-    flash('You were successfully logged in.')
-    return "userid:{}".format(new_user.userid)
+    try:
+        db.session.commit()
+        print 'You were successfully signed up.'
+        return jsonify(user_id=new_user.userid)
+    except sqlalchemy.exc.IntegrityError:
+        print "Integrity Error: Conflict email address!!!"
+        db.session.rollback()
+        return "Signup Error"
 
-#    except sqlalchemy.exc.IntegrityError:
-#        print "Integrity Error: Conflict email address!!!"
-#        flash('This email address has been used.')
-#        db.session.rollback()
-#        return "Signup error"
 
-#app.add_url_rule('/events', 'events', lambda: app.send_static_file('index.html'))
-#@app.route('/events')
-#def events():
-#    return render_template('./events/index.html')
-
-@app.route('/login', methods=['GET', 'POST'])
+@app.route('/login', methods=['POST', 'GET'])
 def login():
     if request.method == 'POST':
-        res = Person.query.filter(Person.email == request.form['email'],
-                                  Person.password == request.form['password']
+        print "#######\nHere I am\n#######"
+        request_form = json.loads(request.data)
+        res = Person.query.filter(Person.email == request_form['exist_email'],
+                                  Person.password == request_form['exist_password']
                                   ).all()
         if len(res)!= 0:
             #session['logged_in']=True
             print "Login successfully."
-            return "{}".format(res[0].userid)
+            return jsonify(user_id=res[0].userid)
             #return redirect(url_for('events_handler'))
         else:
             print "Invalid email-password combination."
-            return "Login error"   
+            return "Login Error"   
 
-@app.route('/eventss', methods=['GET', 'POST'])
+
+@app.route('/eventss', methods=['GET'])
 def events_handler():
     	events = [{
 	    'id': '1009214592509511',
