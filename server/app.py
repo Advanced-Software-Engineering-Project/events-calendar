@@ -86,6 +86,7 @@ class Event(db.Model):
     group = db.Column(db.String(100))
     title = db.Column(db.String(100))
     url = db.Column(db.Text)
+    photo_url = db.Column(db.Text)
     rating = db.Column(db.Integer)
     favorite = db.Column(db.Integer)
         
@@ -112,6 +113,10 @@ class Event(db.Model):
         except:
             self.url = None
         try:
+            self.photo_url = eventInfoDict['photo_url']
+        except:
+            self.photo_url = None
+        try:
             self.rating = eventInfoDict['rating']
         except:
             self.rating = 3
@@ -130,6 +135,7 @@ class Event(db.Model):
                 'group':self.group,
                 'title':self.title,
                 'url':self.url,
+                'photo_url':self.photo_url,
                 'rating':self.rating,
                 'favorite':self.favorite}
         
@@ -204,33 +210,33 @@ def events_handler():
 
 @app.route('/refresh')
 def refresh_event():
-#    fake_events = [{
-#	    'id': '1009214592509511',
-#	    'datetime': '2016-02-25T19:00:00-0500',
-#	    'location': 'Fairchild 700',
-#	    'group': 'Columbia Bioinformatics',
-#	    'title': 'Bioinformatics Student Research Panel',
-#	    'url': 'https://www.facebook.com/events/563717810449699/',
-#	    'rating': 3,
-#	    'favorite': 1
-#     }, {
-#	    'id': '1009214592509512',
-#	    'datetime': '2016-02-25T19:00:00-0500',
-#	    'location': 'Fairchild 700',
-#	    'group': 'Columbia Bioinformatics',
-#	    'title': 'Bioinformatics Student Research Panel',
-#	    'url': 'https://www.facebook.com/events/563717810449699/',
-#	    'rating': 5,
-#	    'favorite': 0
-#	}]
-    f = open('../scraper/events_data.json','r')
-    fake_events = json.load(f)
-    f.close()
-    for i in range(0, 25):
-        db.session.add(Event(fake_events[i]))
+    eventsdata = [{
+	    'id': '1009214592509511',
+	    'datetime': '2016-02-25T19:00:00-0500',
+	    'location': 'Fairchild 700',
+	    'group': 'Columbia Bioinformatics',
+	    'title': 'Bioinformatics Student Research Panel',
+	    'url': 'https://www.facebook.com/events/563717810449699/',
+	    'rating': 3,
+	    'favorite': 1
+     }, {
+	    'id': '1009214592509512',
+	    'datetime': '2016-02-25T19:00:00-0500',
+	    'location': 'Fairchild 700',
+	    'group': 'Columbia Bioinformatics',
+	    'title': 'Bioinformatics Student Research Panel',
+	    'url': 'https://www.facebook.com/events/563717810449699/',
+	    'rating': 5,
+	    'favorite': 0
+	}]
+#    f = open('../scraper/events_data.json','r')
+#    eventsdata = json.load(f)
+#    f.close()
+    for i in range(0, 2):
+        db.session.add(Event(eventsdata[i]))
         try:
             db.session.commit()
-            print 'One event added. ID:{}'.format(fake_events[i]['id'])
+            print 'One event added. ID:{}'.format(eventsdata[i]['id'])
         except sqlalchemy.exc.IntegrityError:
             print "Integrity Error: old event."
             db.session.rollback()
