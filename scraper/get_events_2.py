@@ -50,7 +50,7 @@ with open(filename) as data_file:
             event['group_url'] = page['url']
             if 'description' in d:
                 event['description'] = d['description']
-            event['start_time'] = d['start_time']
+            event['datetime'] = d['start_time']
             if 'place' in d:
                 event['location'] = d['place']['name']
             if 'cover' in d:
