@@ -78,7 +78,7 @@ function new_account(){
                 window.location.href = "../events/index.html";
             },
         error: function(response){
-            document.getElementById('head').append("<p>Email has been used</p>");
+            $('#head').append('<p style="color:red;text-align:center">Email has been used</p>');
             
         }
     });
@@ -98,17 +98,15 @@ function login(){
         data: JSON.stringify(obj),
         dataType:"json",
         success: function(response) {
-            if(response === "Login Error"){
-                var warn = document.getElementById('login').innerHTML;
-                console.log(1);
-                warn += "<span>Invalid user name or password</span>";
-            }
-            else{
                 console.log(response.user_id);
                 $.cookie('columbia_events_user_id', response.user_id);
                 // Route to events page
                 window.location.href = "../events/index.html";
-            }
+    
+        },
+        error:function(response){
+            $('#warn').append('<p style="color:red;text-align:center">invalid user name or password</p>');
+            
         }
     });
     return false
