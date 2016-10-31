@@ -75,8 +75,8 @@ function new_account(){
             if(response !== "Signup Error"){
                 console.log(response.user_id);
                 $.cookie('columbia_events_user_id', response.user_id);
-                // Route to events page
-                // window.location.href = "../events";
+                //Route to events page
+                window.location.href = "../events/index.html";
             }
         }
     });
