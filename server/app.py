@@ -204,26 +204,29 @@ def events_handler():
 
 @app.route('/refresh')
 def refresh_event():
-    fake_events = [{
-	    'id': '1009214592509511',
-	    'datetime': '2016-02-25T19:00:00-0500',
-	    'location': 'Fairchild 700',
-	    'group': 'Columbia Bioinformatics',
-	    'title': 'Bioinformatics Student Research Panel',
-	    'url': 'https://www.facebook.com/events/563717810449699/',
-	    'rating': 3,
-	    'favorite': 1
-     }, {
-	    'id': '1009214592509512',
-	    'datetime': '2016-02-25T19:00:00-0500',
-	    'location': 'Fairchild 700',
-	    'group': 'Columbia Bioinformatics',
-	    'title': 'Bioinformatics Student Research Panel',
-	    'url': 'https://www.facebook.com/events/563717810449699/',
-	    'rating': 5,
-	    'favorite': 0
-	}]
-    for i in range(0, len(fake_events)):
+#    fake_events = [{
+#	    'id': '1009214592509511',
+#	    'datetime': '2016-02-25T19:00:00-0500',
+#	    'location': 'Fairchild 700',
+#	    'group': 'Columbia Bioinformatics',
+#	    'title': 'Bioinformatics Student Research Panel',
+#	    'url': 'https://www.facebook.com/events/563717810449699/',
+#	    'rating': 3,
+#	    'favorite': 1
+#     }, {
+#	    'id': '1009214592509512',
+#	    'datetime': '2016-02-25T19:00:00-0500',
+#	    'location': 'Fairchild 700',
+#	    'group': 'Columbia Bioinformatics',
+#	    'title': 'Bioinformatics Student Research Panel',
+#	    'url': 'https://www.facebook.com/events/563717810449699/',
+#	    'rating': 5,
+#	    'favorite': 0
+#	}]
+    f = open('../scraper/events_data.json','r')
+    fake_events = json.load(f)
+    f.close()
+    for i in range(0, 25):
         db.session.add(Event(fake_events[i]))
         try:
             db.session.commit()
