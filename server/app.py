@@ -13,7 +13,7 @@ import os
 import time
 import json
 import sqlalchemy
-from flask import Flask, Response, request, jsonify, session
+from flask import Flask, Response, request, jsonify, session, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__, static_url_path='', static_folder='../webapp/')
@@ -71,25 +71,46 @@ class Person(db.Model):
 class Event(db.Model):
     """
     Table event(
-    eventid text PRIMARY KEY,
-    eventdate date,
+    id text PRIMARY KEY,
+    datetime date,
     location text,
     group text,
     title text NOT NULL,    
     url text,
-    rating float,
+    rating int,
     )
     """
-    eventid = db.Column(db.Text, primary_key=True)
-    title = db.Column(db.String(120), nullable=False)
-    rate = db.Column(db.Float)
+    id = db.Column(db.Text, primary_key=True)
+    datetime = db.Column(db.String(30))
+    location = db.Column(db.String(100))
+    group = db.Column(db.String(100))
+    title = db.Column(db.String(100))
+    url = db.Column(db.Text)
+    rating = db.Column(db.Integer)
+    favorite = db.Column(db.Integer)
         
-    def __init__(self, eventid, title):
-        self.eventid = eventid
-        self.title = title
+    def __init__(self, eventInfoDict):
+        self.id = eventInfoDict['id']
+        self.datetime = eventInfoDict['datetime']
+        self.location = eventInfoDict['location']
+        self.group = eventInfoDict['group']
+        self.title = eventInfoDict['title']
+        self.url = eventInfoDict['url']
+        self.rating = eventInfoDict['rating']
+        self.favorite = eventInfoDict['favorite']
     
     def __repr__(self):
-        return "{},{},{}".format(self.eventid, self.title, self.rate)
+        return "<{},{}>".format(self.id, self.title)
+    
+    def todict(self):
+        return {'id':self.id,
+                'datetime':self.datetime,
+                'location':self.location,
+                'group':self.group,
+                'title':self.title,
+                'url':self.url,
+                'rating':self.rating,
+                'favorite':self.favorite}
         
     def update_rating(self, newrate):
         pass
@@ -113,7 +134,10 @@ IN USE: signup, login, calendar
 db.create_all()
 
 #app.add_url_rule('/', 'root', lambda: app.send_static_file('index.html'))
-    
+@app.route('/')
+def root():
+    return redirect('/login/index.html')
+
 @app.route('/signup', methods=['POST'])
 def signup():
     request_form = json.loads(request.data)    
@@ -152,7 +176,12 @@ def login():
 
 @app.route('/eventss', methods=['GET'])
 def events_handler():
-    	events = [{
+    return jsonify(events=[o.todict() for o in Event.query.all()])
+
+
+@app.route('/refresh')
+def refresh_event():
+    fake_events = [{
 	    'id': '1009214592509511',
 	    'datetime': '2016-02-25T19:00:00-0500',
 	    'location': 'Fairchild 700',
@@ -161,8 +190,8 @@ def events_handler():
 	    'url': 'https://www.facebook.com/events/563717810449699/',
 	    'rating': 3,
 	    'favorite': 1
-	}, {
-	    'id': '1009214592509511',
+     }, {
+	    'id': '1009214592509512',
 	    'datetime': '2016-02-25T19:00:00-0500',
 	    'location': 'Fairchild 700',
 	    'group': 'Columbia Bioinformatics',
@@ -171,19 +200,21 @@ def events_handler():
 	    'rating': 5,
 	    'favorite': 0
 	}]
-	print(request)
-	return jsonify(events=events)
-#    if request.method == 'POST':
-#        new_event = dict([('eventid','#facebook123'), ('title', 'Ballroom Dance')])
-#        db.session.add(Event(new_event['eventid'], new_event['title']))
-#        db.session.commit()
-#        return 'New event posted'
-#    else:
-#        print "##############"
-#        print request.data
-#        return Event.query.all()
-
-        
+    for i in range(0, len(fake_events)):
+        db.session.add(Event(fake_events[i]))
+        try:
+            db.session.commit()
+            print 'One event added. ID:{}'.format(fake_events[i]['id'])
+        except sqlalchemy.exc.IntegrityError:
+            print "Integrity Error: old event."
+            db.session.rollback()
+    #print '###########'
+    #print [o.__dict__ for o in Event.query.all()]
+    #print [o.todict() for o in Event.query.all()]
+    return redirect('login/index.html')
+     
+    
+    
 ##Temporary local development solution for CORS
 @app.after_request
 def after_request(response):
