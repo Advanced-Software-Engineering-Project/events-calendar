@@ -153,7 +153,7 @@ def signup():
     except sqlalchemy.exc.IntegrityError:
         print "Integrity Error: Conflict email address!!!"
         db.session.rollback()
-        response = jsonify("Signup Error")
+        response = jsonify({'error': 'user exists'})
         response.status_code = 400
         return response
 
