@@ -78,7 +78,7 @@ function new_account(){
                 window.location.href = "../events/index.html";
             },
         error: function(response){
-            document.getElementById('signup').append("<p>Email has been used</p>");
+            document.getElementById('head').append("<p>Email has been used</p>");
             
         }
     });
