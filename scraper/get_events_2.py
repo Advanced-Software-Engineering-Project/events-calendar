@@ -45,7 +45,7 @@ with open(filename) as data_file:
         for d in response.json()['data']:
             event = {}
             event['id'] = d['id']
-            event['name'] = d['name']
+            event['title'] = d['name']
             event['page_id'] = page['node_id']
             event['group_url'] = page['url']
             if 'description' in d:
@@ -63,6 +63,6 @@ with open(filename) as data_file:
             print('\n\n\ndone with ' + str(i) + ' pages')
             print('events count: ' + str(len(events)) + '\n\n\n')
 
-            with open('events_data.txt', 'w') as outfile:
+            with open('events_data.json', 'w') as outfile:
                 json.dump(events, outfile)
 
