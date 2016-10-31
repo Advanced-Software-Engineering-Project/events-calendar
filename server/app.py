@@ -91,13 +91,34 @@ class Event(db.Model):
         
     def __init__(self, eventInfoDict):
         self.id = eventInfoDict['id']
-        self.datetime = eventInfoDict['datetime']
-        self.location = eventInfoDict['location']
-        self.group = eventInfoDict['group']
-        self.title = eventInfoDict['title']
-        self.url = eventInfoDict['url']
-        self.rating = eventInfoDict['rating']
-        self.favorite = eventInfoDict['favorite']
+        try:
+            self.datetime = eventInfoDict['datetime']
+        except:
+            self.datetime = None
+        try:
+            self.location = eventInfoDict['location']
+        except:
+            self.location = None
+        try:
+            self.group = eventInfoDict['group']
+        except:
+            self.group = None
+        try:
+            self.title = eventInfoDict['title']
+        except:
+            self.title = 'Untitled Event'
+        try:
+            self.url = eventInfoDict['url']
+        except:
+            self.url = None
+        try:
+            self.rating = eventInfoDict['rating']
+        except:
+            self.rating = 3
+        try:
+            self.favorite = eventInfoDict['favorite']
+        except:
+            self.favorite = 1
     
     def __repr__(self):
         return "<{},{}>".format(self.id, self.title)
