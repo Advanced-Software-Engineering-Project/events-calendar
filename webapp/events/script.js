@@ -28,11 +28,11 @@ function favor(favorite, id) {
     var id = this.id;
     if(favorite === 1) {
         return '<span class="glyphicon glyphicon-heart"></span>'
-        console.log(favorite);
+
     }
     else {
         return '<span class="glyphicon glyphicon-heart-empty"></span>'
-        console.log(favorite);
+
     }
 }
 
