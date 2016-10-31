@@ -78,6 +78,9 @@ function new_account(){
                 //Route to events page
                 window.location.href = "../events/index.html";
             }
+            else{
+                document.getElementById('signup').append('<span>Email address has been used</span>');
+            }
         }
     });
     return false
