@@ -202,6 +202,11 @@ def login():
             print "Invalid email-password combination."
             return "Login Error"   
 
+@app.route('/logout', methods=['GET'])
+def logout_page():
+    # logout_user()
+    return redirect('/')
+
 
 @app.route('/eventss', methods=['GET'])
 def events_handler():
