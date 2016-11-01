@@ -13,5 +13,6 @@ Backend: Postgres, Python, Flask
 
 ## Running the Web Application
 
+0. Set up the environment with a [instruction](https://github.com/Advanced-Software-Engineering-Project/events-calendar/blob/master/server/ready_for_server.md)
 1. Go to `\server` directory and type `python app.py`
 2. Go to `localhost:5000`
