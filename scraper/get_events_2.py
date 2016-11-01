@@ -19,56 +19,52 @@ headers = {
 }
 
 fileDir = os.path.dirname(os.path.realpath('__file__'))
-filename = os.path.join(fileDir, 'data/pages_with_ids.json')
-
+pages_file = os.path.join(fileDir, 'pages_data.json')
 
 
 
 class FacebookScraper:
 
     def get_groups(self):
-
         return
 
-    def get_events(self, groups_file):
+    def get_events(self):
         start_date = datetime.datetime.now().strftime("%Y-%m-%d")
         events = []
 
-        with open(filename) as data_file:
+        with open(pages_file) as data_file:
             pages_data = json.load(data_file)
 
             # For every Columbia Page:
             for i, page in enumerate(pages_data):
-                pprint(page['node_id'])
-                pprint(page['url'])
+                pprint(page['group_name'])
 
                 url = 'https://graph.facebook.com/v2.8/'
-                url = url + page['node_id']
+                url = url + str(page['group_id'])
                 url = url + '/events?'
                 url = url + 'since='
                 url = url + start_date
-                url = url + '&access_token=EAACEdEose0cBALFkO6rUmGl01Qt864YOXOWv67Lg2FgRQbsqeq8B3HnevZCFlTsW9jmuIX4nMedvZALi9DBLXj06O5K8b9AA3hazmm4UUAsXDcl5hZBEFHx6ZCiiEDFBi4peoF8Pxj7yyhPYqtmnv0x8m5JcGlBu7LfQtS6HywZDZD'
+                url = url + '&access_token=EAACEdEose0cBAAJ5TssjmvbHicr5vUuSRSZCe8Ba2TM61LRLdRr1jzy9qglJYW6qoAUGk7zvxmDMCbziRLJQIrtgCZAvslzFILt6VVJUIKNr4fMGgtpMlLAsOMcYXwGrSP203J6axkZCZBKnONWkn9tRvv2xVDYY6pW0h89uzAZDZD'
                 url = url + '&debug=all&format=json&method=get&pretty=0&suppress_http_code=1'
                 url = url + '&fields=name,place,start_time,description,cover,photos.limit(1),picture'
 
-                response = requests.get(url, headers=headers)
-                data = response.json()
-                print(response.json())
+                response_data = requests.get(url, headers=headers).json()
+                print(response_data)
 
-                # Skipping some nodes that have urls instead of ids:
-                if 'http' in page['node_id']:
+                if 'error' in response_data:
                     continue
 
                 # Add all that Page's events:
-                for d in response.json()['data']:
+                for d in response_data['data']:
                     event = {}
                     event['id'] = d['id']
                     event['title'] = d['name']
-                    event['page_id'] = page['node_id']
-                    event['group_url'] = page['url']
+                    event['datetime'] = d['start_time']
+                    event['group_id'] = page['group_id']
+                    event['group'] = page['group']
+                    event['group_url'] = page['group_url']
                     if 'description' in d:
                         event['description'] = d['description']
-                    event['datetime'] = d['start_time']
                     if 'place' in d:
                         event['location'] = d['place']['name']
                     if 'cover' in d:
@@ -87,4 +83,4 @@ class FacebookScraper:
 
 if __name__ == "__main__":
     scraper = FacebookScraper()
-    scraper.get_events('dummy')
+    scraper.get_events()

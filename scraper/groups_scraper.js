@@ -99,7 +99,7 @@ page.open("http://www.facebook.com/login.php", function(status) {
         for (var i = 0; i < pages_els.length; i++) {
           pages.push({
             group_id: JSON.parse(pages_els[i].getAttribute('data-bt')).id,
-            group_name: pages_els[i].querySelector('._5d-5').innerHTML,
+            group: pages_els[i].querySelector('._5d-5').innerHTML,
             group_url: pages_els[i].querySelector('a').href
           })
         }
