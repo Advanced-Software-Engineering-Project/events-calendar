@@ -2,7 +2,7 @@
 #### Step 1: Python and Postgres
 Run the following shell command to install:
 * Python 2.7.11 or above
-* Python pip 8
+* Python pip 8 or above
 * Postgresql 9.3 or above
 * Postgresql Server 9.3 or above
 ```
