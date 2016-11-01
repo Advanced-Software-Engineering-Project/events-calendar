@@ -1,14 +1,24 @@
 # Environment Setup
-#### Step 1: PostgresSQL (9.5)
-A Postgres database with a database user must be created before server runs, at localhost (127.0.0.1) through default port. As suggested in "config.py", the postgres commands are:
+#### Step 1: Python and Postgres
+Run the following shell command to install:
+* Python 2.7.11 or above
+* Python pip 8 or above
+* Postgresql 9.3 or above
+* Postgresql Server 9.3 or above
+```
+sudo apt-get install python-dev python-pip postgresql-9.3 postgresql-server-dev-9.3
+```
 
-```sql
-create user "ase4156" with password 'dbpass' nocreatedb;
-create database "eventscalendar" with owner = "ase4156";
-```
 #### Step 2: Other Requirements
-Run the following shell command to install the Python-related packages including the updated Flask, psycopg2, SQLAlchemy, etc.
+Run the following shell command to install the Python packages using `pip` including the updated Flask, psycopg2, SQLAlchemy, etc.
 ```
-pip install -r requirements.txt
+sudo pip install -r requirements.txt
 ```
+
+#### Step 3: Run it
+After changing directory to `/server`, run
+```
+python app.py
+```
+Now, the application is available on `localhost:5000`
 
