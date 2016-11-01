@@ -56,8 +56,8 @@ function getEvents(url){
         })
         .replaceWith(function(){return this.data;});
 
-      //console.log(html);
-      savePage(html);
+      // console.log(html);
+      // savePage(html);
       console.log('found the events div? ', $('._3j40').length);
 
       $('._4dmd._4eok').each(function(){  // (Event div)

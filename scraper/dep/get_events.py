@@ -51,7 +51,7 @@ with open('pages_with_ids.json') as data_file:
 
         response = requests.post('https://www.facebook.com/api/graphqlbatch/', headers=headers, data=data)
         if response.content:
-            if len(response.content.split('\n')[0]) > 5:   # yes we are hacking
+            if len(response.content.split('\n')[0]) > 5:
                 print(response.content.split('\n')[0])
                 json_data = json.loads(response.content.split('\n')[0])
         else:
