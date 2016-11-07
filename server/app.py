@@ -204,18 +204,22 @@ def login():
         if len(res)!= 0:
             login_user(res[0])
             print "Login successfully."
-            return jsonify(user_id=res[0].userid)
-            #return redirect(url_for('events_handler'))
+            return redirect('/events/index.html')
         else:
             print "Invalid email-password combination."
             return "Login Error"   
 
-@app.route("/protected/",methods=["GET"])
+@app.route("/get_userid")
+@login_required
+def get_uid():
+    return jsonify(user_id=current_user.userid)
+
+@app.route("/protected",methods=["GET"])
 @login_required
 def protected():
     return Response(response="{}:Hello Protected World!".format(current_user.email), status=200)
 
-@app.route('/logout/')
+@app.route('/logout')
 def logout():
     logout_user()
     return 'Logged out'
