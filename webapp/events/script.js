@@ -18,32 +18,32 @@ var dummy;
 //         render(data.events);
 //     });
 
-$.get(
-    "/events/" + getUserId(),
-    function(data) {
-        render(data.events);
-    });
 
 function getUserId() {
-    var user_id = "";
     $.ajax({
         url:  "/get_userid",
-        method: 'POST',
         contentType:"application/json; charset=utf-8",
-        //data: obj,
-        data: JSON.stringify(obj),
         dataType:"json",
         success: function(response) {
-            user_id = resposne.user_id;
-          console.log(response.user_id);
-          $.cookie('columbia_events_user_id', response.user_id);
+            user_id = response.user_id;
+            console.log(response.user_id);
+            console.log("success")
+            return response.user_id;
+          // $.cookie('columbia_events_user_id', response.user_id);
     
         },
         error:function(response){
+            console.log("error")
         }
     });
-    return user_id;
+    return false
 }
+
+
+$.get(
+    'events/' + getUserId(), // TODO: not sure how to do ths
+    function(data) { render(data.events);}
+);
 
 function render(events){
     $("#eventTemplate").tmpl(events).appendTo("#eventlist");
@@ -85,6 +85,8 @@ function eventRating(rating, id) {
 function logout() {
     $.ajax({
         url:  "/logout"
+        // TODO: redirect to root.
+        
     });
     return false
 }

@@ -203,7 +203,8 @@ def login():
         if len(res)!= 0:
             login_user(res[0])
             print "Login successfully:", current_user
-            return redirect('/events/index.html')
+            #return redirect('/events/index.html')
+            return jsonify(user_id=current_user.id)
         else:
             print "Invalid email-password combination."
             response = jsonify({'error': 'invalid combination'})
