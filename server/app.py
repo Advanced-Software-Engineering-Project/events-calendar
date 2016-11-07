@@ -15,12 +15,16 @@ import json
 import sqlalchemy
 from flask import Flask, Response, request, jsonify, session, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
+from flask_login import LoginManager, UserMixin, login_required, login_user, logout_user, current_user
 
 app = Flask(__name__, static_url_path='', static_folder='../webapp/')
             #template_folder='../webapp/')
 app.config.from_pyfile('config.py')
 app.secret_key = 'super secret key'
 db = SQLAlchemy(app)
+
+login_manager = LoginManager()
+login_manager.init_app(app)
 
 #%% <DATABASE SCHEMA>
 """
@@ -160,6 +164,11 @@ IN USE: signup, login, calendar
 """
 db.create_all()
 
+@login_manager.user_loader
+def user_loader(userid):
+    user = Person.query.filter(Person.userid == userid).one()
+    return user
+
 #app.add_url_rule('/', 'root', lambda: app.send_static_file('index.html'))
 @app.route('/')
 def root():
@@ -184,7 +193,6 @@ def signup():
         response.status_code = 400
         return response
 
-
 @app.route('/login', methods=['POST', 'GET'])
 def login():
     if request.method == 'POST':
@@ -194,7 +202,7 @@ def login():
                                   Person.password == request_form['exist_password']
                                   ).all()
         if len(res)!= 0:
-            #session['logged_in']=True
+            login_user(res[0])
             print "Login successfully."
             return jsonify(user_id=res[0].userid)
             #return redirect(url_for('events_handler'))
@@ -202,10 +210,19 @@ def login():
             print "Invalid email-password combination."
             return "Login Error"   
 
-@app.route('/logout', methods=['GET'])
-def logout_page():
-    # logout_user()
-    return redirect('/')
+@app.route("/protected/",methods=["GET"])
+@login_required
+def protected():
+    return Response(response="{}:Hello Protected World!".format(current_user.email), status=200)
+
+@app.route('/logout/')
+def logout():
+    logout_user()
+    return 'Logged out'
+
+@login_manager.unauthorized_handler
+def unauthorized_handler():
+    return 'Unauthorized'
 
 
 @app.route('/eventss', methods=['GET'])
@@ -260,5 +277,29 @@ def after_request(response):
   response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
   return response
 
+#if __name__ == '__main__':
+#    app.run(port=int(os.environ.get("PORT", 5000)), debug=True)
 if __name__ == '__main__':
-    app.run(port=int(os.environ.get("PORT", 5000)), debug=True)
+    import click
+ 
+    @click.command()
+    @click.option('--debug', is_flag=True)
+    @click.option('--threaded', is_flag=True)#RECOMMENDED
+    #@click.argument('HOST', default='0.0.0.0')
+    @click.argument('HOST', default='127.0.0.1')
+    @click.argument('PORT', default=5000, type=int)
+    def run(debug, threaded, host, port):
+      """
+      This function handles command line parameters.
+      Run the server using
+          python server.py
+      Show the help text using
+          python server.py --help
+      """
+  
+      HOST, PORT = host, port
+      print "running on %s:%d" % (HOST, PORT)
+      app.run(host=HOST, port=PORT, debug=debug, threaded=threaded)
+  
+  
+    run()
