@@ -82,3 +82,10 @@ function eventRating(rating, id) {
     return stars
 }
 
+function logout() {
+    $.ajax({
+        url:  "/logout"
+    });
+    return false
+}
+
