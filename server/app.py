@@ -43,7 +43,7 @@ eventid text FOREIGN KEY REFERENCES event(eventid)
 )
 """
 
-class Person(db.Model):
+class Person(db.Model, UserMixin):
     """
     TABLE person(
     userid varchar(40) PRIMARY KEY,
@@ -52,7 +52,7 @@ class Person(db.Model):
     username varchar(80) UNIQUE
     )
     """
-    userid = db.Column(db.String(40), primary_key=True)
+    id = db.Column(db.String(40), primary_key=True)
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(80), nullable=False)
     firstname = db.Column(db.String(40))
@@ -61,7 +61,7 @@ class Person(db.Model):
     created_at = db.Column(db.DateTime)
 
     def __init__(self, email, password, firstname, lastname):
-        self.userid = "{}".format(int(time.time() * 1000))
+        self.id = "{}".format(int(time.time() * 1000))
         self.email = email
         self.password = password
         self.firstname = firstname
@@ -165,8 +165,8 @@ IN USE: signup, login, calendar
 db.create_all()
 
 @login_manager.user_loader
-def user_loader(userid):
-    user = Person.query.filter(Person.userid == userid).one()
+def user_loader(id):
+    user = Person.query.filter(Person.id == id).one()
     return user
 
 #app.add_url_rule('/', 'root', lambda: app.send_static_file('index.html'))
@@ -185,7 +185,7 @@ def signup():
     try:
         db.session.commit()
         print 'You were successfully signed up.'
-        return jsonify(user_id=new_user.userid)
+        return jsonify(user_id=new_user.id)
     except sqlalchemy.exc.IntegrityError:
         print "Integrity Error: Conflict email address!!!"
         db.session.rollback()
@@ -203,10 +203,9 @@ def login():
         if len(res)!= 0:
             print "#######\nHere I am\n#######"
             login_user(res[0])
-            print "!!!!!!!!!"
+            print current_user
             print "Login successfully."
-            return jsonify(user_id=new_user.userid)
-            #return redirect('/events/index.html')
+            return redirect('/events/index.html')
         else:
             print "Invalid email-password combination."
             return "Login Error"   
@@ -214,7 +213,7 @@ def login():
 @app.route("/get_userid")
 @login_required
 def get_uid():
-    return jsonify(user_id=current_user.userid)
+    return jsonify(user_id=current_user.id)
 
 @app.route("/protected",methods=["GET"])
 @login_required
