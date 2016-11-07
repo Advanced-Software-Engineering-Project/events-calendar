@@ -98,10 +98,10 @@ function login(){
         data: JSON.stringify(obj),
         dataType:"json",
         success: function(response) {
-                console.log(response.user_id);
-                $.cookie('columbia_events_user_id', response.user_id);
-                // Route to events page
-                window.location.href = "../events/index.html";
+          console.log(response.user_id);
+          $.cookie('columbia_events_user_id', response.user_id);
+          // Route to events page
+          window.location.href = "../events/index.html";
     
         },
         error:function(response){

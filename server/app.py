@@ -196,15 +196,17 @@ def signup():
 @app.route('/login', methods=['POST', 'GET'])
 def login():
     if request.method == 'POST':
-        print "#######\nHere I am\n#######"
         request_form = json.loads(request.data)
         res = Person.query.filter(Person.email == request_form['exist_email'],
                                   Person.password == request_form['exist_password']
                                   ).all()
         if len(res)!= 0:
+            print "#######\nHere I am\n#######"
             login_user(res[0])
+            print "!!!!!!!!!"
             print "Login successfully."
-            return redirect('/events/index.html')
+            return jsonify(user_id=new_user.userid)
+            #return redirect('/events/index.html')
         else:
             print "Invalid email-password combination."
             return "Login Error"   
