@@ -96,14 +96,14 @@ function login(){
         contentType:"application/json; charset=utf-8",
         //data: obj,
         data: JSON.stringify(obj),
-        dataType:"json",
-        success: function(response) {
-          console.log(response.user_id);
-          $.cookie('columbia_events_user_id', response.user_id);
+        //dataType:"json",
+        //success: function(response) {
+        //  console.log(response.user_id);
+        //  $.cookie('columbia_events_user_id', response.user_id);
           // Route to events page
-          window.location.href = "../events/index.html";
+        //  window.location.href = "../events/index.html";
     
-        },
+        //},
         error:function(response){
             $('#warn').append('<p style="color:red;text-align:center">invalid user name or password</p>');
             
