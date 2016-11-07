@@ -12,19 +12,39 @@ var dummy;
 
 
 
-$.get(
-    "http://localhost:5000/eventss",
-    function(data) {
-        render(data.events);
-        console.log("here");
-        consol.log(user_id);
-    }
-);
 // $.get(
-//     "/events/" + user_id,
+//     "http://localhost:5000/eventss",
 //     function(data) {
 //         render(data.events);
 //     });
+
+$.get(
+    "/events/" + getUserId(),
+    function(data) {
+        render(data.events);
+    });
+
+function getUserId() {
+    var user_id = "trial";
+    console.log(user_id);
+    // $.ajax({
+    //     url:  "/events",
+    //     method: 'POST',
+    //     contentType:"application/json; charset=utf-8",
+    //     //data: obj,
+    //     data: JSON.stringify(obj),
+    //     dataType:"json",
+    //     success: function(response) {
+    //         user_id = resposne.user_id;
+    //       console.log(response.user_id);
+    //       $.cookie('columbia_events_user_id', response.user_id);
+    
+    //     },
+    //     error:function(response){
+    //     }
+    // });
+    return user_id;
+}
 
 function render(events){
     $("#eventTemplate").tmpl(events).appendTo("#eventlist");
