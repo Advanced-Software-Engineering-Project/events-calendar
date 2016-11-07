@@ -9,11 +9,22 @@ $(function() {
     });
 });
 var dummy;
+
+
+
 $.get(
-        "http://localhost:5000/eventss",
-        function(data) {
-            render(data.events);
-        });
+    "http://localhost:5000/eventss",
+    function(data) {
+        render(data.events);
+        console.log("here");
+        consol.log(user_id);
+    }
+);
+// $.get(
+//     "/events/" + user_id,
+//     function(data) {
+//         render(data.events);
+//     });
 
 function render(events){
     $("#eventTemplate").tmpl(events).appendTo("#eventlist");
