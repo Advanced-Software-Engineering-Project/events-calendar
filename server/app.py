@@ -201,14 +201,14 @@ def login():
                                   Person.password == request_form['exist_password']
                                   ).all()
         if len(res)!= 0:
-            print "#######\nHere I am\n#######"
             login_user(res[0])
-            print current_user
-            print "Login successfully."
+            print "Login successfully:", current_user
             return redirect('/events/index.html')
         else:
             print "Invalid email-password combination."
-            return "Login Error"   
+            response = jsonify({'error': 'invalid combination'})
+            response.status_code = 400
+            return response  
 
 @app.route("/get_userid")
 @login_required
