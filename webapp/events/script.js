@@ -13,10 +13,6 @@ $(function() {
 var dummy;
 
 
-
-
-
-
 $.get(
     '/events',
     function(data) { render(data.events);}
@@ -61,9 +57,10 @@ function eventRating(rating, id) {
 
 function logout() {
     $.ajax({
-        url:  "/logout"
-        // TODO: redirect to root.
-        
+        url:  "/logout",
+        success: function(response) {
+                window.location.href = "../login/index.html";
+            }
     });
     return false
 }

@@ -224,7 +224,12 @@ def protected():
 #    db.session.commit()
 #    print 'Appended a relationship (Parent:%d, Child:%d)'%(current_user.id, favone.id)
 
-@app.route('/eventss', methods=['GET'])
+@app.route('/events/index.html')
+@login_required
+def events_check():
+    return app.send_static_file('./events/index.html')
+
+@app.route('/events', methods=['GET'])
 @login_required
 def events_handler():
     favbuf = current_user.favorites
@@ -236,22 +241,13 @@ def events_handler():
 @app.route('/logout')
 def logout():
     logout_user()
-    return 'Logged out'
+    return Response()
 
 @login_manager.unauthorized_handler
 def unauthorized_handler():
     print 'Unauthorized action'
-    return 'Unauthorized'
+    return redirect('/')
 
-<<<<<<< HEAD
-=======
-
-@app.route('/events', methods=['GET'])
-def events_handler():
-    return jsonify(events=[o.todict() for o in Event.query.all()])
-
-
->>>>>>> 7fb75a0c3e9627e983dc6a309cbe37424ca1705d
 @app.route('/refresh')
 def refresh_event():
 #    eventsdata = [{
@@ -299,7 +295,7 @@ if __name__ == '__main__':
     @click.option('--debug', is_flag=True)
     @click.option('--threaded', is_flag=True)#RECOMMENDED
     #@click.argument('HOST', default='0.0.0.0')
-    @click.argument('HOST', default='0.0.0.0')
+    @click.argument('HOST', default='127.0.0.1')
     @click.argument('PORT', default=env_port, type=int)
     def run(debug, threaded, host, port):
       """
