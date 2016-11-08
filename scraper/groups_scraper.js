@@ -1,6 +1,7 @@
 var fs = require('fs');
 var page = require('webpage').create();
 
+var images_dir = '/images/'
 
 
 page.open("http://www.facebook.com/login.php", function(status) {
@@ -12,7 +13,7 @@ page.open("http://www.facebook.com/login.php", function(status) {
     };
 
     page.evaluate(function() {
-      document.getElementById("email").value = "ionox0@gmail.com";
+      document.getElementById("email").value = "";
       document.getElementById("pass").value = "";
       document.getElementById("loginbutton").click();
     });
@@ -21,7 +22,7 @@ page.open("http://www.facebook.com/login.php", function(status) {
       page.evaluate(function() {
         console.log('At Homepage');
       });
-      page.render("home_page.png");
+//      page.render(images_dir + "home_page.png");
 
       routeToSearch();
     }, 2000);
@@ -37,7 +38,7 @@ page.open("http://www.facebook.com/login.php", function(status) {
         page.evaluate(function() {
           console.log('At Search Page');
         });
-        page.render("search_page.png");
+//        page.render(images_dir + "search_page.png");
 
         routeToPages();
       }, 5000)
@@ -63,7 +64,7 @@ page.open("http://www.facebook.com/login.php", function(status) {
         page.evaluate(function() {
           console.log('At Pages Page');
         });
-        page.render("pages_page.png");
+//        page.render(images_dir + "pages_page.png");
 
         scrollLoop();
       }, 5000)
@@ -84,7 +85,7 @@ page.open("http://www.facebook.com/login.php", function(status) {
         page.evaluate(function() {
           console.log('Scrolling iteration...');
         });
-        page.render("pages_page_scroll_" + i + ".png");
+//        page.render(images_dir + "pages_page_scroll_" + i + ".png");
 
         scrollLoop();
       }, 5000)
@@ -94,7 +95,6 @@ page.open("http://www.facebook.com/login.php", function(status) {
       var pages = page.evaluate(function() {
         var pages_els = document.querySelectorAll("._5und");
         var pages = [];
-        var i = 0;
 
         for (var i = 0; i < pages_els.length; i++) {
           pages.push({
@@ -114,7 +114,7 @@ page.open("http://www.facebook.com/login.php", function(status) {
 
     function writeResults(pages) {
       console.log(pages);
-      var path = 'pages_data.json';
+      var path = '/data/pages_data.json';
       fs.write(path, pages, 'w');
 
       phantom.exit();

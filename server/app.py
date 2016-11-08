@@ -243,6 +243,15 @@ def unauthorized_handler():
     print 'Unauthorized action'
     return 'Unauthorized'
 
+<<<<<<< HEAD
+=======
+
+@app.route('/events', methods=['GET'])
+def events_handler():
+    return jsonify(events=[o.todict() for o in Event.query.all()])
+
+
+>>>>>>> 7fb75a0c3e9627e983dc6a309cbe37424ca1705d
 @app.route('/refresh')
 def refresh_event():
 #    eventsdata = [{
@@ -280,33 +289,30 @@ def refresh_event():
     #print [o.todict() for o in Event.query.all()]
     return redirect('login/index.html')
 
-##Temporary local development solution for CORS
-@app.after_request
-def after_request(response):
-    response.headers.add('Access-Control-Allow-Origin', '*')
-    response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
-    response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
-    return response
 
 if __name__ == '__main__':
     import click
-
+    
+    env_port = int(os.environ.get("PORT", 5000))
+ 
     @click.command()
     @click.option('--debug', is_flag=True)
     @click.option('--threaded', is_flag=True)#RECOMMENDED
     #@click.argument('HOST', default='0.0.0.0')
-    @click.argument('HOST', default='127.0.0.1')
-    @click.argument('PORT', default=5000, type=int)
+    @click.argument('HOST', default='0.0.0.0')
+    @click.argument('PORT', default=env_port, type=int)
     def run(debug, threaded, host, port):
-        """
-        This function handles command line parameters.
-        Run the server using
-            python server.py
-        Show the help text using
-            python server.py --help
-        """
-        HOST, PORT = host, port
-        print "running on %s:%d" % (HOST, PORT)
-        app.run(host=HOST, port=PORT, debug=debug, threaded=threaded)
-
+      """
+      This function handles command line parameters.
+      Run the server using
+          python server.py
+      Show the help text using
+          python server.py --help
+      """
+  
+      HOST, PORT = host, port
+      print "running on %s:%d" % (HOST, PORT)
+      app.run(host=HOST, port=env_port, debug=debug, threaded=threaded)
+  
+  
     run()
