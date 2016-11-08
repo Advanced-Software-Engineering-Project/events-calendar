@@ -273,19 +273,21 @@ def refresh_event():
     #print [o.todict() for o in Event.query.all()]
     return redirect('login/index.html')
      
-    
+
 
 #if __name__ == '__main__':
 #    app.run(port=int(os.environ.get("PORT", 5000)), debug=True)
 if __name__ == '__main__':
     import click
+
+    port = int(os.environ.get("PORT", 5000))
  
     @click.command()
     @click.option('--debug', is_flag=True)
     @click.option('--threaded', is_flag=True)#RECOMMENDED
     #@click.argument('HOST', default='0.0.0.0')
     @click.argument('HOST', default='127.0.0.1')
-    @click.argument('PORT', default=5000, type=int)
+    @click.argument('PORT', default=port, type=int)
     def run(debug, threaded, host, port):
       """
       This function handles command line parameters.
