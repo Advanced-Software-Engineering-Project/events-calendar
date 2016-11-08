@@ -22,7 +22,7 @@ $.get(
 
 function render(events){
     window.events = events;
-    $("#eventTemplate").tmpl(events).appendTo("#eventlist");
+    $("#eventlist").html($("#eventTemplate").tmpl(events));
 }
 
 function formatDate(datetime) {
@@ -39,7 +39,6 @@ function favor(favorite, id) {
 }
 
 function setFavorite(fav, id) {
-    debugger;
     if (fav) {
         $.ajax({
             method: 'POST',
@@ -53,15 +52,15 @@ function setFavorite(fav, id) {
             method: 'DELETE',
             url: '/favorite',
             contentType: "application/json; charset=utf-8",
-            data: JSON.stringify(id),
+            data: JSON.stringify({id: id}),
             success: favSuccess
         })
     }
 
     function favSuccess() {
         // Flip the favorite flag for this event
-        for (var i = 1; i < window.events.length; i++) {
-            if (window.events[i].id === id) {
+        for (var i = 0; i < window.events.length; i++) {
+            if (+window.events[i].id === +id) {
                 window.events[i].favorite = !window.events[i].favorite;
             }
         }

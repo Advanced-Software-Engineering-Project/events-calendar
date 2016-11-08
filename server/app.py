@@ -216,7 +216,7 @@ def protected():
 def addtorelationship():
     request_form = json.loads(request.data)
     print request_form
-    event_id = request_form['id']
+    event_id = str(request_form['id'])
     favone = Event.query.filter(Event.id == event_id).one()
     print favone
     if request.method == 'POST':
@@ -225,7 +225,6 @@ def addtorelationship():
         current_user.favorites.remove(favone)
     db.session.add(current_user)
     db.session.commit()
-    print 'Appended a relationship (Parent:%d, Child:%d)'%(current_user.id, favone.id)
     return Response('success')
 
 @app.route('/events/index.html')
