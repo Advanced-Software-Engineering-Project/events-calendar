@@ -297,8 +297,8 @@ if __name__ == '__main__':
     @click.command()
     @click.option('--debug', is_flag=True)
     @click.option('--threaded', is_flag=True)#RECOMMENDED
-    #@click.argument('HOST', default='0.0.0.0')
-    @click.argument('HOST', default='127.0.0.1')
+    @click.argument('HOST', default='0.0.0.0')
+    #@click.argument('HOST', default='127.0.0.1')
     @click.argument('PORT', default=env_port, type=int)
     def run(debug, threaded, host, port):
       """
