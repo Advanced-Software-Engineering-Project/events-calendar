@@ -1,5 +1,4 @@
-'user-strict'
-var API_URL = 'http://localhost:5000'
+'use-strict'
 
 $(function() {
     $('input[name="daterange"]').daterangepicker();
@@ -44,7 +43,7 @@ function getUserId() {
 
 
 $.get(
-    API_URL + '/events',
+    '/events',
     function(data) { render(data.events);}
 );
 
