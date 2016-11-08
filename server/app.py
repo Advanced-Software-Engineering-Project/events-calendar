@@ -1,4 +1,4 @@
-#!/usr/bin/env python2.7
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 """
@@ -6,14 +6,14 @@ To run locally
     python server.py
 Go to http://localhost:5000 in your browser
 
-@author: peng
+@ase4156-backend: Peng, Ian
 """
 from datetime import datetime
 import os
 import time
 import json
 import sqlalchemy
-from flask import Flask, Response, request, jsonify, redirect, url_for
+from flask import Flask, Response, request, jsonify, redirect
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, UserMixin,\
                 login_required, login_user, logout_user, current_user
@@ -33,16 +33,17 @@ CODE SECTION: DATABASE SCHEMA
 IN USE: Person, Event
 """
 
-#Favorite = db.Table('Favorite',
-#    db.Column('userid', db.Integer, db.ForeignKey('Person.userid')),
-#    db.Column('eventid', db.Text, db.ForeignKey('Event.eventid'))
-#    )
+
 """
 Table favorite(
-userid int FOREIGN KEY REFERENCES person(userid),
-eventid text FOREIGN KEY REFERENCES event(eventid)
+    user_id string FOREIGN KEY REFERENCES person(userid),
+    event_id string FOREIGN KEY REFERENCES event(eventid)
 )
 """
+favorite_table = db.Table('favorite',
+    db.Column('user_id', db.String(40), db.ForeignKey('person.id')),
+    db.Column('event_id', db.String(40), db.ForeignKey('event.id'))
+    )
 
 class Person(db.Model, UserMixin):
     """
@@ -57,6 +58,9 @@ class Person(db.Model, UserMixin):
     lastname = db.Column(db.String(40))
     username = db.Column(db.String(80), unique=True)
     created_at = db.Column(db.DateTime)
+    favorites = db.relationship("Event", secondary = favorite_table,\
+				# OPTIONALv0: child record delete on cascade
+				back_populates = "fans")
 
     def __init__(self, email, password, firstname, lastname):
         self.id = "{}".format(int(time.time() * 1000))
@@ -76,7 +80,7 @@ class Event(db.Model):
     id text PRIMARY KEY
     )
     """
-    id = db.Column(db.Text, primary_key=True)
+    id = db.Column(db.String(40), primary_key=True)
     datetime = db.Column(db.String(30))
     location = db.Column(db.String(100))
     group = db.Column(db.String(100))
@@ -84,7 +88,7 @@ class Event(db.Model):
     group_url = db.Column(db.Text)
     photo_url = db.Column(db.Text)
     rating = db.Column(db.Integer)
-    favorite = db.Column(db.Integer)
+    fans = db.relationship("Person", secondary = favorite_table, back_populates="favorites")
 
     def __init__(self, infodict):
         self.id = infodict['id']
@@ -115,16 +119,12 @@ class Event(db.Model):
         try:
             self.rating = infodict['rating']
         except:
-            self.rating = 3
-        try:
-            self.favorite = infodict['favorite']
-        except:
-            self.favorite = 1
+            self.rating = 4
 
     def __repr__(self):
         return "<{},{}>".format(self.id, self.title)
 
-    def todict(self):
+    def todict(self, bool_fav):
         """ Output dictionary """
         return {'id':self.id,
                 'datetime':self.datetime,
@@ -134,28 +134,26 @@ class Event(db.Model):
                 'group_url':self.group_url,
                 'photo_url':self.photo_url,
                 'rating':self.rating,
-                'favorite':self.favorite}
+                'favorite': int(bool_fav)
+               }
 
-    def update_rating(self, newrate):
-        pass
-
-#class Rate(db.Model):
-    """
-    Table rate(
-    userid int FOREIGN KEY REFERENCES person(userid),
-    eventid text FOREIGN KEY REFERENCES event(eventid),
-    rate int,
-    CHECK (rate in (1,2,3,4,5))
-    )
-    """
-
+"""
+Table rate(
+userid int FOREIGN KEY REFERENCES person(userid),
+eventid text FOREIGN KEY REFERENCES event(eventid),
+rate int,
+CHECK (rate in (1,2,3,4,5))
+)
+"""
 
 #%% <SERVER API>
 """
 CODE SECTION: SERVER API
 IN USE: signup, login, calendar
 """
+# def init_db():
 db.create_all()
+print 'Database initialized'
 
 @login_manager.user_loader
 def user_loader(id):
@@ -213,10 +211,27 @@ def get_uid():
 def protected():
     return Response(response="{}:Hello Protected World!".format(current_user.email), status=200)
 
+#@app.route('/favorite', methods=['POST', 'DELETE'])
+#def addtorelationship():
+#    event_id = request.arg('event_id')
+#    favone = Event.query.filter(Event.id == event_id).one()
+#    print favone
+#    if request.method == 'POST':
+#        current_user.favorites.append(favone)
+#    elif request.method == 'DELETE':
+#        current_user.favorites.remove(favone)
+#    db.session.add(current_user)
+#    db.session.commit()
+#    print 'Appended a relationship (Parent:%d, Child:%d)'%(current_user.id, favone.id)
+
 @app.route('/eventss', methods=['GET'])
 @login_required
 def events_handler():
-    return jsonify(events=[o.todict() for o in Event.query.all()])
+    favbuf = current_user.favorites
+    print favbuf
+    print '###'
+    #print [o.todict(o in favbuf) for o in Event.query.all()]    
+    return jsonify(events=[o.todict(o in favbuf) for o in Event.query.all()])
 
 @app.route('/logout')
 def logout():
@@ -225,6 +240,7 @@ def logout():
 
 @login_manager.unauthorized_handler
 def unauthorized_handler():
+    print 'Unauthorized action'
     return 'Unauthorized'
 
 @app.route('/refresh')
@@ -251,7 +267,7 @@ def refresh_event():
     f = open('../scraper/events_data.json', 'r')
     eventsdata = json.load(f)
     f.close()
-    for i in range(0, 2):
+    for i in range(0, 5):
         db.session.add(Event(eventsdata[i]))
         try:
             db.session.commit()

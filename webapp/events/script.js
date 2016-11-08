@@ -12,38 +12,38 @@ var dummy;
 
 
 
-// $.get(
-//     "http://localhost:5000/eventss",
-//     function(data) {
-//         render(data.events);
-//     });
-
-
-function getUserId() {
-    $.ajax({
-        url:  "/get_userid",
-        contentType:"application/json; charset=utf-8",
-        dataType:"json",
-        success: function(response) {
-            user_id = response.user_id;
-            console.log(response.user_id);
-            console.log("success")
-            return response.user_id;
-          // $.cookie('columbia_events_user_id', response.user_id);
-    
-        },
-        error:function(response){
-            console.log("error")
-        }
-    });
-    return false
-}
-
-
 $.get(
-    'events/' + getUserId(), // TODO: not sure how to do ths
-    function(data) { render(data.events);}
-);
+     "/eventss",
+     function(data) {
+         render(data.events);
+     });
+
+
+//function getUserId() {
+//    $.ajax({
+//        url:  "/get_userid",
+//        contentType:"application/json; charset=utf-8",
+//        dataType:"json",
+//        success: function(response) {
+//            user_id = response.user_id;
+//            console.log(response.user_id);
+//            console.log("success")
+//            return response.user_id;
+//          // $.cookie('columbia_events_user_id', response.user_id);
+//    
+//        },
+//        error:function(response){
+//            console.log("error")
+//        }
+//    });
+//    return false
+//}
+
+
+//$.get(
+//    'events/' + getUserId(), // TODO: not sure how to do ths
+//    function(data) { render(data.events);}
+//);
 
 function render(events){
     $("#eventTemplate").tmpl(events).appendTo("#eventlist");
