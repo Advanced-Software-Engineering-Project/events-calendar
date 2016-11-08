@@ -175,6 +175,7 @@ def signup():
     try:
         db.session.commit()
         print 'You were successfully signed up.'
+        login_user(new_user)
         return jsonify(user_id=new_user.id)
     except sqlalchemy.exc.IntegrityError:
         print "Integrity Error: Conflict email address!!!"
