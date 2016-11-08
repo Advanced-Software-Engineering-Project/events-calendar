@@ -226,6 +226,7 @@ def addtorelationship():
     db.session.add(current_user)
     db.session.commit()
     print 'Appended a relationship (Parent:%d, Child:%d)'%(current_user.id, favone.id)
+    return Response('success')
 
 @app.route('/events/index.html')
 @login_required
