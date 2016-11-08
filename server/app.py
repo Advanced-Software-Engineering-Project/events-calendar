@@ -231,7 +231,7 @@ def unauthorized_handler():
     return 'Unauthorized'
 
 
-@app.route('/eventss', methods=['GET'])
+@app.route('/events', methods=['GET'])
 def events_handler():
     return jsonify(events=[o.todict() for o in Event.query.all()])
 
