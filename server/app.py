@@ -134,7 +134,7 @@ class Event(db.Model):
                 'group_url':self.group_url,
                 'photo_url':self.photo_url,
                 'rating':self.rating,
-                'favorite': int(bool_fav)
+                'favorite': bool_fav
                }
 
 """
@@ -212,18 +212,20 @@ def get_uid():
 def protected():
     return Response(response="{}:Hello Protected World!".format(current_user.email), status=200)
 
-#@app.route('/favorite', methods=['POST', 'DELETE'])
-#def addtorelationship():
-#    event_id = request.arg('event_id')
-#    favone = Event.query.filter(Event.id == event_id).one()
-#    print favone
-#    if request.method == 'POST':
-#        current_user.favorites.append(favone)
-#    elif request.method == 'DELETE':
-#        current_user.favorites.remove(favone)
-#    db.session.add(current_user)
-#    db.session.commit()
-#    print 'Appended a relationship (Parent:%d, Child:%d)'%(current_user.id, favone.id)
+@app.route('/favorite', methods=['POST', 'DELETE'])
+def addtorelationship():
+    request_form = json.loads(request.data)
+    print request_form
+    event_id = request_form['id']
+    favone = Event.query.filter(Event.id == event_id).one()
+    print favone
+    if request.method == 'POST':
+        current_user.favorites.append(favone)
+    elif request.method == 'DELETE':
+        current_user.favorites.remove(favone)
+    db.session.add(current_user)
+    db.session.commit()
+    print 'Appended a relationship (Parent:%d, Child:%d)'%(current_user.id, favone.id)
 
 @app.route('/events/index.html')
 @login_required
