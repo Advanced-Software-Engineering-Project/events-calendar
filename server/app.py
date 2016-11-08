@@ -13,14 +13,15 @@ import os
 import time
 import json
 import sqlalchemy
-from flask import Flask, Response, request, jsonify, session, redirect, url_for
+from flask import Flask, Response, request, jsonify, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
-from flask_login import LoginManager, UserMixin, login_required, login_user, logout_user, current_user
+from flask_login import LoginManager, UserMixin,\
+                login_required, login_user, logout_user, current_user
 
 app = Flask(__name__, static_url_path='', static_folder='../webapp/')
-            #template_folder='../webapp/')
 app.config.from_pyfile('config.py')
 app.secret_key = 'super secret key'
+
 db = SQLAlchemy(app)
 
 login_manager = LoginManager()
@@ -46,10 +47,7 @@ eventid text FOREIGN KEY REFERENCES event(eventid)
 class Person(db.Model, UserMixin):
     """
     TABLE person(
-    userid varchar(40) PRIMARY KEY,
-    email varchar(120) UNIQUE NOT NULL,
-    password varchar(80) NOT NULL,
-    username varchar(80) UNIQUE
+    id varchar(40) PRIMARY KEY
     )
     """
     id = db.Column(db.String(40), primary_key=True)
@@ -57,7 +55,7 @@ class Person(db.Model, UserMixin):
     password = db.Column(db.String(80), nullable=False)
     firstname = db.Column(db.String(40))
     lastname = db.Column(db.String(40))
-    username = db.Column(db.String(80), unique=True)    
+    username = db.Column(db.String(80), unique=True)
     created_at = db.Column(db.DateTime)
 
     def __init__(self, email, password, firstname, lastname):
@@ -75,13 +73,7 @@ class Person(db.Model, UserMixin):
 class Event(db.Model):
     """
     Table event(
-    id text PRIMARY KEY,
-    datetime date,
-    location text,
-    group text,
-    title text NOT NULL,    
-    url text,
-    rating int,
+    id text PRIMARY KEY
     )
     """
     id = db.Column(db.Text, primary_key=True)
@@ -93,46 +85,47 @@ class Event(db.Model):
     photo_url = db.Column(db.Text)
     rating = db.Column(db.Integer)
     favorite = db.Column(db.Integer)
-        
-    def __init__(self, eventInfoDict):
-        self.id = eventInfoDict['id']
+
+    def __init__(self, infodict):
+        self.id = infodict['id']
         try:
-            self.datetime = eventInfoDict['datetime']
+            self.datetime = infodict['datetime']
         except:
             self.datetime = None
         try:
-            self.location = eventInfoDict['location']
+            self.location = infodict['location']
         except:
             self.location = None
         try:
-            self.group = eventInfoDict['group']
+            self.group = infodict['group']
         except:
             self.group = None
         try:
-            self.title = eventInfoDict['title']
+            self.title = infodict['title']
         except:
             self.title = 'Untitled Event'
         try:
-            self.group_url = eventInfoDict['group_url']
+            self.group_url = infodict['group_url']
         except:
             self.group_url = None
         try:
-            self.photo_url = eventInfoDict['photo_url']
+            self.photo_url = infodict['photo_url']
         except:
             self.photo_url = None
         try:
-            self.rating = eventInfoDict['rating']
+            self.rating = infodict['rating']
         except:
             self.rating = 3
         try:
-            self.favorite = eventInfoDict['favorite']
+            self.favorite = infodict['favorite']
         except:
             self.favorite = 1
-    
+
     def __repr__(self):
         return "<{},{}>".format(self.id, self.title)
-    
+
     def todict(self):
+        """ Output dictionary """
         return {'id':self.id,
                 'datetime':self.datetime,
                 'location':self.location,
@@ -142,7 +135,7 @@ class Event(db.Model):
                 'photo_url':self.photo_url,
                 'rating':self.rating,
                 'favorite':self.favorite}
-        
+
     def update_rating(self, newrate):
         pass
 
@@ -155,7 +148,7 @@ class Event(db.Model):
     CHECK (rate in (1,2,3,4,5))
     )
     """
-    
+
 
 #%% <SERVER API>
 """
@@ -169,18 +162,17 @@ def user_loader(id):
     user = Person.query.filter(Person.id == id).one()
     return user
 
-#app.add_url_rule('/', 'root', lambda: app.send_static_file('index.html'))
 @app.route('/')
 def root():
     return redirect('/login/index.html')
 
 @app.route('/signup', methods=['POST'])
 def signup():
-    request_form = json.loads(request.data)    
-    new_user = Person(request_form['email'], 
-                      request_form['password'], 
+    request_form = json.loads(request.data)
+    new_user = Person(request_form['email'],
+                      request_form['password'],
                       request_form['firstname'],
-                      request_form['lastname'])    
+                      request_form['lastname'])
     db.session.add(new_user)
     try:
         db.session.commit()
@@ -199,8 +191,8 @@ def login():
         request_form = json.loads(request.data)
         res = Person.query.filter(Person.email == request_form['exist_email'],
                                   Person.password == request_form['exist_password']
-                                  ).all()
-        if len(res)!= 0:
+                                 ).all()
+        if len(res) != 0:
             login_user(res[0])
             print "Login successfully:", current_user
             #return redirect('/events/index.html')
@@ -209,14 +201,14 @@ def login():
             print "Invalid email-password combination."
             response = jsonify({'error': 'invalid combination'})
             response.status_code = 400
-            return response  
+            return response
 
 @app.route("/get_userid")
 @login_required
 def get_uid():
     return jsonify(user_id=current_user.id)
 
-@app.route("/protected",methods=["GET"])
+@app.route("/protected", methods=["GET"])
 @login_required
 def protected():
     return Response(response="{}:Hello Protected World!".format(current_user.email), status=200)
@@ -257,7 +249,7 @@ def refresh_event():
 #	    'rating': 5,
 #	    'favorite': 0
 #	}]
-    f = open('../scraper/events_data.json','r')
+    f = open('../scraper/events_data.json', 'r')
     eventsdata = json.load(f)
     f.close()
     for i in range(0, 2):
@@ -272,22 +264,18 @@ def refresh_event():
     #print [o.__dict__ for o in Event.query.all()]
     #print [o.todict() for o in Event.query.all()]
     return redirect('login/index.html')
-     
-    
-    
+
 ##Temporary local development solution for CORS
 @app.after_request
 def after_request(response):
-  response.headers.add('Access-Control-Allow-Origin', '*')
-  response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
-  response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
-  return response
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+    response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
+    return response
 
-#if __name__ == '__main__':
-#    app.run(port=int(os.environ.get("PORT", 5000)), debug=True)
 if __name__ == '__main__':
     import click
- 
+
     @click.command()
     @click.option('--debug', is_flag=True)
     @click.option('--threaded', is_flag=True)#RECOMMENDED
@@ -295,17 +283,15 @@ if __name__ == '__main__':
     @click.argument('HOST', default='127.0.0.1')
     @click.argument('PORT', default=5000, type=int)
     def run(debug, threaded, host, port):
-      """
-      This function handles command line parameters.
-      Run the server using
-          python server.py
-      Show the help text using
-          python server.py --help
-      """
-  
-      HOST, PORT = host, port
-      print "running on %s:%d" % (HOST, PORT)
-      app.run(host=HOST, port=PORT, debug=debug, threaded=threaded)
-  
-  
+        """
+        This function handles command line parameters.
+        Run the server using
+            python server.py
+        Show the help text using
+            python server.py --help
+        """
+        HOST, PORT = host, port
+        print "running on %s:%d" % (HOST, PORT)
+        app.run(host=HOST, port=PORT, debug=debug, threaded=threaded)
+
     run()
