@@ -105,7 +105,7 @@ function login(){
     
         },
         error:function(response){
-            $('#warn').append('<p style="color:red;text-align:center">invalid user name or password</p>');
+            $('#warn').html('<p style="color:red;text-align:center">invalid user name or password</p>');
             
         }
     });

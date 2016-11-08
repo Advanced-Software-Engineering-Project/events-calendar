@@ -1,5 +1,7 @@
 'use-strict'
 
+window.events = [];
+
 $(function() {
     $('input[name="daterange"]').daterangepicker();
     $('input[name="timerange"]').daterangepicker({
@@ -19,6 +21,7 @@ $.get(
 );
 
 function render(events){
+    window.events = events;
     $("#eventTemplate").tmpl(events).appendTo("#eventlist");
 }
 
@@ -28,14 +31,41 @@ function formatDate(datetime) {
 }
 
 function favor(favorite, id) {
-    var id = this.id;
-    if(favorite === 1) {
-        return '<span class="glyphicon glyphicon-heart"></span>'
-
+    if (favorite) {
+        return '<span class="glyphicon glyphicon-heart" onClick="setFavorite(false, ' + id + ')"></span>'
+    } else {
+        return '<span class="glyphicon glyphicon-heart-empty" onClick="setFavorite(true, ' + id + ')"></span>'
     }
-    else {
-        return '<span class="glyphicon glyphicon-heart-empty"></span>'
+}
 
+function setFavorite(fav, id) {
+    debugger;
+    if (fav) {
+        $.ajax({
+            method: 'POST',
+            url: '/favorite',
+            data: JSON.stringify({id: id}),
+            contentType: "application/json; charset=utf-8",
+            success: favSuccess
+        })
+    } else {
+        $.ajax({
+            method: 'DELETE',
+            url: '/favorite',
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify(id),
+            success: favSuccess
+        })
+    }
+
+    function favSuccess() {
+        // Flip the favorite flag for this event
+        for (var i = 1; i < window.events.length; i++) {
+            if (window.events[i].id === id) {
+                window.events[i].favorite = !window.events[i].favorite;
+            }
+        }
+        render(window.events);
     }
 }
 
