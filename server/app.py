@@ -213,6 +213,11 @@ def get_uid():
 def protected():
     return Response(response="{}:Hello Protected World!".format(current_user.email), status=200)
 
+@app.route('/eventss', methods=['GET'])
+@login_required
+def events_handler():
+    return jsonify(events=[o.todict() for o in Event.query.all()])
+
 @app.route('/logout')
 def logout():
     logout_user()
@@ -221,12 +226,6 @@ def logout():
 @login_manager.unauthorized_handler
 def unauthorized_handler():
     return 'Unauthorized'
-
-
-@app.route('/eventss', methods=['GET'])
-def events_handler():
-    return jsonify(events=[o.todict() for o in Event.query.all()])
-
 
 @app.route('/refresh')
 def refresh_event():
