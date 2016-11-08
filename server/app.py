@@ -272,10 +272,10 @@ def refresh_event():
 #	    'rating': 5,
 #	    'favorite': 0
 #	}]
-    f = open('../scraper/events_data.json', 'r')
+    f = open('../scraper/data/events_data.json', 'r')
     eventsdata = json.load(f)
     f.close()
-    for i in range(0, 5):
+    for i in range(0, 20):
         db.session.add(Event(eventsdata[i]))
         try:
             db.session.commit()
