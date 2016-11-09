@@ -19,10 +19,22 @@ from flask_login import LoginManager, UserMixin,\
                 login_required, login_user, logout_user, current_user
 
 app = Flask(__name__, static_url_path='', static_folder='../webapp/')
-app.config.from_pyfile('config.py')
-app.secret_key = 'super secret key'
 
-db = SQLAlchemy(app)
+
+def init_config(testing=False):
+    if testing:
+        app.config.from_pyfile('config.py')
+        app.secret_key = 'super secret key'
+    else:
+        app.config.from_pyfile('test_config.py')
+        app.secret_key = 'super secret key'
+
+
+def init_db(app, testing=False):
+    init_config(testing)
+    return SQLAlchemy(app)
+
+db = init_db(app)
 
 login_manager = LoginManager()
 login_manager.init_app(app)

@@ -6,16 +6,35 @@ Created on Thu Oct 27 14:47:36 2016
 """
 
 import os
-import app
+from app import app, init_config, init_db
 import unittest
 
-from flask import json, jsonify
+import tempfile
+
 
 class TestCase(unittest.TestCase):
 
     def setUp(self):
-        app.app.config['TESTING'] = True
-        self.app = app.app.test_client()
+        self.client = app.test_client()
+        db = init_db(app, True)
+        db.create_all()
+
+
+        # self.db_fd, app.config['DATABASE'] = tempfile.mkstemp()
+        # with app.app_context():
+        #     app.init_db()
+
+
+    def login(self, username, password):
+        return self.app.post('/login', data=dict(
+            username=username,
+            password=password
+        ), follow_redirects=True)
+
+    def logout(self):
+        return self.app.get('/logout', follow_redirects=True)
+
+
 
     def test_signup(self):
         return self.app.post('/signup', data = dict(
