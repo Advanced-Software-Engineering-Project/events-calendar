@@ -272,25 +272,6 @@ def unauthorized_handler():
 
 @app.route('/refresh')
 def refresh_event():
-#    eventsdata = [{
-#	    'id': '1009214592509511',
-#	    'datetime': '2016-02-25T19:00:00-0500',
-#	    'location': 'Fairchild 700',
-#	    'group': 'Columbia Bioinformatics',
-#	    'title': 'Bioinformatics Student Research Panel',
-#	    'url': 'https://www.facebook.com/events/563717810449699/',
-#	    'rating': 3,
-#	    'favorite': 1
-#     }, {
-#	    'id': '1009214592509512',
-#	    'datetime': '2016-02-25T19:00:00-0500',
-#	    'location': 'Fairchild 700',
-#	    'group': 'Columbia Bioinformatics',
-#	    'title': 'Bioinformatics Student Research Panel',
-#	    'url': 'https://www.facebook.com/events/563717810449699/',
-#	    'rating': 5,
-#	    'favorite': 0
-#	}]
     f = open('../scraper/data/events_data.json', 'r')
     eventsdata = json.load(f)
     f.close()
@@ -302,9 +283,6 @@ def refresh_event():
         except sqlalchemy.exc.IntegrityError:
             print "Integrity Error: old event."
             db.session.rollback()
-    #print '###########'
-    #print [o.__dict__ for o in Event.query.all()]
-    #print [o.todict() for o in Event.query.all()]
     return redirect('login/index.html')
 
 
@@ -317,7 +295,6 @@ if __name__ == '__main__':
     @click.option('--debug', is_flag=True)
     @click.option('--threaded', is_flag=True)#RECOMMENDED
     @click.argument('HOST', default='0.0.0.0')
-    #@click.argument('HOST', default='127.0.0.1')
     @click.argument('PORT', default=env_port, type=int)
     def run(debug, threaded, host, port):
       """
