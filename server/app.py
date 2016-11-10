@@ -22,7 +22,7 @@ app = Flask(__name__, static_url_path='', static_folder='../webapp/')
 
 
 def init_config(testing=False):
-    if testing:
+    if not testing:
         app.config.from_pyfile('config.py')
         app.secret_key = 'super secret key'
     else:
