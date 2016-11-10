@@ -24,9 +24,7 @@ body {
     overflow: hidden;
 }
 
-.caption h4 {
-    white-space: nowrap;
-}
+
 
 .event-date-time {
     color: #79797a;
@@ -56,8 +54,12 @@ body {
 
 .thumbnail {
     padding: 0;
+    border-radius: 0px;
 }
-
+.thumbnail>img{      
+    margin-right:0;
+    margin-left: 0;
+}
 .thumbnail .caption-full {
     padding: 9px;
     color: #333;
