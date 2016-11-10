@@ -6,10 +6,8 @@ Created on Thu Oct 27 14:47:36 2016
 """
 
 
-<<<<<<< HEAD
 from flask import Flask
-=======
->>>>>>> 40257ad0a69f261c746378b2035b235428434f1f
+
 import unittest
 import json
 
