@@ -263,15 +263,15 @@ def addtorelationship():
     db.session.commit()
     return Response('success', status=200)
 
-@nocache
-@login_required
 @app.route('/events/index.html')
+@login_required
+@nocache
 def events_check():
     return app.send_static_file('./events/index.html')
 
-@nocache
-@login_required
 @app.route('/events', methods=['GET'])
+@login_required
+@nocache
 def events_handler():
     favbuf = current_user.favorites
     print favbuf
