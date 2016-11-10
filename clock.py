@@ -18,11 +18,11 @@ sched = BlockingScheduler()
 #
 
 
-@sched.scheduled_job('interval', id='my_job_id', minutes=2)
+@sched.scheduled_job('interval', id='get_events', minutes=2)
 def scheduled_job():
     events_scraper.get_events()
 
-@sched.scheduled_job('cron', day_of_week='mon-sun', minutes=2)
+@sched.scheduled_job('interval', id='import', minutes=2)
 def scheduled_job():
     data_importer.do_import()
 
