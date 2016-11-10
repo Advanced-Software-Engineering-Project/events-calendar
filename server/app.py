@@ -255,6 +255,8 @@ def addtorelationship():
     event_id = str(request_form['id'])
     favone = Event.query.filter(Event.id == event_id).one()
     print favone
+    # todo - 409 for duplicate favorites
+    # todo - 404 for delete nonexistant favorite
     if request.method == 'POST':
         current_user.favorites.append(favone)
     elif request.method == 'DELETE':
@@ -281,6 +283,8 @@ def events_handler():
 
 @app.route('/logout')
 def logout():
+    # todo - Should be PUT or POST
+    # todo - 404 for duplicate logout
     logout_user()
     return Response()
 
