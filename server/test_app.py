@@ -6,7 +6,7 @@ Created on Thu Oct 27 14:47:36 2016
 """
 
 import os
-from app import app, init_config, init_db
+from app import app, init_db, Person, Event
 import unittest
 
 import tempfile
@@ -18,6 +18,7 @@ class TestCase(unittest.TestCase):
         self.client = app.test_client()
         db = init_db(app, True)
         db.create_all()
+        db.session.commit()
 
 
         # self.db_fd, app.config['DATABASE'] = tempfile.mkstemp()
@@ -25,26 +26,26 @@ class TestCase(unittest.TestCase):
         #     app.init_db()
 
 
-    def login(self, username, password):
-        return self.app.post('/login', data=dict(
-            username=username,
-            password=password
-        ), follow_redirects=True)
-
-    def logout(self):
-        return self.app.get('/logout', follow_redirects=True)
-
-
-
-    def test_signup(self):
-        return self.app.post('/signup', data = dict(
-                email='abc@columbia.edu',
-                password='passwd',
-                lastname='ab',
-                firstname='cc'
-            #follow_redirects=True,
-            #content_type='application/json'
-        ))
+#    def login(self, username, password):
+#        return self.app.post('/login', data=dict(
+#            username=username,
+#            password=password
+#        ), follow_redirects=True)
+#
+#    def logout(self):
+#        return self.app.get('/logout', follow_redirects=True)
+#
+#
+#
+#    def test_signup(self):
+#        return self.app.post('/signup', data = dict(
+#                email='abc@columbia.edu',
+#                password='passwd',
+#                lastname='ab',
+#                firstname='cc'
+#            #follow_redirects=True,
+#            #content_type='application/json'
+#        ))
 
 if __name__ == '__main__':
     unittest.main()
