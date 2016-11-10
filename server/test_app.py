@@ -5,16 +5,10 @@ Created on Thu Oct 27 14:47:36 2016
 @author: peng
 """
 
-
-from flask import Flask
-
 import unittest
 import json
 
 from app import db, app, Person, Event, refresh_event
-
-
-#from app.models import User
 
 
 class SignupTestCase(unittest.TestCase):
@@ -77,7 +71,6 @@ class LoginTestCase(unittest.TestCase):
 
     def tearDown(self):
         db.drop_all()
-        
 
     def test_user_login(self):
         response = self.app.post('/login', data = json.dumps(dict(
@@ -86,7 +79,6 @@ class LoginTestCase(unittest.TestCase):
         )))
 
         assert response.status_code == 400
-
     
     def test_invalid(self):
         response = self.app.post('/login', data = json.dumps(dict(
@@ -138,13 +130,22 @@ class EventsTestCase(unittest.TestCase):
 
     def test_events_returned(self):
         # Add some events to test DB
-        refresh_event(2)
+        db.session.add(Event({
+            'id': '123',
+            'datetime': '1-23-45',
+            'location': 'mars',
+            'group': 'columbiagroup',
+            'title': 'a new event',
+            'group_url': 'http://www.google.com'
+        }))
+
+        db.session.commit()
 
         response = self.app.get('/events',
             content_type='application/json'
         )
         data = json.loads(response.data)
-        assert len(data['events']) == 2
+        assert len(data['events']) == 1
 
 
 class FavoritesTestCase(unittest.TestCase):
@@ -159,21 +160,23 @@ class FavoritesTestCase(unittest.TestCase):
 
         self.app = app.test_client()
 
-        new_user = Person('asdf123@columbia.edu',
-                      'asdf',
-                      'test',
-                      'testerson')
+        new_user = Person(
+            'asdf123@columbia.edu',
+            'asdf',
+            'test',
+            'testerson'
+        )
+
         db.session.add(new_user)
-        db.session.add(Event(
-            {
+        db.session.add(Event({
                 'id': '123',
                 'datetime': '1-23-45',
                 'location': 'mars',
                 'group': 'columbiagroup',
                 'title': 'a new event',
                 'group_url': 'http://www.google.com'
-            }
-        ))
+            }))
+
         db.session.commit()
 
         self.app.post('/login', data = json.dumps(dict(
