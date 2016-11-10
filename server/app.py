@@ -241,17 +241,17 @@ def addtorelationship():
         current_user.favorites.remove(favone)
     db.session.add(current_user)
     db.session.commit()
-    return Response('success')
+    return Response('success', status=201)
 
-@app.route('/events/index.html')
-@login_required
 @nocache
+@login_required
+@app.route('/events/index.html')
 def events_check():
     return app.send_static_file('./events/index.html')
 
-@app.route('/events', methods=['GET'])
-@login_required
 @nocache
+@login_required
+@app.route('/events', methods=['GET'])
 def events_handler():
     favbuf = current_user.favorites
     print favbuf
@@ -270,11 +270,11 @@ def unauthorized_handler():
     return redirect('/')
 
 @app.route('/refresh')
-def refresh_event():
+def refresh_event(count):
     f = open('../scraper/data/events_data.json', 'r')
     eventsdata = json.load(f)
     f.close()
-    for i in range(0, 20):
+    for i in range(0, count):
         db.session.add(Event(eventsdata[i]))
         try:
             db.session.commit()
