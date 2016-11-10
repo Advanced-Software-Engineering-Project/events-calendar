@@ -5,47 +5,47 @@ Created on Thu Oct 27 14:47:36 2016
 @author: peng
 """
 
-import os
-from app import app, init_db, Person, Event
+
+
+from flask import Flask
 import unittest
+import json
 
-import tempfile
+from app import db, app
 
+#from app.models import *
 
 class TestCase(unittest.TestCase):
-
     def setUp(self):
-        self.client = app.test_client()
-        db = init_db(app, True)
+        """
+        Creates a new database for the unit test to use
+        """
+        print "### Testing Starts ###"
+        app.config.from_pyfile('test_config.py')
+        db.init_app(app)
         db.create_all()
-        db.session.commit()
+        
+        self.app = app.test_client()
+        return self.app
 
 
-        # self.db_fd, app.config['DATABASE'] = tempfile.mkstemp()
-        # with app.app_context():
-        #     app.init_db()
+#    def tearDown(self):
+#        db.drop_all()
 
+    def test_dummy(self):
+        pass
 
-#    def login(self, username, password):
-#        return self.app.post('/login', data=dict(
-#            username=username,
-#            password=password
-#        ), follow_redirects=True)
-#
-#    def logout(self):
-#        return self.app.get('/logout', follow_redirects=True)
-#
-#
-#
-#    def test_signup(self):
-#        return self.app.post('/signup', data = dict(
-#                email='abc@columbia.edu',
-#                password='passwd',
-#                lastname='ab',
-#                firstname='cc'
-#            #follow_redirects=True,
-#            #content_type='application/json'
-#        ))
+    def test_user_signup(self):
+        response = self.app.post('/signup', data = dict(
+            email='abc@columbia.edu',
+            password='passwd',
+            lastname='ab',
+            firstname='cc'
+            #follow_redirects=True,
+            #content_type='application/json'
+        ))
+        self.assert_equal(response.status_code, 200)
+        
 
 if __name__ == '__main__':
     unittest.main()
