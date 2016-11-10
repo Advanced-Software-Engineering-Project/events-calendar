@@ -21,17 +21,18 @@ from flask_login import LoginManager, UserMixin,\
 app = Flask(__name__, static_url_path='', static_folder='../webapp/')
 
 
-def init_config(testing=False):
+def init_config(app, testing=False):
     if not testing:
         app.config.from_pyfile('config.py')
-        app.secret_key = 'super secret key'
     else:
         app.config.from_pyfile('test_config.py')
-        app.secret_key = 'super secret key'
+    
+    app.secret_key = 'super secret key'
+    return
 
 
 def init_db(app, testing=False):
-    init_config(testing)
+    init_config(app, testing)
     return SQLAlchemy(app)
 
 db = init_db(app)
