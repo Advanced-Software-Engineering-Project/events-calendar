@@ -241,7 +241,7 @@ def addtorelationship():
         current_user.favorites.remove(favone)
     db.session.add(current_user)
     db.session.commit()
-    return Response('success', status=201)
+    return Response('success', status=200)
 
 @nocache
 @login_required
