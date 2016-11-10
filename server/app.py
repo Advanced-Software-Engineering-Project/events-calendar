@@ -191,11 +191,22 @@ def cannotbeacurrentuser():
 @app.route('/signup', methods=['POST'])
 def signup():
     request_form = json.loads(request.data)
+
+    if not 'email' in request_form:
+        return Response('missing email', status=400)
+    if not 'password' in request_form:
+        return Response('missing password', status=400)
+    if not 'firstname' in request_form:
+        return Response('missing firstname', status=400)
+    if not 'lastname' in request_form:
+        return Response('missing lastname', status=400)
+
     new_user = Person(request_form['email'],
                       request_form['password'],
                       request_form['firstname'],
                       request_form['lastname'])
     db.session.add(new_user)
+
     try:
         db.session.commit()
         print 'You were successfully signed up.'
@@ -205,7 +216,7 @@ def signup():
         print "Integrity Error: Conflict email address!!!"
         db.session.rollback()
         response = jsonify({'error': 'user exists'})
-        response.status_code = 400
+        response.status_code = 409
         return response
 
 @app.route('/login', methods=['POST', 'GET'])
