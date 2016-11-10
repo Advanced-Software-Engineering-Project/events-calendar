@@ -180,6 +180,14 @@ def user_loader(id):
 def root():
     return redirect('/login/index.html')
 
+@app.route('/login/index.html')
+@nocache
+def cannotbeacurrentuser():
+    if not current_user.is_authenticated:        
+        return app.send_static_file('./login/index.html')
+    else:
+        return redirect('/events/index.html')
+
 @app.route('/signup', methods=['POST'])
 def signup():
     request_form = json.loads(request.data)
@@ -219,9 +227,10 @@ def login():
             return response
 
 @app.route("/get_userid")
-@login_required
 def get_uid():
-    return jsonify(user_id=current_user.id)
+    print current_user
+    #return current_user.id
+    return "s"
 
 @app.route("/protected", methods=["GET"])
 @login_required

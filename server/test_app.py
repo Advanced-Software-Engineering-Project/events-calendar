@@ -6,7 +6,6 @@ Created on Thu Oct 27 14:47:36 2016
 """
 
 
-
 from flask import Flask
 import unittest
 import json
@@ -61,6 +60,7 @@ class LoginTestCase(unittest.TestCase):
 
     def tearDown(self):
         db.drop_all()
+        
 
 
     def test_user_login(self):
