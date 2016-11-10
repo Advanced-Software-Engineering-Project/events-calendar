@@ -14,16 +14,10 @@ import unittest
 import json
 
 from app import db, app, refresh_event
-<<<<<<< Updated upstream
 
-=======
-
-<<<<<<< HEAD
 
 #from app.models import User
-=======
->>>>>>> origin/master
->>>>>>> Stashed changes
+
 
 class SignupTestCase(unittest.TestCase):
 
@@ -96,9 +90,7 @@ class LoginTestCase(unittest.TestCase):
             exist_password='passwd'
         )))
         assert response.status_code == 200
-<<<<<<< Updated upstream
-=======
-<<<<<<< HEAD
+
     
     def test_invalid(self):
         response = self.app.post('/login', data = json.dumps(dict(
@@ -111,9 +103,7 @@ class FavoritesTestCase(unittest.TestCase):
 
     def setUp(self):
         #Creates a new database for the unit test to use
-    
-=======
->>>>>>> Stashed changes
+
 
 
 
@@ -138,17 +128,12 @@ class EventsTestCase(unittest.TestCase):
         """
         Creates a new database for the unit test to use
         """
-<<<<<<< Updated upstream
-=======
->>>>>>> origin/master
->>>>>>> Stashed changes
+
         app.config.from_pyfile('test_config.py')
         db.init_app(app)
         db.create_all()
 
-<<<<<<< Updated upstream
-=======
-<<<<<<< HEAD
+
         self.app = app.test_client()
 
         user = User(active=True)
@@ -161,8 +146,7 @@ class EventsTestCase(unittest.TestCase):
         db.drop_all()
 
     def easylogin():
-=======
->>>>>>> Stashed changes
+
         app.config['TESTING'] = True
         app.login_manager.init_app(app)
 
@@ -175,18 +159,12 @@ class EventsTestCase(unittest.TestCase):
             firstname='cd'
         )))
 
-<<<<<<< Updated upstream
-=======
->>>>>>> origin/master
->>>>>>> Stashed changes
+
         self.app.post('/login', data = json.dumps(dict(
             exist_email='abc@columbia.edu',
             exist_password='passwd'
         )))
 
-<<<<<<< Updated upstream
-=======
-<<<<<<< HEAD
     def test_set_favorites(self):
         easylogin()
         response = self.app.post('/favorite', data = json.dumps(dict(id = '')
@@ -207,9 +185,7 @@ class EventsTestCase(unittest.TestCase):
         )))
         print(response)
         assert response.status_code == 200
-        
-=======
->>>>>>> Stashed changes
+
 
     def tearDown(self):
         db.drop_all()
@@ -233,15 +209,6 @@ class EventsTestCase(unittest.TestCase):
         data = json.loads(response.data)
         assert len(data['events']) == 2
 
-
-
-
-
-
-<<<<<<< Updated upstream
-=======
->>>>>>> origin/master
->>>>>>> Stashed changes
 
 if __name__ == '__main__':
     unittest.main()
