@@ -54,6 +54,8 @@ function validateSignup(){
     }
 }
 
+
+
 // Prevent form submission
 jQuery("form").submit(function(e){
     console.log('preventsubmit')
@@ -94,7 +96,7 @@ function login(){
     var obj ={};
     obj.exist_email = $("#exist_email").val();
     obj.exist_password = $("#exist_password").val();
-
+    if (!obj.exist_email || !obj.exist_password ) return false
     $.ajax({
         url:  "/login",
         method: 'POST',
