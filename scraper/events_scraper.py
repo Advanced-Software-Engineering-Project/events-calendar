@@ -21,7 +21,9 @@ headers = {
 fileDir = os.path.dirname(os.path.realpath('__file__'))
 pages_file = os.path.join(fileDir, 'scraper/data/pages_data.json')
 
-
+# Grab API key
+key_response = requests.get('https://graph.facebook.com/oauth/access_token?type=client_cred&client_id=355046878181225&client_secret=c6f4a196e8184f469515fdad16ff486d', headers=headers)
+key  = key_response.text.split('=')[1]
 
 
 def get_events():
@@ -40,7 +42,7 @@ def get_events():
             url = url + '/events?'
             url = url + 'since='
             url = url + start_date
-            url = url + '&access_token=EAACEdEose0cBADwjzj00lfkTOEnHYgCwpSLPWZB1vQXkEGtbxPcXaZCxmsy8LZAVk33EQ6CraaTy7riZBjB70plBhnjqfAea9T6fKZAgAcENf33RdhlKy9ClgVpbl7OVHS3LzwpVp7crfOTem4EmdUkb8Wx2IDZA6Cl3jJRLKXFwZDZD'
+            url = url + '&access_token=' + key
             url = url + '&debug=all&format=json&method=get&pretty=0&suppress_http_code=1'
             url = url + '&fields=name,place,start_time,description,cover,photos.limit(1),picture'
 

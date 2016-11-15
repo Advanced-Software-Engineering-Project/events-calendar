@@ -237,12 +237,6 @@ def login():
             response.status_code = 400
             return response
 
-@app.route("/get_userid")
-def get_uid():
-    print current_user
-    #return current_user.id
-    return "s"
-
 @app.route("/protected", methods=["GET"])
 @login_required
 def protected():
