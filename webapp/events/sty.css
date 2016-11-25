@@ -24,8 +24,6 @@ body {
     overflow: hidden;
 }
 
-
-
 .event-date-time {
     color: #79797a;
 }
@@ -51,6 +49,19 @@ body {
 .ratings-favorites .ratings {
     color: #FDCC40;
 }
+.glyphicon {
+  font-size: 20px;
+}
+
+.glyphicon-heart-empty:hover {
+  color: #990000;
+  font-size: 22px;
+}
+
+.glyphicon-heart:hover {
+  color: #990000;
+  font-size: 22px;
+}
 
 .thumbnail {
     padding: 0;
@@ -68,6 +79,10 @@ body {
 .form-section{
     margin-left: auto ;
     margin-right: auto ;
+}
+
+.form-control {
+  border-radius: 0;
 }
 
 
@@ -161,3 +176,4 @@ margin-right: 15px !important;
   display: block;
   width: 100%;
 }
+
