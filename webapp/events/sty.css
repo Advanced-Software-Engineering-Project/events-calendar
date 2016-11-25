@@ -55,13 +55,14 @@ body {
 
 .glyphicon-heart-empty:hover {
   color: #990000;
-  font-size: 22px;
+  transform: scale(1.1);
 }
 
 .glyphicon-heart:hover {
   color: #990000;
-  font-size: 22px;
+  transform: scale(1.1);
 }
+
 
 .thumbnail {
     padding: 0;
