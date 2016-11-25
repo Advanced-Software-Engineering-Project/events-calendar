@@ -136,3 +136,28 @@ margin-right: 15px !important;
   color:#2f2f2f;
   text-decoration: none;
 }
+
+
+.button {
+  border: 0;
+  outline: none;
+  border-radius: 0;
+  padding: 4px 4px;
+  font-size: 2rem;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  background: #a4defc;
+  color: #ffffff;
+  -webkit-transition: all 0.5s ease;
+  transition: all 0.5s ease;
+  -webkit-appearance: none;
+}
+.button:hover, .button:focus {
+  background: #6bcdff;
+}
+
+.button-block {
+  display: block;
+  width: 100%;
+}
