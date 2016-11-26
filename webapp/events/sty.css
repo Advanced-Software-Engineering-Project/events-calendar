@@ -1,17 +1,17 @@
 body {
-    padding-top: 70px; /* Required padding for .navbar-fixed-top. Remove if using .navbar-static-top. Change if height of navigation changes. */
+  padding-top: 70px; /* Required padding for .navbar-fixed-top. Remove if using .navbar-static-top. Change if height of navigation changes. */
 }
 
 .col-centered {
-    float: none;
-    margin: 0 auto;
+  float: none;
+  margin: 0 auto;
 }
 .slide-image {
-    width: 100%;
+  width: 100%;
 }
 
 .carousel-holder {
-    margin-bottom: 30px;
+  margin-bottom: 30px;
 }
 
 .carousel-control,
@@ -177,4 +177,13 @@ margin-right: 15px !important;
   display: block;
   width: 100%;
 }
+
+.select{
+  border-radius: 0;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background: url("../images/dropdown.png") 96% no-repeat #ffffff;*/
+} 
+
 
