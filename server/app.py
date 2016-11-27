@@ -233,8 +233,9 @@ def signup():
     except sqlalchemy.exc.IntegrityError:
         print "Integrity Error: Conflict email address!!!"
         db.session.rollback()
-        #TODO: status=409
-        return jsonify({'error': 'user exists'})
+        response = jsonify(error='user exists')
+        response.status_code = 409
+        return response
 
 
 @app.route('/login', methods=['POST', 'GET'])
@@ -250,8 +251,9 @@ def login():
             return jsonify(user_id=current_user.id)
         else:
             print "Invalid email-password combination."
-            # TODO: status=400
-            return jsonify({'error': 'invalid combination'})
+            response=jsonify(error='invalid combination')
+            response.status_code = 400
+            return response
 
 
 @app.route('/favorite', methods=['POST', 'DELETE'])
@@ -292,7 +294,7 @@ def rate_group():
     thegroup = Group.query.filter(Group.id == request_form['group_id']).one()
     thegroup.rating = (thegroup.rating + request_form['rate_value'])*0.5
     db.session.commit()
-    return Response(jsonify(rating=thegroup.rating), status=200)
+#    return Response(jsonify(rating=thegroup.rating), status=200)
     #TODO: cannot rate duplicately
 
 
