@@ -3,7 +3,17 @@
 window.events = [];
 
 $(function() {
+<<<<<<< Updated upstream
 	// $('input[name="daterange"]').daterangepicker();
+=======
+<<<<<<< HEAD
+=======
+	$('input[name="daterange"]').daterangepicker();
+<<<<<<< Updated upstream
+=======
+>>>>>>> origin/master
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
 	$('.my-favorites').click(function(){
 		var $this = $(this);
 		$this.toggleClass('my-favorites');
@@ -15,16 +25,24 @@ $(function() {
 			$this.value('all-events');
 		}
 	});
+    return $(".starrr").starrr();
 });
 var dummy;
 
 
 $.get(
 	'/events',
+<<<<<<< Updated upstream
 	function(data) {
 		window.events = data.events;
 		render(data.events);
 	}
+=======
+	function(data) { 
+        render(data.events);
+        $('.starrr').starrr();  
+    }
+>>>>>>> Stashed changes
 );
 
 function render(events){
@@ -110,24 +128,11 @@ function setFavorite(fav, id) {
 	}
 }
 
-function eventRating(rating, id) {
-	var id = this.id;
-	var minus = 5 - rating;
-	var stars = '';
-	while(rating > 0) {
-		stars += '<span class="glyphicon glyphicon-star"></span>';
-		rating -=1;
-		console.log(rating);
-	}
-	while(minus > 0) {
-		stars += '<span class="glyphicon glyphicon-star-empty"></span>';
-		minus -=1;
-	}
-	return stars
-}
+
 
 function logout() {
 	$.ajax({
+        method: 'POST',
 		url:  "/logout",
 		success: function(response) {
 				window.location.href = "../login/index.html";
