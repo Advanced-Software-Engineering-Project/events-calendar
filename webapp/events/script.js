@@ -30,6 +30,7 @@ $.get(
 
 function render(events){
 	$("#eventlist").html($("#eventTemplate").tmpl(events));
+    console.log(events);
 }
 
 function filterEventsByText() {
