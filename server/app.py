@@ -196,7 +196,7 @@ CHECK (rate in (1,2,3,4,5))
 CODE SECTION: SERVER API
 IN USE: signup, login, calendar
 """
-@app.route('/test')
+@app.route('/eventjson')
 def mytest():
     return jsonify(events=[o.todict(False) for o in Event.query.all()])
 
@@ -272,6 +272,7 @@ def protected():
     return Response(response="{}:Hello Protected World!".format(current_user.email), status=200)
 
 @app.route('/favorite', methods=['POST', 'DELETE'])
+@login_required
 def addtorelationship():
     request_form = json.loads(request.data)
     print request_form
