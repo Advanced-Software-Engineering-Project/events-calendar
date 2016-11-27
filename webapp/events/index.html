@@ -35,28 +35,19 @@
 					<a class="navbar-brand" href="#">What's up Columbia</a>
 				</div>
 				<ul class="nav navbar-nav navbar-right">
+					<li><a href="#" class="my-favorites" value="my-favorites">My Favorites</a></li>
 					<li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown">Account
 							<b class="caret"></b>
 						</a>
 						<ul class="dropdown-menu">
-							<li>
-								<div class="navbar-content">
-										<!-- <div class="row">
-												<span>My Name</span>
-												<p class="text-muted small">
-														mail@gmail.com</p>
-												<div class="divider">
-												</div>
-												<a href="#" class="btn btn-primary btn-sm active">View Profile</a>
-										</div> -->
-								
-														<!-- <div class="col-md-6">
-																<a href="#" class="btn btn-default btn-sm">Change Passoword</a>
-														</div> -->
-									<button type="button" class="btn btn-link"/>Account Info</button>
-									<button type="button"class="btn btn-link" onclick = "logout()"/>Log Out</button>
-																
+							<li><div class="navbar-content">
+									My Name
+									<p class="text-muted small">mail@gmail.com</p>
+									<!-- <div class="col-md-6">
+											<a href="#" class="btn btn-default btn-sm">Change Passoword</a>
+									</div> -->
+									<button type="button"class="btn btn-link" onclick = "logout()"/>Log Out</button>								
 								</div>
 							</li>
 						</ul>
@@ -103,7 +94,7 @@
 -->
 
 			 <!-- SECTION: Search Bar -->
-				<!-- <div class="row-fluid">
+				<div class="row-fluid">
 						<div class="form-section col-centered">
 								<div class="row">
 										<form role="form">
@@ -136,10 +127,10 @@
 										</form>
 								</div>
 						</div>
-				</div> -->
+				</div>
 
 				<!-- SECTION: New Filter Bar -->
-				<form action"/" method="post">
+				<!-- <form action"/" method="post">
 					<div class="container">
 						<div class="row">
 							<div class="form-group col-sm-6 col-md-6 col-lg-6">
@@ -147,19 +138,20 @@
 							</div>
 							<div class="form-group col-sm-3 col-md-3 col-lg-3">
 								<select class="form-control select">
-								  <option style="text-align:left;" value="alldates">All Dates</option>
-								  <option style="text-align:left;" value="today">Today</option>
-								  <option style="text-align:left;" value="tomorrow">Tomorrow</option>
-								  <option style="text-align:left;" value="thisweekend">This Weekend</option>
+								  <option value="alldates">All Dates</option>
+								  <option value="today">Today</option>
+								  <option value="tomorrow">Tomorrow</option>
+								  <option value="thisweekend">This Week</option>
+								  <option value-"customdates">Custom Date</option>
 								</select>
 								<i class="icon icon-edit icon-white"></i>
 							</div>
-							<div class="form-group col-sm3 col-md-3 col-lg-3">
+							<div class="form-group col-sm-3 col-md-3 col-lg-3">
 								<button type="submit" id="submit" class="button button-block">Search</button>
 							</div>
 						</div>
 					</div>
-				</form>
+				</form> -->
 
 				<!-- SECTION: events -->
 				<div class="row-fluid">

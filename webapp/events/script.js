@@ -11,6 +11,17 @@ $(function() {
             format: 'h:mm A'
         }
     });
+    $('.my-favorites').click(function(){
+        var $this = $(this);
+        $this.toggleClass('my-favorites');
+        if($this.hasClass('my-favorites')){
+            $this.text('My Favorites');
+            $this.value('my-favorites');         
+        } else {
+            $this.text('All Events');
+            $this.value('all-events');
+        }
+    });
 });
 var dummy;
 
