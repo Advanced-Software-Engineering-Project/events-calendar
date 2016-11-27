@@ -13,19 +13,27 @@ groups_table = meta.tables['group']
 json_data = open('scraper/data/events_data.json').read()
 events = json.loads(json_data)
 
+
+
+# id = db.Column(db.String(40), primary_key=True)
+# datetime = db.Column(db.DateTime)
+# location = db.Column(db.String(100))
+# group_id = db.Column(db.String(40))
+# title = db.Column(db.String(100))
+# url = db.Column(db.Text)
+# photo_url = db.Column(db.Text)
 def import_events():
     for e in events:
         try:
             clause = events_table.insert().values(
                 id          = e['id'],
-                title       = e['title'],
                 datetime    = e['datetime'],
-                # group_id    = e['group_id'],
-                group       = e['group'],
-                group_url   = e['group_url'],
-                # description = e['description'],
                 location    = e['location'],
+                group_id    = e['group_id'],
+                title       = e['title'],
+                url         = e['url'],
                 photo_url   = e['photo_url']
+                # description = e['description'],
             )
             con.execute(clause)
 
@@ -35,15 +43,19 @@ def import_events():
             print "Import Exception: {}".format(e)
 
 
+# id = db.Column(db.String(40), primary_key=True)
+# name = db.Column(db.String(100))
+# rating = db.Column(db.Float)
 def import_groups():
     groups_json = open('scraper/data/pages_data.json').read()
 
     for g in groups_json:
         try:
             clause = groups_table.insert().values(
-                id = g['id'],
-                name = g['group_name'],
-                group_url = g['group_url'],
+                id          = g['id'],
+                name        = g['group_name'],
+                group       = g['group'],
+                # group_url   = e['group_url'],
             )
             con.execute(clause)
 
