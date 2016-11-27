@@ -96,66 +96,92 @@ class Person(db.Model, UserMixin):
 class Event(db.Model):
     """
     Table event(
-    id text PRIMARY KEY
+    id char(40) PRIMARY KEY
     )
     """
     id = db.Column(db.String(40), primary_key=True)
-    datetime = db.Column(db.String(30))
+    datetime = db.Column(db.DateTime)
     location = db.Column(db.String(100))
-    group = db.Column(db.String(100))
+    group_id = db.Column(db.String(40))
     title = db.Column(db.String(100))
-    group_url = db.Column(db.Text)
+    url = db.Column(db.Text)
     photo_url = db.Column(db.Text)
-    rating = db.Column(db.Integer)
     fans = db.relationship("Person", secondary = favorite_table, back_populates="favorites")
 
     def __init__(self, infodict):
         self.id = infodict['id']
         try:
+            #self.datetime = datetime.strptime(infodict['datetime'][:infodict['datetime'].rindex(':')+3],"%Y-%m-%dT%H:%M:%S")
             self.datetime = infodict['datetime']
         except:
             self.datetime = None
         try:
             self.location = infodict['location']
         except:
-            self.location = None
+            self.location = 'TBA'
         try:
-            self.group = infodict['group']
+            self.group_id = infodict['group_id']
         except:
-            self.group = None
+            self.group_id = None
         try:
             self.title = infodict['title']
         except:
             self.title = 'Untitled Event'
         try:
-            self.group_url = infodict['group_url']
+            self.url = infodict['url']
         except:
-            self.group_url = None
+            self.url = 'http://www.google.com'
         try:
             self.photo_url = infodict['photo_url']
         except:
             self.photo_url = None
-        try:
-            self.rating = infodict['rating']
-        except:
-            self.rating = 4
+
 
     def __repr__(self):
         return "<{},{}>".format(self.id, self.title)
 
     def todict(self, bool_fav):
         """ Output dictionary """
+        thegroup = Group.query.filter(Group.id == self.group_id).one()
+        #print thegroup
         return {'id':self.id,
-                'datetime':self.datetime,
+                'datetime':self.datetime.strftime("%Y-%m-%dT%H:%M:%S"),
                 'location':self.location,
-                'group':self.group,
+                'group_id':self.group_id,
                 'title':self.title,
-                'group_url':self.group_url,
+                'url':self.url,
                 'photo_url':self.photo_url,
-                'rating':self.rating,
-                'favorite': bool_fav
+                'favorite': bool_fav,
+                'group':thegroup.name,
+                'rating':thegroup.rating
                }
 
+
+class Group(db.Model):
+    """
+    Table group(
+    group_id char(40) PRIMARY KEY
+    )
+    """
+    id = db.Column(db.String(40), primary_key=True)
+    name = db.Column(db.String(100))
+    rating = db.Column(db.Float)
+    
+    def __init__(self, infodict):
+        try:
+            self.id = infodict['group_id']
+            self.name = infodict['group']
+            self.rating = 5.0
+        except KeyError:
+            print 'New event does not belong to any group.'
+            self.id = '0'
+            self.name = None
+            self.rating = 0
+             
+    def __repr__(self):
+        return "<GROUP {}, RATING {}>".format(self.id, self.rating)
+    
+               
 """
 Table rate(
 userid int FOREIGN KEY REFERENCES person(userid),
@@ -170,6 +196,9 @@ CHECK (rate in (1,2,3,4,5))
 CODE SECTION: SERVER API
 IN USE: signup, login, calendar
 """
+@app.route('/eventjson')
+def mytest():
+    return jsonify(events=[o.todict(False) for o in Event.query.all()])
 
 @login_manager.user_loader
 def user_loader(id):
@@ -243,6 +272,7 @@ def protected():
     return Response(response="{}:Hello Protected World!".format(current_user.email), status=200)
 
 @app.route('/favorite', methods=['POST', 'DELETE'])
+@login_required
 def addtorelationship():
     request_form = json.loads(request.data)
     print request_form
@@ -258,6 +288,16 @@ def addtorelationship():
     db.session.add(current_user)
     db.session.commit()
     return Response('success', status=200)
+    
+@app.route('/rate', methods=['POST'])
+@login_required
+def rate_group():
+    request_form = json.loads(request.data)
+    thegroup = Group.query.filter(Group.id == request_form['group_id']).one()
+    thegroup.rating = (thegroup.rating + request_form['rate_value'])*0.5
+    db.session.commit()
+    return Response(jsonify(rating=thegroup.rating), status=200)
+    
 
 @app.route('/events/index.html')
 @login_required
@@ -275,20 +315,21 @@ def events_handler():
     #print [o.todict(o in favbuf) for o in Event.query.all()]    
     return jsonify(events=[o.todict(o in favbuf) for o in Event.query.all()])
 
+
 @app.route('/logout')
 def logout():
     # todo - Should be PUT or POST
     # todo - 404 for duplicate logout
     logout_user()
-    return Response()
+    return redirect('/')
 
 @login_manager.unauthorized_handler
 def unauthorized_handler():
     print 'Unauthorized action'
     return redirect('/')
 
-@app.route('/refresh')
-def refresh_event(count):
+@app.route('/refresh/<int:count>')
+def load_event_from_json_to_database(count):
     f = open('../scraper/data/events_data.json', 'r')
     eventsdata = json.load(f)
     f.close()
@@ -298,7 +339,15 @@ def refresh_event(count):
             db.session.commit()
             print 'One event added. ID:{}'.format(eventsdata[i]['id'])
         except sqlalchemy.exc.IntegrityError:
-            print "Integrity Error: old event."
+            print "Integrity Error: Event exists."
+            db.session.rollback()
+        #
+        db.session.add(Group(eventsdata[i]))
+        try:
+            db.session.commit()
+            print 'New group added. ID:{}'.format(eventsdata[i]['group_id'])
+        except sqlalchemy.exc.IntegrityError:
+            print "Integrity Error: Group exists."
             db.session.rollback()
     return redirect('login/index.html')
 
@@ -327,7 +376,7 @@ if __name__ == '__main__':
   
       HOST, PORT = host, port
       print "running on %s:%d" % (HOST, PORT)
-      app.run(host=HOST, port=env_port, debug=debug, threaded=threaded)
+      app.run(host=HOST, port=PORT, debug=debug, threaded=threaded)
   
   
     run()

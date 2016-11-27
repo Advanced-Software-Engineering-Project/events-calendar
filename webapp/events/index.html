@@ -2,201 +2,221 @@
 <html lang="en">
 
 <head>
-    <link rel="shortcut icon" href="http://cuit.columbia.edu/sites/all/libraries/ias/favicon-crown.png" type="image/png">
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
+	<link rel="shortcut icon" href="http://cuit.columbia.edu/sites/all/libraries/ias/favicon-crown.png" type="image/png">
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="">
+	<meta name="author" content="">
 
-    <title>Columbia Events Calendar</title>
+	<title>Columbia Events Calendar</title>
 
-    <!-- Bootstrap Core CSS -->
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Custom CSS -->
-    <link href="sty.css" rel="stylesheet">
+	<!-- Bootstrap Core CSS -->
+	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+	<!-- Custom CSS -->
+	<link href="sty.css" rel="stylesheet">
 
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
-
+	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+	<!--[if lt IE 9]>
+			<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+			<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+	<![endif]-->
 </head>
 
 <body>
 
-    <!-- Navigation -->
-    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-        <div class="container-fluid">
-            <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header">
-                <a class="navbar-brand" href="#">What's up Columbia</a>
-            </div>
-            <ul class="nav navbar-nav navbar-right">
-                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Account
-                    <b class="caret"></b></a>
-                    <ul class="dropdown-menu">
-                        <li>
-                            <div class="navbar-content">
-                                <!-- <div class="row">
-                                    <span>My Name</span>
-                                    <p class="text-muted small">
-                                        mail@gmail.com</p>
-                                    <div class="divider">
-                                    </div>
-                                    <a href="#" class="btn btn-primary btn-sm active">View Profile</a>
-                                </div> -->
-                            
-                                        <!-- <div class="col-md-6">
-                                            <a href="#" class="btn btn-default btn-sm">Change Passoword</a>
-                                        </div> -->
-                                <button type="button" class="btn btn-link"/>Account Info</button>
-                                <button type="button"class="btn btn-link" onclick = "logout()"/>Log Out</button>
-                                
-                            </div>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
-            
-            <!-- Collect the nav links, forms, and other content for toggling -->
+	<!-- Navigation -->
+	<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+		<div class="container-fluid">
+		<!-- Brand and toggle get grouped for better mobile display -->
+			<div class="navbar-header">
+				<a class="navbar-brand" href="#">What's up Columbia</a>
+			</div>
+			<ul class="nav navbar-nav navbar-right">
+				<li><a href="#" class="my-favorites" value="my-favorites">My Favorites</a></li>
+				<li class="dropdown">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown">Account
+						<b class="caret"></b>
+					</a>
+					<ul class="dropdown-menu">
+						<li>
+							<div class="navbar-content">
+								My Name
+								<p class="text-muted small">mail@gmail.com</p>
+								<!-- <div class="col-md-6">
+										<a href="#" class="btn btn-default btn-sm">Change Passoword</a>
+								</div> -->
+								<button type="button"class="btn btn-link" onclick = "logout()"/>Log Out</button>								
+							</div>
+						</li>
+					</ul>
+				</li>
+			</ul>
+		</div>
+	</nav>
 
-            <!-- /.navbar-collapse -->
-        </div>
-        <!-- /.container -->
-    </nav>
+		<!-- Page Content -->
+		<div class="container-fluid">
 
-    <!-- Page Content -->
-    <div class="container-fluid">
-
-        <!-- SECTION: Carousel of Featured Events -->
-<!--
-        <div class="row">
-            <div class="row-fluid carousel-holder">
-                <div class="col-md-12">
-                    <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
-                        <ol class="carousel-indicators">
-                            <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
-                            <li data-target="#carousel-example-generic" data-slide-to="1"></li>
-                            <li data-target="#carousel-example-generic" data-slide-to="2"></li>
-                        </ol>
-                        <div class="carousel-inner">
-                            <div class="item active">
-                                <img class="slide-image" src="http://placehold.it/800x300" alt="">
-                            </div>
-                            <div class="item">
-                                <img class="slide-image" src="http://placehold.it/800x300" alt="">
-                            </div>
-                            <div class="item">
-                                <img class="slide-image" src="http://placehold.it/800x300" alt="">
-                            </div>
-                        </div>
-                        <a class="left carousel-control" href="#carousel-example-generic" data-slide="prev">
-                            <span class="glyphicon glyphicon-chevron-left"></span>
-                        </a>
-                        <a class="right carousel-control" href="#carousel-example-generic" data-slide="next">
-                            <span class="glyphicon glyphicon-chevron-right"></span>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
+				<!-- SECTION: Carousel of Featured Events -->
+<!--	
+				<div class="row">
+						<div class="row-fluid carousel-holder">
+								<div class="col-md-12">
+										<div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+												<ol class="carousel-indicators">
+														<li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+														<li data-target="#carousel-example-generic" data-slide-to="1"></li>
+														<li data-target="#carousel-example-generic" data-slide-to="2"></li>
+												</ol>
+												<div class="carousel-inner">
+														<div class="item active">
+																<img class="slide-image" src="http://placehold.it/800x300" alt="">
+														</div>
+														<div class="item">
+																<img class="slide-image" src="http://placehold.it/800x300" alt="">
+														</div>
+														<div class="item">
+																<img class="slide-image" src="http://placehold.it/800x300" alt="">
+														</div>
+												</div>
+												<a class="left carousel-control" href="#carousel-example-generic" data-slide="prev">
+														<span class="glyphicon glyphicon-chevron-left"></span>
+												</a>
+												<a class="right carousel-control" href="#carousel-example-generic" data-slide="next">
+														<span class="glyphicon glyphicon-chevron-right"></span>
+												</a>
+										</div>
+								</div>
+						</div>
+				</div>
 -->
 
-       <!-- SECTION: Search Bar -->
-        <div class="row-fluid">
-            <div class="form-section col-centered">
-                <div class="row">
-                    <form role="form">
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label class="sr-only" for="eventname">Event</label>
-                                <input type="text" class="form-control" id="eventname"/>
-                            </div>
-                        </div>
-                        <div class="col-md-2">
-                            <div class="form-group">
-                                <label class="sr-only" for="daterange">Date</label>
-                                 <div class="input-group">
-                                    <input type="text" class="form-control" name="daterange" />
-                                </div>
+			 <!-- SECTION: Search Bar -->
+				<!-- <div class="row-fluid">
+					<div class="form-section col-centered">
+						<div class="row">
+							<form role="form">
+								<div class="col-md-4">
+									<div class="form-group">
+										<label class="sr-only" for="eventname">Event</label>
+										<input type="text" class="form-control" id="eventname"/>
+									</div>
+									</div>
+								<div class="col-md-2">
+									<div class="form-group">
+										<label class="sr-only" for="daterange">Date</label>
+											<div class="input-group">
+												<input type="text" class="form-control" name="daterange" />
+											</div>
+									</div>
+								</div>
+								<div class="col-md-2">
+									<div class="form-group">
+										<label class="sr-only" for="timerange">Time</label>
+											<div class="input-group">
+												<input type="text" class="form-control" name="timerange" value = "12 AM-12PM"/>
+											</div>
+									</div>
+								</div>
+								<div class="col-md-2">
+									<button type="submit" id="submit"class="button button-block">Search</button>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div> -->
 
-                            </div>
-                        </div>
-                      <div class="col-md-2">
-                        <div class="form-group">
-                          <label class="sr-only" for="timerange">Time</label>
-                            <div class="input-group">
-                            <input type="text" class="form-control" name="timerange" value = "12 AM-12PM"/>
-                            </div>
-                        </div>
-                        </div>
-                        <div class="col-md-2">
-                            <button type="submit" class="btn btn-default btn-primary">Search</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
+				<!-- SECTION: New Filter Bar -->
+				<form action"/" method="post">
+					<div class="container">
+						<div class="row">
+							<div class="form-group col-sm-6 col-md-6 col-lg-6">
+								<input type="text" class="form-control" onInput="filterEvents()" name="search" id="search" placeholder="Search event" value=""> 
+							</div>
+							<div class="form-group col-sm-3 col-md-3 col-lg-3">
+								<select class="form-control select" id="select-dates">
+								  <option value="alldates">All Dates</option>
+								  <option value="today">Today</option>
+								  <option value="tomorrow">Tomorrow</option>
+								  <option value="thisweekend">This Week</option>
+								  <option value="customdate">Custom Date</option>
+								</select>
+								<i class="icon icon-edit icon-white"></i>
+							</div>
+							<div class="form-group col-sm-3 col-md-3 col-lg-3">
+								<button type="submit" id="submit" class="button button-block">Search</button>
+							</div>
+						</div>
+						<div id="custom-date" style="display:none;">
+							<div class="input-group">
+								<input type="text" class="form-control" name="daterange" />
+							</div>
+						</div>
+					</div>
+				</form>
 
-        <!-- SECTION: events -->
-        <div class="row-fluid">
-            <div id="eventlist"></div>
+				<!-- SECTION: events -->
+				<div class="row-fluid">
+						<div id="eventlist"></div>
+				</div>
+		</div>
 
-        </div>
-    </div>
+
+		<!-- /.container -->
+
+		<div class="container-fluid">
+			<hr>
+			<!-- Footer -->
+			<footer>
+				<div class="row">
+					<div class="col-lg-12">
+						<p>Copyright &copy; What's up columbia 2016</p>
+					</div>
+				</div>
+			</footer>
+		</div>
+		<!-- /.container -->
+
+		<!-- jQuery -->
+		<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+		<!-- Bootstrap Core JavaScript -->
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="http://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+		<!-- Underscore -->
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js'></script>
+
+		<link rel="stylesheet" type="text/css" href="http://cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css" />
+		<script type="text/javascript" src="http://cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
+		<script src="dateformat.js"></script>
 
 
-    <!-- /.container -->
 
-    <div class="container-fluid">
+		<script id="eventTemplate" type="text/x-jQuery-tmpl"/>
+			<div id=${id} class="col-sm-4 col-lg-4 col-md-4">
+				<div class="thumbnail">
+					<img src="${photo_url}" alt=" " style="width:100%;height:150px;object-fit:cover;"/>
+					<div class="caption">
+						<p class="event-date-time">${formatDate(datetime)}</p>
+						<h4><a href="${group_url}">${title}</a></h4>
+						<p class="organizer">${group}</p>
+					</div>
+					<div class="ratings-favorites">
+						<p class="pull-right favorites">
+							{{html favor(favorite, id)}}
+						</p>
+						<p class="ratings">
+							{{html eventRating(rating, id)}}
+						</p>
+					</div>
+				</div>
+			</div>
+		</script>
 
-        <hr>
 
-        <!-- Footer -->
-        <footer>
-            <div class="row">
-                <div class="col-lg-12">
-                    <p>Copyright &copy; What's up columbia 2016</p>
-                </div>
-            </div>
-        </footer>
-
-    </div>
-    <!-- /.container -->
-
-    <!-- jQuery -->
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
-    <!-- Bootstrap Core JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="http://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="http://cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css" />
-    <script type="text/javascript" src="http://cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
-    <script src="dateformat.js"></script>
-    <script id="eventTemplate" type="text/x-jQuery-tmpl">
-    <div id=${id} class="col-sm-4 col-lg-4 col-md-4">
-        <div class="thumbnail">
-            <img src="${photo_url}" alt=" " style="width:100%;height:150px;object-fit:cover;"/>
-            <div class="caption">
-                <p class="event-date-time">${formatDate(datetime)}</p>
-                <h4><a href="${group_url}">${title}</a></h4>
-                <p class="organizer">${group}</p>
-            </div>
-            <div class="ratings-favorites">
-                <p class="pull-right favorites">
-                    {{html favor(favorite, id)}}
-                </p>
-                <p class="ratings">
-                    {{html eventRating(rating, id)}}
-                </p>
-            </div>
-        </div>
-    </div>
-    </script>
-    <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.templates/beta1/jquery.tmpl.js"></script>
-    <script src="script.js"></script>
+		<script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.templates/beta1/jquery.tmpl.js"></script>
+		<script src="script.js"></script>
 </body>
 
 </html>

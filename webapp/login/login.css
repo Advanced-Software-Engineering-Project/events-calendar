@@ -15,7 +15,7 @@ html {
 body {
   background-image: url("../images/login_night.jpg");
   background-repeat: no-repeat;
-  background-size: 100% 100%;
+  background-size: 100% ;
   background-origin: content-box;
   background-color: black;
   font-family: 'Titillium Web', sans-serif;
@@ -35,7 +35,7 @@ a:hover {
   background: rgba(255, 255, 255, 0.9);
   padding: 40px;
   max-width: 600px;
-  margin: 40px auto;
+  margin: 20px auto;
   border-radius: 4px;
   box-shadow: 0 4px 10px 4px rgba(19, 35, 47, 0.3);
 }
@@ -43,7 +43,7 @@ a:hover {
 .tab-group {
   list-style: none;
   padding: 0;
-  margin: 0 0 40px 0;
+  margin: 0 0 20px 0;
 }
 .tab-group:after {
   content: "";
@@ -81,7 +81,7 @@ h2 {
   text-align: center;
   color: #2D6998;
   font-weight: 300;
-  margin: 0 0 40px;
+  margin: 0 0 20px;
 }
 
 label {
@@ -103,7 +103,7 @@ label .req {
 
 label.active {
   -webkit-transform: translateY(50px);
-          transform: translateY(50px);
+          transform: translateY(35px);
   left: 2px;
   font-size: 14px;
 }
@@ -119,7 +119,7 @@ input, textarea {
   font-size: 22px;
   display: block;
   width: 100%;
-  height: 8%;
+  height: 10%;
   padding: 5px 10px;
   background: none;
   background-image: none;
@@ -141,7 +141,7 @@ textarea {
 
 .field-wrap {
   position: relative;
-  margin-bottom: 40px;
+  margin-bottom: 25px;
 }
 
 .top-row:after {
