@@ -8,7 +8,7 @@ Created on Thu Oct 27 14:47:36 2016
 import unittest
 import json
 
-from app import db, app, Person, Event, refresh_event
+from app import db, app, Person, Event
 
 
 class SignupTestCase(unittest.TestCase):
