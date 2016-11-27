@@ -9,6 +9,9 @@ meta = sqlalchemy.MetaData(bind=con, reflect=True)
 
 events_table = meta.tables['event']
 
+'''
+Delete past events from our DB
+'''
 def do_clean():
     try:
         time = datetime.now()
