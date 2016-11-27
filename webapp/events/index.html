@@ -59,7 +59,40 @@
 
 		<!-- Page Content -->
 		<div class="container-fluid">
-
+				 <!-- SECTION: Search Bar -->
+				<!-- <div class="row-fluid">
+					<div class="form-section col-centered">
+						<div class="row">
+ 							<form role="form">
+ 								<div class="col-md-4">
+ 									<div class="form-group">
+ 										<label class="sr-only" for="eventname">Event</label>
+ 										<input type="text" class="form-control" id="eventname"/>
+ 									</div>
+ 									</div>
+ 								<div class="col-md-2">
+ 									<div class="form-group">
+ 										<label class="sr-only" for="daterange">Date</label>
+ 										<div class="input-group">
+ 												<input type="text" class="form-control" name="daterange" />
+ 											</div>
+ 									</div>
+ 								</div>
+ 								<div class="col-md-2">
+ 									<div class="form-group">
+ 										<label class="sr-only" for="timerange">Time</label>
+ 											<div class="input-group">
+ 												<input type="text" class="form-control" name="timerange" value = "12 AM-12PM"/>
+ 											</div>
+ 									</div>
+ 								</div>
+ 								<div class="col-md-2">
+ 									<button type="submit" id="submit"class="button button-block">Search</button>
+ 								</div>
+ 							</form>
+ 						</div>
+ 					</div>
+ 				</div> -->
 				<!-- SECTION: New Filter Bar -->
 				<form action"/" method="post">
 					<div class="container">
@@ -73,22 +106,22 @@
 								  <option value="today">Today</option>
 								  <option value="tomorrow">Tomorrow</option>
 								  <option value="nextsevendays">Upcoming</option>
-							<!-- 	  <option value="customdate">Custom Date</option> -->
+								  <option value="customdate">Custom Date</option>
 								</select>
 							</div>
 							<div class="form-group col-sm-3 col-md-3 col-lg-3">
 								<button type="submit" id="submit" class="button button-block">Search</button>
 							</div>
 						</div>
-						<div class="row">
-							<div class="form-group"id="custom-date" style="display:none;">
-								<div class="input-group">
-									<!-- <input type="text" class="form-control" name="daterange" /> -->
-								</div>
+						<div class="row" id="custom-date" style="display:none;">
+							<div class="form-inline form-group col-sm-6 col-md-6 col-lg-6 pull-right">
+								<label>Select Dates: </label>
+								<input type="text" class="form-control" name="daterange1" id="daterange1" style="width:70%"/>
 							</div>
 						</div>
 					</div>
 				</form>
+
 
 				<!-- SECTION: events -->
 				<div class="row-fluid">
@@ -118,11 +151,19 @@
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 		<script type="text/javascript" src="http://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
 
-		<script src="dateformat.js"></script>
-        <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.templates/beta1/jquery.tmpl.js"></script>
+		
+    <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.templates/beta1/jquery.tmpl.js"></script>
 		<script src='https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js'></script>
 
+		
+		<!-- Include Date Range Picker -->
 
+		<link rel="stylesheet" type="text/css" href="http://cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css" />
+  	<script type="text/javascript" src="http://cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
+  	<script src="dateformat.js"></script>
+
+    <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.templates/beta1/jquery.tmpl.js"></script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js'></script>
 
 		<script id="eventTemplate" type="text/x-jQuery-tmpl">
 			<div id=${id} class="col-sm-4 col-lg-4 col-md-4">
@@ -144,7 +185,7 @@
 		</script>
 
 
-        <script src="rate.js"></script>
+    <script src="rate.js"></script>
 		<script src="script.js"></script>
 </body>
 

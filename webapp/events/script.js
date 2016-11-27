@@ -3,7 +3,7 @@
 window.events = [];
 
 $(function() {
-
+	$('input[name="daterange1"]').daterangepicker();
 	$('.my-favorites').click(function(){
 		var $this = $(this);
 		$this.toggleClass('my-favorites');
@@ -60,6 +60,10 @@ function filterEventByDate(e) {
 		case 'nextsevendays':
 			var endTime = moment().startOf('day').add(7, 'days');
 			break;
+
+		case 'customdate':
+			render(window.events);
+			return
 	}
 
 	var filteredEvents = _.filter(window.events, function(event) {
