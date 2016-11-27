@@ -111,7 +111,8 @@ class Event(db.Model):
     def __init__(self, infodict):
         self.id = infodict['id']
         try:
-            self.datetime = datetime.strptime(infodict['datetime'])
+            #self.datetime = datetime.strptime(infodict['datetime'][:infodict['datetime'].rindex(':')+3],"%Y-%m-%dT%H:%M:%S")
+            self.datetime = infodict['datetime']
         except:
             self.datetime = None
         try:
@@ -139,17 +140,20 @@ class Event(db.Model):
     def __repr__(self):
         return "<{},{}>".format(self.id, self.title)
 
-    def todict(self, bool_fav, group_rating):
+    def todict(self, bool_fav):
         """ Output dictionary """
+        thegroup = Group.query.filter(Group.id == self.group_id).one()
+        #print thegroup
         return {'id':self.id,
-                'datetime':self.datetime,
+                'datetime':self.datetime.strftime("%Y-%m-%dT%H:%M:%S"),
                 'location':self.location,
                 'group_id':self.group_id,
                 'title':self.title,
-                'urk':self.url,
+                'url':self.url,
                 'photo_url':self.photo_url,
                 'favorite': bool_fav,
-                'rating':group_rating,
+                'group':thegroup.name,
+                'rating':thegroup.rating
                }
 
 
@@ -175,7 +179,7 @@ class Group(db.Model):
             self.rating = 0
              
     def __repr__(self):
-        return "<GROUP {}, RATING {}>".format(self.group_id, self.rating)
+        return "<GROUP {}, RATING {}>".format(self.id, self.rating)
     
                
 """
@@ -192,6 +196,9 @@ CHECK (rate in (1,2,3,4,5))
 CODE SECTION: SERVER API
 IN USE: signup, login, calendar
 """
+@app.route('/test')
+def mytest():
+    return jsonify(events=[o.todict(False) for o in Event.query.all()])
 
 @login_manager.user_loader
 def user_loader(id):
@@ -297,6 +304,7 @@ def events_handler():
     #print [o.todict(o in favbuf) for o in Event.query.all()]    
     return jsonify(events=[o.todict(o in favbuf) for o in Event.query.all()])
 
+
 @app.route('/logout')
 def logout():
     # todo - Should be PUT or POST
@@ -310,7 +318,7 @@ def unauthorized_handler():
     return redirect('/')
 
 @app.route('/refresh/<int:count>')
-def refresh_event(count):
+def load_event_from_json_to_database(count):
     f = open('../scraper/data/events_data.json', 'r')
     eventsdata = json.load(f)
     f.close()
