@@ -47,14 +47,15 @@ def import_events():
 # name = db.Column(db.String(100))
 # rating = db.Column(db.Float)
 def import_groups():
-    groups_json = open('scraper/data/pages_data.json').read()
+    f = open('scraper/data/pages_data.json', 'r')
+    groups_json = json.load(f)
 
     for g in groups_json:
         try:
             clause = groups_table.insert().values(
-                id          = g['id'],
+                id          = str(g['group_id']),
                 name        = g['group_name'],
-                group       = g['group'],
+                rating      = 5.0
                 # group_url   = e['group_url'],
             )
             con.execute(clause)
@@ -67,4 +68,5 @@ def import_groups():
 
 
 if __name__ == "__main__":
+    import_groups()
     import_events()

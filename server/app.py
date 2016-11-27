@@ -184,15 +184,18 @@ class Event(db.Model):
 def mytest():
     return jsonify(events=[o.todict(False) for o in Event.query.all()])
 
+
 @login_manager.user_loader
 def user_loader(id):
     """Core part of login_manager"""
     user = Person.query.filter(Person.id == id).one()
     return user
 
+
 @app.route('/')
 def root():
     return redirect('/login/index.html')
+
 
 @app.route('/login/index.html')
 @nocache
@@ -201,6 +204,7 @@ def cannotbeacurrentuser():
         return app.send_static_file('./login/index.html')
     else:
         return redirect('/events/index.html')
+
 
 @app.route('/signup', methods=['POST'])
 def signup():
@@ -229,9 +233,10 @@ def signup():
     except sqlalchemy.exc.IntegrityError:
         print "Integrity Error: Conflict email address!!!"
         db.session.rollback()
-        response = jsonify({'error': 'user exists'})
+        response = jsonify(error='user exists')
         response.status_code = 409
         return response
+
 
 @app.route('/login', methods=['POST', 'GET'])
 def login():
@@ -243,11 +248,13 @@ def login():
         if len(res) != 0:
             login_user(res[0])
             print "Login successfully:", current_user
-            #return redirect('/events/index.html')
             return jsonify(user_id=current_user.id)
         else:
             print "Invalid email-password combination."
-            return Response(jsonify({'error': 'invalid combination'}), status=400)
+            response=jsonify(error='invalid combination')
+            response.status_code = 400
+            return response
+
 
 @app.route('/favorite', methods=['POST', 'DELETE'])
 @login_required
@@ -257,24 +264,40 @@ def favorite_handler():
     event_id = str(request_form['id'])
     favone = Event.query.filter(Event.id == event_id).one()
     print favone
-    # todo - 409 for duplicate favorites
-    # todo - 404 for delete nonexistant favorite
+
+    def favorite_exist(event_id):
+        cmd = """SELECT * FROM favorite WHERE user_id = :uid and event_id = :eid"""
+        cursor = db.session.execute(cmd, dict(uid=current_user.id, eid=event_id))
+        if cursor.fetchone() == None:
+            return False
+        return True
+    
     if request.method == 'POST':
+        # todo - 409 for duplicate favorites
+        if favorite_exist(favone.id):
+            return Response('duplicate favorites', status=409)
         current_user.favorites.append(favone)
     elif request.method == 'DELETE':
+        # todo - 404 for delete nonexistant favorite
+        if not favorite_exist(favone.id):
+            return Response('nonexistant favorite', status=404)
         current_user.favorites.remove(favone)
     db.session.add(current_user)
     db.session.commit()
     return Response('success', status=200)
+
 
 @app.route('/rate', methods=['POST'])
 @login_required
 def rate_group():
     request_form = json.loads(request.data)
     thegroup = Group.query.filter(Group.id == request_form['group_id']).one()
+    print '###', thegroup.rating
     thegroup.rating = (thegroup.rating + request_form['rate_value'])*0.5
     db.session.commit()
-    return Response(response=jsonify(rating=thegroup.rating), status=200)
+    print '###', thegroup.rating
+    return Response(jsonify(rating=thegroup.rating), status=200)
+    #TODO: cannot rate duplicately
 
 
 @app.route('/events/index.html', methods=['GET'])
@@ -282,6 +305,7 @@ def rate_group():
 @nocache
 def events_check():
     return app.send_static_file('./events/index.html')
+
 
 @app.route('/events', methods=['GET'])
 @login_required
@@ -293,11 +317,13 @@ def events_handler():
 
 @app.route('/logout', methods=['POST'])
 def logout():
-    # todo - Should be PUT or POST
-    # todo - 404 for duplicate logout
+    if not current_user.is_authenticated:
+        # 404 for duplicate logout
+        return Response(status=404)
     logout_user()
     return redirect('/')
 
+    
 @login_manager.unauthorized_handler
 def unauthorized_handler():
     print 'Unauthorized action'
@@ -311,8 +337,9 @@ def unauthorized_handler():
         </html>
         """
 
+
 @app.route('/refresh/<int:count>')
-def jsontodatabase(count):
+def refresh_event(count):
     f = open('../scraper/data/events_data.json', 'r')
     eventsdata = json.load(f)
     f.close()
@@ -335,6 +362,10 @@ def jsontodatabase(count):
     return redirect('login/index.html')
 
 
+
+
+
+
 if __name__ == '__main__':
     db.create_all()
     print 'Database initialized'
@@ -351,9 +382,11 @@ if __name__ == '__main__':
         """
         This function handles command line parameters.
         Run the server using
-            python server.py
+            python app.py
+        Run the server with params using
+            python app.py 127.0.0.1 8111 --threaded
         Show the help text using
-            python server.py --help
+            python app.py --help
         """
 
         HOST, PORT = host, port

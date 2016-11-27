@@ -7,13 +7,17 @@ url = 'postgresql://ase4156:dbpass@104.196.133.79/eventscalendar'
 con = sqlalchemy.create_engine(url, client_encoding='utf8')
 meta = sqlalchemy.MetaData(bind=con, reflect=True)
 
-table = meta.tables['event']
+events_table = meta.tables['event']
 
+'''
+Delete past events from our DB
+'''
 def do_clean():
     try:
         time = datetime.now()
-        # todo - create new field for 'expired' instead of deleting
-        table.query(Event).filter(Event.datetime < time).delete()
+
+        clause = events_table.delete(Event.datetime < time)
+        con.execute(clause)
 
         print 'Deleted old events'
 
