@@ -16,17 +16,4 @@ def scheduled_job():
 
 
 
-
-# test
-# @sched.scheduled_job('interval', id='get_events', minutes=2)
-# def scheduled_job():
-#     events_scraper.get_events()
-#
-# @sched.scheduled_job('interval', id='import', minutes=2)
-# def scheduled_job():
-#     data_importer.do_import()
-
-
-
-
 sched.start()
