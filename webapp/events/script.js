@@ -4,13 +4,6 @@ window.events = [];
 
 $(function() {
 	$('input[name="daterange"]').daterangepicker();
-	$('input[name="timerange"]').daterangepicker({
-		timePicker: true,
-		timePickerIncrement: 30,
-		locale: {
-			format: 'h:mm A'
-		}
-	});
 	$('.my-favorites').click(function(){
 		var $this = $(this);
 		$this.toggleClass('my-favorites');
@@ -34,6 +27,14 @@ $.get(
 function render(events){
 	window.events = events;
 	$("#eventlist").html($("#eventTemplate").tmpl(events));
+}
+
+function filterEvents() {
+	var text = $('#search').val();
+	var filteredEvents = _.filter(window.events, function(event) {
+		return (event.title.toLowerCase().indexOf(text.toLowerCase()) > -1)
+	})
+	$("#eventlist").html($("#eventTemplate").tmpl(filteredEvents));
 }
 
 function formatDate(datetime) {
@@ -106,3 +107,8 @@ function logout() {
 }
 
 
+
+document.getElementById('select-dates').addEventListener('change', function () {
+    var style = this.value == "customdate" ? 'block' : 'none';
+    document.getElementById('custom-date').style.display = style;
+});
