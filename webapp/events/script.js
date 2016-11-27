@@ -3,17 +3,7 @@
 window.events = [];
 
 $(function() {
-<<<<<<< Updated upstream
-	// $('input[name="daterange"]').daterangepicker();
-=======
-<<<<<<< HEAD
-=======
-	$('input[name="daterange"]').daterangepicker();
-<<<<<<< Updated upstream
-=======
->>>>>>> origin/master
->>>>>>> Stashed changes
->>>>>>> Stashed changes
+
 	$('.my-favorites').click(function(){
 		var $this = $(this);
 		$this.toggleClass('my-favorites');
@@ -25,24 +15,17 @@ $(function() {
 			$this.value('all-events');
 		}
 	});
-    return $(".starrr").starrr();
 });
 var dummy;
 
 
 $.get(
 	'/events',
-<<<<<<< Updated upstream
-	function(data) {
-		window.events = data.events;
-		render(data.events);
-	}
-=======
 	function(data) { 
+        window.events = data.events;
         render(data.events);
         $('.starrr').starrr();  
     }
->>>>>>> Stashed changes
 );
 
 function render(events){

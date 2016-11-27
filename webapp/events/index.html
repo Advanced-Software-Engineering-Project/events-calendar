@@ -60,75 +60,6 @@
 		<!-- Page Content -->
 		<div class="container-fluid">
 
-				<!-- SECTION: Carousel of Featured Events -->
-<!--	
-				<div class="row">
-						<div class="row-fluid carousel-holder">
-								<div class="col-md-12">
-										<div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
-												<ol class="carousel-indicators">
-														<li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
-														<li data-target="#carousel-example-generic" data-slide-to="1"></li>
-														<li data-target="#carousel-example-generic" data-slide-to="2"></li>
-												</ol>
-												<div class="carousel-inner">
-														<div class="item active">
-																<img class="slide-image" src="http://placehold.it/800x300" alt="">
-														</div>
-														<div class="item">
-																<img class="slide-image" src="http://placehold.it/800x300" alt="">
-														</div>
-														<div class="item">
-																<img class="slide-image" src="http://placehold.it/800x300" alt="">
-														</div>
-												</div>
-												<a class="left carousel-control" href="#carousel-example-generic" data-slide="prev">
-														<span class="glyphicon glyphicon-chevron-left"></span>
-												</a>
-												<a class="right carousel-control" href="#carousel-example-generic" data-slide="next">
-														<span class="glyphicon glyphicon-chevron-right"></span>
-												</a>
-										</div>
-								</div>
-						</div>
-				</div>
--->
-
-			 <!-- SECTION: Search Bar -->
-				<!-- <div class="row-fluid">
-					<div class="form-section col-centered">
-						<div class="row">
-							<form role="form">
-								<div class="col-md-4">
-									<div class="form-group">
-										<label class="sr-only" for="eventname">Event</label>
-										<input type="text" class="form-control" id="eventname"/>
-									</div>
-									</div>
-								<div class="col-md-2">
-									<div class="form-group">
-										<label class="sr-only" for="daterange">Date</label>
-											<div class="input-group">
-												<input type="text" class="form-control" name="daterange" />
-											</div>
-									</div>
-								</div>
-								<div class="col-md-2">
-									<div class="form-group">
-										<label class="sr-only" for="timerange">Time</label>
-											<div class="input-group">
-												<input type="text" class="form-control" name="timerange" value = "12 AM-12PM"/>
-											</div>
-									</div>
-								</div>
-								<div class="col-md-2">
-									<button type="submit" id="submit"class="button button-block">Search</button>
-								</div>
-							</form>
-						</div>
-					</div>
-				</div> -->
-
 				<!-- SECTION: New Filter Bar -->
 				<form action"/" method="post">
 					<div class="container">
@@ -163,7 +94,7 @@
 				<div class="row-fluid">
 						<div id="eventlist"></div>
 				</div>
-      
+        </div>
 
 
 		<!-- /.container -->
@@ -186,33 +117,20 @@
 		<!-- Bootstrap Core JavaScript -->
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 		<script type="text/javascript" src="http://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
-<<<<<<< Updated upstream
-=======
-<<<<<<< HEAD
+
 		<script src="dateformat.js"></script>
-		<script id="eventTemplate" type="text/x-jQuery-tmpl">
-		<div id=${id} class="col-sm-4 col-lg-4 col-md-4">
-			<div class="thumbnail">
-				<img src="${photo_url}" alt=" " style="width:100%;height:150px;object-fit:cover;"/>
-=======
->>>>>>> Stashed changes
-		<!-- Underscore -->
+		<script id="eventTemplate" type="text/x-jQuery-tmpl"></script>
 		<script src='https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js'></script>
 
-		<link rel="stylesheet" type="text/css" href="http://cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css" />
 		<script type="text/javascript" src="http://cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
 		<script src="dateformat.js"></script>
 
 
 
-		<script id="eventTemplate" type="text/x-jQuery-tmpl"/>
+		<script id="eventTemplate" type="text/x-jQuery-tmpl">
 			<div id=${id} class="col-sm-4 col-lg-4 col-md-4">
 				<div class="thumbnail">
 					<img src="${photo_url}" alt=" " style="width:100%;height:150px;object-fit:cover;"/>
-<<<<<<< Updated upstream
-=======
->>>>>>> origin/master
->>>>>>> Stashed changes
 					<div class="caption">
 						<p class="event-date-time">${formatDate(datetime)}</p>
 						<h4><a href="${group_url}">${title}</a></h4>
