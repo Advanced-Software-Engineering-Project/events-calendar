@@ -96,66 +96,88 @@ class Person(db.Model, UserMixin):
 class Event(db.Model):
     """
     Table event(
-    id text PRIMARY KEY
+    id char(40) PRIMARY KEY
     )
     """
     id = db.Column(db.String(40), primary_key=True)
-    datetime = db.Column(db.String(30))
+    datetime = db.Column(db.DateTime)
     location = db.Column(db.String(100))
-    group = db.Column(db.String(100))
+    group_id = db.Column(db.String(40))
     title = db.Column(db.String(100))
-    group_url = db.Column(db.Text)
+    url = db.Column(db.Text)
     photo_url = db.Column(db.Text)
-    rating = db.Column(db.Integer)
     fans = db.relationship("Person", secondary = favorite_table, back_populates="favorites")
 
     def __init__(self, infodict):
         self.id = infodict['id']
         try:
-            self.datetime = infodict['datetime']
+            self.datetime = datetime.strptime(infodict['datetime'])
         except:
             self.datetime = None
         try:
             self.location = infodict['location']
         except:
-            self.location = None
+            self.location = 'TBA'
         try:
-            self.group = infodict['group']
+            self.group_id = infodict['group_id']
         except:
-            self.group = None
+            self.group_id = None
         try:
             self.title = infodict['title']
         except:
             self.title = 'Untitled Event'
         try:
-            self.group_url = infodict['group_url']
+            self.url = infodict['url']
         except:
-            self.group_url = None
+            self.url = 'http://www.google.com'
         try:
             self.photo_url = infodict['photo_url']
         except:
             self.photo_url = None
-        try:
-            self.rating = infodict['rating']
-        except:
-            self.rating = 4
+
 
     def __repr__(self):
         return "<{},{}>".format(self.id, self.title)
 
-    def todict(self, bool_fav):
+    def todict(self, bool_fav, group_rating):
         """ Output dictionary """
         return {'id':self.id,
                 'datetime':self.datetime,
                 'location':self.location,
-                'group':self.group,
+                'group_id':self.group_id,
                 'title':self.title,
-                'group_url':self.group_url,
+                'urk':self.url,
                 'photo_url':self.photo_url,
-                'rating':self.rating,
-                'favorite': bool_fav
+                'favorite': bool_fav,
+                'rating':group_rating,
                }
 
+
+class Group(db.Model):
+    """
+    Table group(
+    group_id char(40) PRIMARY KEY
+    )
+    """
+    id = db.Column(db.String(40), primary_key=True)
+    name = db.Column(db.String(100))
+    rating = db.Column(db.Float)
+    
+    def __init__(self, infodict):
+        try:
+            self.id = infodict['group_id']
+            self.name = infodict['group']
+            self.rating = 5.0
+        except KeyError:
+            print 'New event does not belong to any group.'
+            self.id = '0'
+            self.name = None
+            self.rating = 0
+             
+    def __repr__(self):
+        return "<GROUP {}, RATING {}>".format(self.group_id, self.rating)
+    
+               
 """
 Table rate(
 userid int FOREIGN KEY REFERENCES person(userid),
@@ -287,7 +309,7 @@ def unauthorized_handler():
     print 'Unauthorized action'
     return redirect('/')
 
-@app.route('/refresh')
+@app.route('/refresh/<int:count>')
 def refresh_event(count):
     f = open('../scraper/data/events_data.json', 'r')
     eventsdata = json.load(f)
@@ -298,7 +320,15 @@ def refresh_event(count):
             db.session.commit()
             print 'One event added. ID:{}'.format(eventsdata[i]['id'])
         except sqlalchemy.exc.IntegrityError:
-            print "Integrity Error: old event."
+            print "Integrity Error: Event exists."
+            db.session.rollback()
+        #
+        db.session.add(Group(eventsdata[i]))
+        try:
+            db.session.commit()
+            print 'New group added. ID:{}'.format(eventsdata[i]['group_id'])
+        except sqlalchemy.exc.IntegrityError:
+            print "Integrity Error: Group exists."
             db.session.rollback()
     return redirect('login/index.html')
 
