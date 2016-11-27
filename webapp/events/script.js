@@ -3,7 +3,7 @@
 window.events = [];
 
 $(function() {
-	$('input[name="daterange"]').daterangepicker();
+	// $('input[name="daterange"]').daterangepicker();
 	$('.my-favorites').click(function(){
 		var $this = $(this);
 		$this.toggleClass('my-favorites');
@@ -21,20 +21,50 @@ var dummy;
 
 $.get(
 	'/events',
-	function(data) { render(data.events);}
+	function(data) {
+		window.events = data.events;
+		render(data.events);
+	}
 );
 
 function render(events){
-	window.events = events;
 	$("#eventlist").html($("#eventTemplate").tmpl(events));
 }
 
-function filterEvents() {
+function filterEventsByText() {
 	var text = $('#search').val();
 	var filteredEvents = _.filter(window.events, function(event) {
 		return (event.title.toLowerCase().indexOf(text.toLowerCase()) > -1)
 	})
 	$("#eventlist").html($("#eventTemplate").tmpl(filteredEvents));
+}
+
+function filterEventByDate(e) {
+	var timerange = e.target.selectedOptions[0].value;
+
+	switch (timerange) {
+		case 'alldates':
+			render(window.events);
+			return
+
+		case 'today':
+			var endTime = moment().startOf('day').add(1, 'days');
+			break;
+
+		case 'tomorrow':
+			var endTime = moment().startOf('day').add(2, 'days');
+			break;
+
+		case 'nextsevendays':
+			var endTime = moment().startOf('day').add(7, 'days');
+			break;
+	}
+
+	var filteredEvents = _.filter(window.events, function(event) {
+		return moment(event.datetime).isBefore(endTime);
+	});
+
+	render(filteredEvents);
 }
 
 function formatDate(datetime) {
