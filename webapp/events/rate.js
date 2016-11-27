@@ -99,12 +99,16 @@ var __slice = [].slice;
 
 
 
-$( document ).ready(function() {
-      
-  $('.starrr').on('starrr:change');
-});
+    $('.starrr').on('starrr:change', function(e, value){
+            var group_id = $(e).closest("div").attr("id");
+            $.ajax({
+			method: 'POST',
+			url: '/rate',
+			data: JSON.stringify({group_id: group_id, rate_value: value}),
+			contentType: "application/json; charset=utf-8",
+			success: rateSuccess
+		})
+        }
+    );
 
-function RateEvent(element) {
-    console.log($(element).attr("id"));
-    console.log($(element).value());
-}
+

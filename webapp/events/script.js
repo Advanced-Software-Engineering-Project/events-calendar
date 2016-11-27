@@ -16,7 +16,7 @@ $(function() {
 		}
 	});
 });
-var dummy;
+
 
 
 $.get(
@@ -24,13 +24,24 @@ $.get(
 	function(data) { 
         window.events = data.events;
         render(data.events);
-        $('.starrr').starrr();  
     }
 );
 
 function render(events){
 	$("#eventlist").html($("#eventTemplate").tmpl(events));
-    console.log(events);
+    $('.starrr').starrr();
+    
+    $('.starrr').on('starrr:change', function(e, value){
+            var group_id = $(e).attr('currentTarget').id;
+            $.ajax({
+			method: 'POST',
+			url: '/rate',
+			data: JSON.stringify({group_id: group_id, rate_value: value}),
+			contentType: "application/json; charset=utf-8",
+		})
+        }
+    );
+
 }
 
 function filterEventsByText() {
