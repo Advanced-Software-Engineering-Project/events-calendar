@@ -288,6 +288,16 @@ def addtorelationship():
     db.session.add(current_user)
     db.session.commit()
     return Response('success', status=200)
+    
+@app.route('/rate', methods=['POST'])
+@login_required
+def rate_group():
+    request_form = json.loads(request.data)
+    thegroup = Group.query.filter(Group.id == request_form['group_id']).one()
+    thegroup.rating = (thegroup.rating + request_form['rate_value'])*0.5
+    db.session.commit()
+    return Response(jsonify(rating=thegroup.rating), status=200)
+    
 
 @app.route('/events/index.html')
 @login_required
@@ -311,7 +321,7 @@ def logout():
     # todo - Should be PUT or POST
     # todo - 404 for duplicate logout
     logout_user()
-    return Response()
+    return redirect('/')
 
 @login_manager.unauthorized_handler
 def unauthorized_handler():
@@ -366,7 +376,7 @@ if __name__ == '__main__':
   
       HOST, PORT = host, port
       print "running on %s:%d" % (HOST, PORT)
-      app.run(host=HOST, port=env_port, debug=debug, threaded=threaded)
+      app.run(host=HOST, port=PORT, debug=debug, threaded=threaded)
   
   
     run()
