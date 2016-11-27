@@ -104,7 +104,3 @@ $( document ).ready(function() {
   $('.starrr').on('starrr:change');
 });
 
-function RateEvent(element) {
-    console.log($(element).attr("id"));
-    console.log($(element).value());
-}

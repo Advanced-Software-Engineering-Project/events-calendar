@@ -292,9 +292,11 @@ def favorite_handler():
 def rate_group():
     request_form = json.loads(request.data)
     thegroup = Group.query.filter(Group.id == request_form['group_id']).one()
+    print '###', thegroup.rating
     thegroup.rating = (thegroup.rating + request_form['rate_value'])*0.5
     db.session.commit()
-#    return Response(jsonify(rating=thegroup.rating), status=200)
+    print '###', thegroup.rating
+    return Response(jsonify(rating=thegroup.rating), status=200)
     #TODO: cannot rate duplicately
 
 
