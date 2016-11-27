@@ -34,6 +34,9 @@ from flask import make_response
 from functools import wraps, update_wrapper
 
 def nocache(view):
+    """
+    @nocache will clean cache after browing the page
+    """
     @wraps(view)
     def no_cache(*args, **kwargs):
         response = make_response(view(*args, **kwargs))
@@ -42,16 +45,10 @@ def nocache(view):
         response.headers['Pragma'] = 'no-cache'
         response.headers['Expires'] = '-1'
         return response
-        
     return update_wrapper(no_cache, view)
 
 
 #%% <DATABASE SCHEMA>
-"""
-CODE SECTION: DATABASE SCHEMA
-IN USE: Person, Event
-"""
-
 
 """
 Table favorite(
@@ -59,10 +56,11 @@ Table favorite(
     event_id string FOREIGN KEY REFERENCES event(eventid)
 )
 """
-favorite_table = db.Table('favorite',
-    db.Column('user_id', db.String(40), db.ForeignKey('person.id')),
-    db.Column('event_id', db.String(40), db.ForeignKey('event.id'))
-    )
+favorite_table = \
+    db.Table('favorite',
+             db.Column('user_id', db.String(40), db.ForeignKey('person.id')),
+             db.Column('event_id', db.String(40), db.ForeignKey('event.id'))
+            )
 
 class Person(db.Model, UserMixin):
     """
@@ -77,9 +75,10 @@ class Person(db.Model, UserMixin):
     lastname = db.Column(db.String(40))
     username = db.Column(db.String(80), unique=True)
     created_at = db.Column(db.DateTime)
-    favorites = db.relationship("Event", secondary = favorite_table,\
-				# OPTIONALv0: child record delete on cascade
-				back_populates = "fans")
+    favorites = db.relationship("Event",
+                                secondary=favorite_table,
+                                # OPTIONALv0: child record delete on cascade
+            				back_populates="fans")
 
     def __init__(self, email, password, firstname, lastname):
         self.id = "{}".format(int(time.time() * 1000))
@@ -92,6 +91,30 @@ class Person(db.Model, UserMixin):
 
     def __repr__(self):
         return '<User %r>' % self.email
+
+class Group(db.Model):
+    """
+    Table group(
+    group_id char(40) PRIMARY KEY
+    )
+    """
+    id = db.Column(db.String(40), primary_key=True)
+    name = db.Column(db.String(100))
+    rating = db.Column(db.Float)
+
+    def __init__(self, infodict):
+        try:
+            self.id = infodict['group_id']
+            self.name = infodict['group']
+            self.rating = 5.0
+        except KeyError:
+            print 'New event does not belong to any group.'
+            self.id = '0'
+            self.name = None
+            self.rating = 0.0
+
+    def __repr__(self):
+        return "<GROUP {}, RATING {}>".format(self.id, self.rating)
 
 class Event(db.Model):
     """
@@ -106,34 +129,34 @@ class Event(db.Model):
     title = db.Column(db.String(100))
     url = db.Column(db.Text)
     photo_url = db.Column(db.Text)
-    fans = db.relationship("Person", secondary = favorite_table, back_populates="favorites")
+    fans = db.relationship("Person", secondary=favorite_table, back_populates="favorites")
 
     def __init__(self, infodict):
         self.id = infodict['id']
         try:
             #self.datetime = datetime.strptime(infodict['datetime'][:infodict['datetime'].rindex(':')+3],"%Y-%m-%dT%H:%M:%S")
             self.datetime = infodict['datetime']
-        except:
+        except KeyError:
             self.datetime = None
         try:
             self.location = infodict['location']
-        except:
+        except KeyError:
             self.location = 'TBA'
         try:
             self.group_id = infodict['group_id']
-        except:
+        except KeyError:
             self.group_id = None
         try:
             self.title = infodict['title']
-        except:
+        except KeyError:
             self.title = 'Untitled Event'
         try:
             self.url = infodict['url']
-        except:
+        except KeyError:
             self.url = 'http://www.google.com'
         try:
             self.photo_url = infodict['photo_url']
-        except:
+        except KeyError:
             self.photo_url = None
 
 
@@ -141,7 +164,7 @@ class Event(db.Model):
         return "<{},{}>".format(self.id, self.title)
 
     def todict(self, bool_fav):
-        """ Output dictionary """
+        """Output dictionary"""
         thegroup = Group.query.filter(Group.id == self.group_id).one()
         #print thegroup
         return {'id':self.id,
@@ -153,55 +176,17 @@ class Event(db.Model):
                 'photo_url':self.photo_url,
                 'favorite': bool_fav,
                 'group':thegroup.name,
-                'rating':thegroup.rating
-               }
-
-
-class Group(db.Model):
-    """
-    Table group(
-    group_id char(40) PRIMARY KEY
-    )
-    """
-    id = db.Column(db.String(40), primary_key=True)
-    name = db.Column(db.String(100))
-    rating = db.Column(db.Float)
-    
-    def __init__(self, infodict):
-        try:
-            self.id = infodict['group_id']
-            self.name = infodict['group']
-            self.rating = 5.0
-        except KeyError:
-            print 'New event does not belong to any group.'
-            self.id = '0'
-            self.name = None
-            self.rating = 0
-             
-    def __repr__(self):
-        return "<GROUP {}, RATING {}>".format(self.id, self.rating)
-    
-               
-"""
-Table rate(
-userid int FOREIGN KEY REFERENCES person(userid),
-eventid text FOREIGN KEY REFERENCES event(eventid),
-rate int,
-CHECK (rate in (1,2,3,4,5))
-)
-"""
+                'rating':thegroup.rating}
 
 #%% <SERVER API>
-"""
-CODE SECTION: SERVER API
-IN USE: signup, login, calendar
-"""
+
 @app.route('/eventjson')
 def mytest():
     return jsonify(events=[o.todict(False) for o in Event.query.all()])
 
 @login_manager.user_loader
 def user_loader(id):
+    """Core part of login_manager"""
     user = Person.query.filter(Person.id == id).one()
     return user
 
@@ -212,7 +197,7 @@ def root():
 @app.route('/login/index.html')
 @nocache
 def cannotbeacurrentuser():
-    if not current_user.is_authenticated:        
+    if not current_user.is_authenticated:
         return app.send_static_file('./login/index.html')
     else:
         return redirect('/events/index.html')
@@ -262,18 +247,11 @@ def login():
             return jsonify(user_id=current_user.id)
         else:
             print "Invalid email-password combination."
-            response = jsonify({'error': 'invalid combination'})
-            response.status_code = 400
-            return response
-
-@app.route("/protected", methods=["GET"])
-@login_required
-def protected():
-    return Response(response="{}:Hello Protected World!".format(current_user.email), status=200)
+            return Response(jsonify({'error': 'invalid combination'}), status=400)
 
 @app.route('/favorite', methods=['POST', 'DELETE'])
 @login_required
-def addtorelationship():
+def favorite_handler():
     request_form = json.loads(request.data)
     print request_form
     event_id = str(request_form['id'])
@@ -288,7 +266,7 @@ def addtorelationship():
     db.session.add(current_user)
     db.session.commit()
     return Response('success', status=200)
-    
+
 @app.route('/rate', methods=['POST'])
 @login_required
 def rate_group():
@@ -296,10 +274,10 @@ def rate_group():
     thegroup = Group.query.filter(Group.id == request_form['group_id']).one()
     thegroup.rating = (thegroup.rating + request_form['rate_value'])*0.5
     db.session.commit()
-    return Response(jsonify(rating=thegroup.rating), status=200)
-    
+    return Response(response=jsonify(rating=thegroup.rating), status=200)
 
-@app.route('/events/index.html')
+
+@app.route('/events/index.html', methods=['GET'])
 @login_required
 @nocache
 def events_check():
@@ -310,13 +288,10 @@ def events_check():
 @nocache
 def events_handler():
     favbuf = current_user.favorites
-    print favbuf
-    print '###'
-    #print [o.todict(o in favbuf) for o in Event.query.all()]    
     return jsonify(events=[o.todict(o in favbuf) for o in Event.query.all()])
 
 
-@app.route('/logout')
+@app.route('/logout', methods=['POST'])
 def logout():
     # todo - Should be PUT or POST
     # todo - 404 for duplicate logout
@@ -326,10 +301,18 @@ def logout():
 @login_manager.unauthorized_handler
 def unauthorized_handler():
     print 'Unauthorized action'
-    return redirect('/')
+    return """
+        <html>
+          <meta http-equiv="refresh" content="3;url=/" />
+          <h2>
+            Not logged-in yet.<br><br>
+            The page will automatically directs to index after 3 seconds...
+          <h2>
+        </html>
+        """
 
 @app.route('/refresh/<int:count>')
-def load_event_from_json_to_database(count):
+def jsontodatabase(count):
     f = open('../scraper/data/events_data.json', 'r')
     eventsdata = json.load(f)
     f.close()
@@ -355,28 +338,26 @@ def load_event_from_json_to_database(count):
 if __name__ == '__main__':
     db.create_all()
     print 'Database initialized'
-    
+
     import click
-    
     env_port = int(os.environ.get("PORT", 5000))
- 
+
     @click.command()
     @click.option('--debug', is_flag=True)
-    @click.option('--threaded', is_flag=True)#RECOMMENDED
+    @click.option('--threaded', is_flag=True) #RECOMMENDED
     @click.argument('HOST', default='0.0.0.0')
     @click.argument('PORT', default=env_port, type=int)
     def run(debug, threaded, host, port):
-      """
-      This function handles command line parameters.
-      Run the server using
-          python server.py
-      Show the help text using
-          python server.py --help
-      """
-  
-      HOST, PORT = host, port
-      print "running on %s:%d" % (HOST, PORT)
-      app.run(host=HOST, port=PORT, debug=debug, threaded=threaded)
-  
-  
+        """
+        This function handles command line parameters.
+        Run the server using
+            python server.py
+        Show the help text using
+            python server.py --help
+        """
+
+        HOST, PORT = host, port
+        print "running on %s:%d" % (HOST, PORT)
+        app.run(host=HOST, port=PORT, debug=debug, threaded=threaded)
+
     run()
