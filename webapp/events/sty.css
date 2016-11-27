@@ -16,38 +16,38 @@ body {
 
 .carousel-control,
 .item {
-    border-radius: 4px;
+  border-radius: 4px;
 }
 
 .caption {
-    height: 130px;
-    overflow: hidden;
+  height: 130px;
+  overflow: hidden;
 }
 
 .event-date-time {
-    color: #79797a;
+  color: #79797a;
 }
 
 .organizer {
-    color: #79797a;
+  color: #79797a;
 }
 
 
 .thumbnail img {
-    width: 100%;
+  width: 100%;
 }
 
 .ratings-favorites {
-    padding-right: 10px;
-    padding-left: 10px;
+  padding-right: 10px;
+  padding-left: 10px;
 }
 
 .ratings-favorites .favorites{
-    color: #E0523D;
+  color: #E0523D;
 }
 
 .ratings-favorites .ratings {
-    color: #FDCC40;
+  color: #FDCC40;
 }
 .glyphicon {
   font-size: 20px;
@@ -65,21 +65,21 @@ body {
 
 
 .thumbnail {
-    padding: 0;
-    border-radius: 0px;
+  padding: 0;
+  border-radius: 0px;
 }
 .thumbnail>img{      
-    margin-right:0;
-    margin-left: 0;
+  margin-right:0;
+  margin-left: 0;
 }
 .thumbnail .caption-full {
-    padding: 9px;
-    color: #333;
+  padding: 9px;
+  color: #333;
 }
 
 .form-section{
-    margin-left: auto ;
-    margin-right: auto ;
+  margin-left: auto ;
+  margin-right: auto ;
 }
 
 .form-control {
@@ -88,7 +88,7 @@ body {
 
 
 footer {
-    margin: 50px 0;
+  margin: 50px 0;
 }
 
 /* Special class on .container surrounding .navbar, used for positioning it into place. */
@@ -113,26 +113,26 @@ footer {
 
 .navbar-content
 {
-    width:150px;
-    padding: 5px 5px;
-    padding-bottom: 1px;
+  width:150px;
+  padding: 5px 5px;
+  padding-bottom: 1px;
 }
 .navbar-content:before, .navbar-content:after
 {
-    display: table;
-    content: "";
-    line-height: 0;
+  display: table;
+  content: "";
+  line-height: 0;
 }
 .navbar-nav.navbar-right:last-child {
 margin-right: 15px !important;
 }
 .navbar-footer 
 {
-    background-color:#DDD;
+  background-color:#DDD;
 }
 .navbar-footer-content { 
-    padding:15px 15px 15px 15px; 
-    text-align: right;
+  padding:15px 15px 15px 15px; 
+  text-align: right;
 }
 
 .dropdown-menu {
