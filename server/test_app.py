@@ -8,7 +8,7 @@ Created on Thu Oct 27 14:47:36 2016
 import unittest
 import json
 
-from app import db, app, Person, Event
+from app import db, app, Person, Event, Group
 
 
 class SignupTestCase(unittest.TestCase):
@@ -177,14 +177,21 @@ class EventsTestCase(unittest.TestCase):
 
 
     def test_events_returned(self):
-        # Add some events to test DB
+        # Add a group to test DB
+        db.session.add(Group({
+            'group_id': '456',
+            'group': 'testgroup'
+        }))
+
+        # Add an event to test DB
         db.session.add(Event({
             'id': '123',
             'datetime': '1-23-45',
             'location': 'mars',
-            'group': 'columbiagroup',
+            'group_id': '456',
             'title': 'a new event',
-            'group_url': 'http://www.google.com'
+            'url': 'http://www.testevent.com',
+            'photo_url': 'http://www.testphotourl.com'
         }))
 
         db.session.commit()
