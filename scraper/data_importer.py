@@ -7,15 +7,16 @@ url = 'postgresql://ase4156:dbpass@104.196.133.79/eventscalendar'
 con = sqlalchemy.create_engine(url, client_encoding='utf8')
 meta = sqlalchemy.MetaData(bind=con, reflect=True)
 
-table = meta.tables['event']
+events_table = meta.tables['event']
+groups_table = meta.tables['group']
 
 json_data = open('scraper/data/events_data.json').read()
 events = json.loads(json_data)
 
-def do_import():
+def import_events():
     for e in events:
         try:
-            clause = table.insert().values(
+            clause = events_table.insert().values(
                 id          = e['id'],
                 title       = e['title'],
                 datetime    = e['datetime'],
@@ -34,5 +35,24 @@ def do_import():
             print "Import Exception: {}".format(e)
 
 
+def import_groups():
+    groups_json = open('scraper/data/pages_data.json').read()
+
+    for g in groups_json:
+        try:
+            clause = groups_table.insert().values(
+                id = g['id'],
+                name = g['group_name'],
+                group_url = g['group_url'],
+            )
+            con.execute(clause)
+
+            print 'One event added. ID: {}'.format(g['id'])
+
+        except Exception as e:
+            print "Import Exception: {}".format(e)
+
+
+
 if __name__ == "__main__":
-    do_import()
+    import_events()

@@ -59,8 +59,7 @@ def get_events():
                     'title': d['name'],
                     'datetime': d['start_time'],
                     'group_id': page['group_id'],
-                    'group': page['group_name'],
-                    'group_url': page['group_url'],
+                    'url': 'https://www.facebook.com/events/' + d['id'],
                 }
 
                 if 'description' in d:
