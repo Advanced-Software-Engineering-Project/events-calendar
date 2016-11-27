@@ -1,7 +1,7 @@
 from fabric.api import local
 from distutils.util import strtobool
 
-def deploy(skip_tests):
+def deploy(skip_tests=False):
     if skip_tests:
         skip_tests = bool(strtobool(skip_tests))
     if not skip_tests:
