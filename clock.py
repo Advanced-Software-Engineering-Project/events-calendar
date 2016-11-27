@@ -6,12 +6,14 @@ from scraper import data_importer
 sched = BlockingScheduler()
 
 
-@sched.scheduled_job('cron', hour=13, minute=35)
+@sched.scheduled_job('cron', hour=13, minute=39)
 def scheduled_job():
+    print('Job: Fetching events')
     events_scraper.get_events()
 
 @sched.scheduled_job('cron', hour=2)
 def scheduled_job():
+    print('Job: Importing events')
     data_importer.do_import()
 
 
