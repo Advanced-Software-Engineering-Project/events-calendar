@@ -63,7 +63,7 @@ def import_groups():
     Use data/pages_data.json file to import Columbia groups data into db
     :return:
     """
-    data_file = open('scraper/data/pages_data.json', 'r')
+    data_file = open('scraper/data/pages_data_2.json', 'r')
     groups_json = json.load(data_file)
 
     for group in groups_json:
@@ -76,7 +76,7 @@ def import_groups():
             )
             CON.execute(clause)
 
-            print 'One event added. ID: {}'.format(group['id'])
+            print 'One group added. ID: {}'.format(group['id'])
 
         except Exception as error:
             print "Import Exception: {}".format(error)

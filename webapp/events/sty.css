@@ -68,6 +68,7 @@ body {
 .thumbnail {
   padding: 0;
   border-radius: 0px;
+  text-align: left;
 }
 .thumbnail>img{      
   margin-right:0;
@@ -196,3 +197,18 @@ margin-right: 15px !important;
     cursor: pointer;
     color: #FFD119;
     text-decoration: none;}
+
+/* Material Design Overrides */
+.row-fluid {
+  text-align: center;
+}
+
+h4 {
+  font-size: 19px;
+  line-height: 20px;
+  margin: 10px 0;
+}
+
+p {
+  margin: 0;
+}

@@ -9,9 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-//    "cheerio": "^0.22.0",
     "express": "^4.14.0",
-//    "form-data": "^2.1.1",
     "phantomjs": "^2.1.7",
     "request": "^2.75.0"
   }
