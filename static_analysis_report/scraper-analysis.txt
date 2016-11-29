@@ -1,0 +1,140 @@
+➜  events-calendar git:(master) ✗ pylint scraper/
+No config file found, using default configuration
+************* Module scraper.data_cleaner
+I:  7, 0: Locally disabling no-member (E1101) (locally-disabled)
+I:  7, 0: Locally disabling no-value-for-parameter (E1120) (locally-disabled)
+W: 34,11: Catching too general exception Exception (broad-except)
+************* Module scraper.data_importer
+I:  7, 0: Locally disabling no-member (E1101) (locally-disabled)
+I:  7, 0: Locally disabling no-value-for-parameter (E1120) (locally-disabled)
+W: 54,15: Catching too general exception Exception (broad-except)
+W: 81,15: Catching too general exception Exception (broad-except)
+************* Module scraper.events_scraper
+I:  7, 0: Locally disabling no-member (E1101) (locally-disabled)
+I:  7, 0: Locally disabling no-value-for-parameter (E1120) (locally-disabled)
+R:  1, 0: Similar lines in 2 files
+==scraper.data_cleaner:12
+==scraper.data_importer:11
+from server import config
+
+
+URL = config.SQLALCHEMY_DATABASE_URI
+CON = sqlalchemy.create_engine(URL, client_encoding='utf8')
+META = sqlalchemy.MetaData(bind=CON, reflect=True)
+
+EVENTS_TABLE = META.tables['event'] (duplicate-code)
+
+
+Report
+======
+94 statements analysed.
+
+Statistics by type
+------------------
+
++---------+-------+-----------+-----------+------------+---------+
+|type     |number |old number |difference |%documented |%badname |
++=========+=======+===========+===========+============+=========+
+|module   |4      |4          |=          |100.00      |0.00     |
++---------+-------+-----------+-----------+------------+---------+
+|class    |0      |0          |=          |0           |0        |
++---------+-------+-----------+-----------+------------+---------+
+|method   |0      |0          |=          |0           |0        |
++---------+-------+-----------+-----------+------------+---------+
+|function |4      |4          |=          |100.00      |0.00     |
++---------+-------+-----------+-----------+------------+---------+
+
+
+
+External dependencies
+---------------------
+::
+
+    requests (scraper.events_scraper)
+    server
+      \-app (scraper.data_cleaner)
+      \-config (scraper.data_importer,scraper.data_cleaner)
+    sqlalchemy (scraper.data_importer,scraper.data_cleaner)
+
+
+
+Raw metrics
+-----------
+
++----------+-------+------+---------+-----------+
+|type      |number |%     |previous |difference |
++==========+=======+======+=========+===========+
+|code      |111    |47.64 |111      |=          |
++----------+-------+------+---------+-----------+
+|docstring |47     |20.17 |31       |+16.00     |
++----------+-------+------+---------+-----------+
+|comment   |24     |10.30 |24       |=          |
++----------+-------+------+---------+-----------+
+|empty     |51     |21.89 |51       |=          |
++----------+-------+------+---------+-----------+
+
+
+
+Duplication
+-----------
+
++-------------------------+------+---------+-----------+
+|                         |now   |previous |difference |
++=========================+======+=========+===========+
+|nb duplicated lines      |8     |8        |=          |
++-------------------------+------+---------+-----------+
+|percent duplicated lines |3.493 |3.756    |-0.26      |
++-------------------------+------+---------+-----------+
+
+
+
+Messages by category
+--------------------
+
++-----------+-------+---------+-----------+
+|type       |number |previous |difference |
++===========+=======+=========+===========+
+|convention |0      |4        |-4.00      |
++-----------+-------+---------+-----------+
+|refactor   |1      |1        |=          |
++-----------+-------+---------+-----------+
+|warning    |3      |4        |-1.00      |
++-----------+-------+---------+-----------+
+|error      |0      |0        |=          |
++-----------+-------+---------+-----------+
+
+
+
+% errors / warnings by module
+-----------------------------
+
++-----------------------+------+--------+---------+-----------+
+|module                 |error |warning |refactor |convention |
++=======================+======+========+=========+===========+
+|scraper.data_importer  |0.00  |66.67   |0.00     |0.00       |
++-----------------------+------+--------+---------+-----------+
+|scraper.data_cleaner   |0.00  |33.33   |0.00     |0.00       |
++-----------------------+------+--------+---------+-----------+
+|scraper.events_scraper |0.00  |0.00    |100.00   |0.00       |
++-----------------------+------+--------+---------+-----------+
+
+
+
+Messages
+--------
+
++-----------------+------------+
+|message id       |occurrences |
++=================+============+
+|locally-disabled |6           |
++-----------------+------------+
+|broad-except     |3           |
++-----------------+------------+
+|duplicate-code   |1           |
++-----------------+------------+
+
+
+
+Global evaluation
+-----------------
+Your code has been rated at 9.57/10 (previous run: 9.04/10, +0.53)

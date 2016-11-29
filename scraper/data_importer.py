@@ -1,19 +1,23 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+"""
+Module for importing Columbia events from Json file
+"""
+#pylint: disable=E1101, E1120
+
 import json
 import sqlalchemy
 
 from server import config
 
 
-url = config.SQLALCHEMY_DATABASE_URI
-con = sqlalchemy.create_engine(url, client_encoding='utf8')
-meta = sqlalchemy.MetaData(bind=con, reflect=True)
+URL = config.SQLALCHEMY_DATABASE_URI
+CON = sqlalchemy.create_engine(URL, client_encoding='utf8')
+META = sqlalchemy.MetaData(bind=CON, reflect=True)
 
-events_table = meta.tables['event']
-groups_table = meta.tables['group']
-
-json_data = open('scraper/data/events_data.json').read()
-events = json.loads(json_data)
-
+EVENTS_TABLE = META.tables['event']
+GROUPS_TABLE = META.tables['group']
 
 
 # id = db.Column(db.String(40), primary_key=True)
@@ -24,48 +28,58 @@ events = json.loads(json_data)
 # url = db.Column(db.Text)
 # photo_url = db.Column(db.Text)
 def import_events():
-    for e in events:
+    """
+    Use data/events_data.json file to import Columbia groups data into db
+    :return:
+    """
+    data_file = open('scraper/data/events_data.json').read()
+    events_json = json.loads(data_file)
+
+    for event in events_json:
         try:
-            clause = events_table.insert().values(
-                id          = e['id'],
-                datetime    = e['datetime'],
-                location    = e['location'],
-                group_id    = e['group_id'],
-                title       = e['title'],
-                url         = e['url'],
-                photo_url   = e['photo_url']
+            clause = EVENTS_TABLE.insert().values(
+                id=event['id'],
+                datetime=event['datetime'],
+                location=event['location'],
+                group_id=event['group_id'],
+                title=event['title'],
+                url=event['url'],
+                photo_url=event['photo_url']
                 # description = e['description'],
             )
-            con.execute(clause)
+            CON.execute(clause)
 
-            print 'One event added. ID: {}'.format(e['id'])
+            print 'One event added. ID: {}'.format(event['id'])
 
-        except Exception as e:
-            print "Import Exception: {}".format(e)
+        except Exception as error:
+            print "Import Exception: {}".format(error)
 
 
 # id = db.Column(db.String(40), primary_key=True)
 # name = db.Column(db.String(100))
 # rating = db.Column(db.Float)
 def import_groups():
-    f = open('scraper/data/pages_data.json', 'r')
-    groups_json = json.load(f)
+    """
+    Use data/pages_data.json file to import Columbia groups data into db
+    :return:
+    """
+    data_file = open('scraper/data/pages_data.json', 'r')
+    groups_json = json.load(data_file)
 
-    for g in groups_json:
+    for group in groups_json:
         try:
-            clause = groups_table.insert().values(
-                id          = str(g['group_id']),
-                name        = g['group_name'],
-                rating      = 5.0
+            clause = GROUPS_TABLE.insert().values(
+                id=str(group['group_id']),
+                name=group['group_name'],
+                rating=5.0
                 # group_url   = e['group_url'],
             )
-            con.execute(clause)
+            CON.execute(clause)
 
-            print 'One event added. ID: {}'.format(g['id'])
+            print 'One event added. ID: {}'.format(group['id'])
 
-        except Exception as e:
-            print "Import Exception: {}".format(e)
-
+        except Exception as error:
+            print "Import Exception: {}".format(error)
 
 
 if __name__ == "__main__":
