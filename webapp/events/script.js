@@ -22,6 +22,11 @@ $(function() {
             render(Data);
 		}
 	});
+	$('#clearFields').click(function(){
+	    $('#select-dates').val('alldates');
+	    $('#search').val("");
+	    filteredEventsByText();
+	});
 });
 
 
@@ -66,6 +71,7 @@ function filterEventsByText() {
 }
 
 function filterEventByDate(e) {
+	
 	var timerange = e.target.selectedOptions[0].value;
 
 	switch (timerange) {
@@ -139,8 +145,6 @@ function setFavorite(fav, id) {
 		render(window.events);
 	}
 }
-
-
 
 function logout() {
 	$.ajax({
