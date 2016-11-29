@@ -1,5 +1,0 @@
-Flask==0.10.1
-psycopg2==2.6.1
-SQLAlchemy==1.0.15
-click==6.6
-Flask-SQLAlchemy==2.1

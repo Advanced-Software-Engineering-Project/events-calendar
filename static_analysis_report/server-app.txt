@@ -1,0 +1,125 @@
+
+ config file found, using default configuration
+************* Module server.app
+I0011: 11,0: : Locally disabling no-member (E1101)
+I0011: 11,0: : Locally disabling no-value-for-parameter (E1120)
+C0103: 23,0: : Invalid constant name "app"
+C0103: 29,0: : Invalid constant name "db"
+C0103: 31,0: : Invalid constant name "login_manager"
+C0103: 62,0: : Invalid constant name "favorite_table"
+C0103: 85,8: Person.__init__: Invalid attribute name "id"
+C0103: 74,4: Person: Invalid class attribute name "id"
+C0103:108,12: Group.__init__: Invalid attribute name "id"
+C0103:102,4: Group: Invalid class attribute name "id"
+R0903: 96,0: Group: Too few public methods (0/2)
+C0103:136,8: Event.__init__: Invalid attribute name "id"
+C0103:126,4: Event: Invalid class attribute name "id"
+R0903:120,0: Event: Too few public methods (1/2)
+W0622:184,16: user_loader: Redefining built-in 'id'
+C0103:184,0: user_loader: Invalid argument name "id"
+C0103:401,8: run: Invalid variable name "HOST"
+C0103:401,14: run: Invalid variable name "PORT"
+
+
+Report
+======
+195 statements analysed.
+
+Statistics by type
+------------------
+
++---------+-------+-----------+-----------+------------+---------+
+|type     |number |old number |difference |%documented |%badname |
++=========+=======+===========+===========+============+=========+
+|module   |1      |1          |=          |100.00      |0.00     |
++---------+-------+-----------+-----------+------------+---------+
+|class    |3      |3          |=          |100.00      |0.00     |
++---------+-------+-----------+-----------+------------+---------+
+|method   |7      |7          |=          |100.00      |0.00     |
++---------+-------+-----------+-----------+------------+---------+
+|function |15     |15         |=          |100.00      |0.00     |
++---------+-------+-----------+-----------+------------+---------+
+
+
+
+External dependencies
+---------------------
+::
+
+    click (server.app)
+    flask (server.app)
+    flask_login (server.app)
+    flask_sqlalchemy (server.app)
+    sqlalchemy (server.app)
+
+
+
+Raw metrics
+-----------
+
++----------+-------+------+---------+-----------+
+|type      |number |%     |previous |difference |
++==========+=======+======+=========+===========+
+|code      |244    |60.10 |244      |=          |
++----------+-------+------+---------+-----------+
+|docstring |63     |15.52 |63       |=          |
++----------+-------+------+---------+-----------+
+|comment   |42     |10.34 |42       |=          |
++----------+-------+------+---------+-----------+
+|empty     |57     |14.04 |57       |=          |
++----------+-------+------+---------+-----------+
+
+
+
+Duplication
+-----------
+
++-------------------------+------+---------+-----------+
+|                         |now   |previous |difference |
++=========================+======+=========+===========+
+|nb duplicated lines      |0     |0        |=          |
++-------------------------+------+---------+-----------+
+|percent duplicated lines |0.000 |0.000    |=          |
++-------------------------+------+---------+-----------+
+
+
+
+Messages by category
+--------------------
+
++-----------+-------+---------+-----------+
+|type       |number |previous |difference |
++===========+=======+=========+===========+
+|convention |13     |13       |=          |
++-----------+-------+---------+-----------+
+|refactor   |2      |2        |=          |
++-----------+-------+---------+-----------+
+|warning    |1      |2        |-1.00      |
++-----------+-------+---------+-----------+
+|error      |0      |0        |=          |
++-----------+-------+---------+-----------+
+
+
+
+Messages
+--------
+
++-----------------------+------------+
+|message id             |occurrences |
++=======================+============+
+|invalid-name           |13          |
++-----------------------+------------+
+|too-few-public-methods |2           |
++-----------------------+------------+
+|locally-disabled       |2           |
++-----------------------+------------+
+|redefined-builtin      |1           |
++-----------------------+------------+
+
+
+
+Global evaluation
+-----------------
+Your code has been rated at 9.18/10 (previous run: 9.13/10, +0.05)
+
+
