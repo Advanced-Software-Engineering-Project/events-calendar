@@ -323,4 +323,8 @@ class RatingTestCase(unittest.TestCase):
 
 
 if __name__ == '__main__':
+    with open('test_app.py') as f:
+        for l in f:
+            if 'def test_' in l and 'if' not in l:
+                print l.strip()
     unittest.main()

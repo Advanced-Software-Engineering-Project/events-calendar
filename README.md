@@ -1,5 +1,27 @@
 # Columbia Events Calendar
 
+## In repository
+* Scripts:
+```
+/server
+/scraper
+/webapp
+clock.py
+fabfile.py
+```
+* Test cases: `/server/test_app.py`
+* Configuration files:`/server/config.py`
+* Data sets: 
+```
+/scraper/data
+psql eventscalendar -U ase4156 -h 104.196.136.43
+```
+* Reports:
+```
+/static_analysis_report
+/code_inspection_report
+```
+
 ## Introduction
 
 There are many groups on Facebook that are associated with Columbia University, which makes it difficult for a user to search through all of the available events to find one that they might be interested in. Our hypothesis is that a unified event calendar of all Columbia events would make it easier for students, faculty and staff to find such events, based on key search terms, or a specific date and time. 
@@ -8,8 +30,8 @@ The Columbia Events Calendar will be focused around a visual calendar of events 
 
 ## Technology
 
-Frontend: SASS, React, Bootstrap
-Backend: Postgres, Python, Flask
+* Frontend: HTML, JS, Bootstrap
+* Backend: Postgres, Python, Flask, SQLAlchemy
 
 ## Running the Web Application
 
