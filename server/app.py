@@ -380,7 +380,6 @@ if __name__ == '__main__':
     print 'Database initialized'
 
     import click
-    #env_port = int(os.environ.get("PORT", 5000))
 
     @click.command()
     @click.option('--debug', is_flag=True)
@@ -398,7 +397,14 @@ if __name__ == '__main__':
             python app.py --help
         """
 
-        HOST, PORT = host, port
+        # Note: prioirity for setting port:
+        # 1. PORT environment variable (for Heroku)
+        # 2. Command line argument
+        # 3. Defaults to 5000
+        env_port = int(os.environ.get("PORT", port))
+
+        HOST, PORT = host, env_port
+
         print "running on %s:%d" % (HOST, PORT)
         app.run(host=HOST, port=PORT, debug=debug, threaded=threaded)
 

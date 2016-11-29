@@ -20,7 +20,7 @@ def do_clean():
         now_time = datetime.now()
         stmt = events_table.delete(Event.datetime < now_time)
         result = con.execute(stmt)
-        
+
         print 'Deleted <' + str(result.rowcount) + '> old events'
 
     except Exception as e:
