@@ -1,7 +1,7 @@
 # Columbia Events Calendar
 
 ## In repository
-* scripts
+* Scripts:
 ```
 /server
 /scraper
@@ -9,14 +9,14 @@
 clock.py
 fabfile.py
 ```
-* test cases: `/server/test_app.py`
-* configuration files:`/server/config.py`
-* data sets: 
+* Test cases: `/server/test_app.py`
+* Configuration files:`/server/config.py`
+* Data sets: 
 ```
 /scraper/data
 psql eventscalendar -U ase4156 -h 104.196.136.43
 ```
-* reports:
+* Reports:
 ```
 /static_analysis_report
 /code_inspection_report
