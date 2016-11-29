@@ -2,6 +2,8 @@
 
 window.events = [];
 var Data = [];
+var email;
+var name;
 $(function() {
 	$('input[name="daterange1"]').daterangepicker();
 	$('.all-events').click(function(){
@@ -41,6 +43,12 @@ $.get(
         window.events = data.events;
         Data = data.events;
         render(Data); 
+        console.log(data.email);
+        console.log(data.name);
+        $(document).ready(function(){
+            $("#user_name").text(data.name);
+            $("#email").html('<p class="text-muted small" id = "email">'+data.email+'</p>');
+        });
     }
 );
 
