@@ -2,31 +2,22 @@
 
 window.events = [];
 var Data = [];
+var email;
+var name;
 $(function() {
 	$('input[name="daterange1"]').daterangepicker();
-	$('.all-events').click(function(){
-		var $this = $(this);
-		$this.toggleClass('my-favorites');
-		if($this.hasClass('my-favorites')){
-			$this.text('My Favorites');
-			$this.val('my-favorites');
+	$('.favorites').click(function(){
             var Newdata = [];
             Data.forEach(function(element) {
                 if(element.favorite === true) {
                     Newdata.push(element);
             }});
             render(Newdata);
-		} else {
-			$this.text('All Events');
-			$this.val('all-events');
+    });
+    $('.all-events').click(function(){
             render(Data);
-		}
-	});
-	$('#clearFields').click(function(){
-	    $('#select-dates').val('alldates');
-	    $('#search').val("");
-	    filteredEventsByText();
-	});
+    });
+
 });
 
 
@@ -41,22 +32,32 @@ $.get(
         window.events = data.events;
         Data = data.events;
         render(Data); 
+        $(document).ready(function(){
+            $("#user_name").text(data.name);
+            $("#email").html('<p class="text-muted small" id = "email">'+data.email+'</p>');
+        });
     }
 );
 
 function render(events){
-	$("#eventlist").html($("#eventTemplate").tmpl(events));
-    $('.starrr').starrr();
-    $('.starrr').on('starrr:change', function(e, value){
-        var group_id = $(e).attr("currentTarget").id;
-        console.log(group_id);
-        $.ajax({
-			method: 'POST',
-			url: '/rate',
-			data: JSON.stringify({group_id: group_id, rate_value: value}),
-			contentType: "application/json; charset=utf-8",
-		})
-});
+    if(events.length === 0) {
+        console.log(0);
+        $("#eventlist").html('<p align="center">Sorry, none of the events matched your search!</p>');
+        return
+    }
+    else{
+        $("#eventlist").html($("#eventTemplate").tmpl(events));
+        $('.starrr').starrr();
+        $('.starrr').on('starrr:change', function(e, value){
+            var group_id = $(e).attr("currentTarget").id;
+            $.ajax({
+			 method: 'POST',
+			 url: '/rate',
+			 data: JSON.stringify({group_id: group_id, rate_value: value}),
+			 contentType: "application/json; charset=utf-8",
+		    })
+        });
+    }
 }
 
 function filterEventsByText() {
@@ -67,11 +68,12 @@ function filterEventsByText() {
 			(event.group.toLowerCase().indexOf(text.toLowerCase()) > -1)
 		)
 	})
-	$("#eventlist").html($("#eventTemplate").tmpl(filteredEvents));
+	render(filteredEvents);
 }
 
 function filterEventByDate(e) {
 	var timerange = e.target.selectedOptions[0].value;
+	var filteredEvents;
 
 	switch (timerange) {
 		case 'alldates':
@@ -79,11 +81,15 @@ function filterEventByDate(e) {
 			return
 
 		case 'today':
-			var endTime = moment().startOf('day').add(1, 'days');
+			filteredEvents = _.filter(window.events, function(event) {
+				return moment(event.datetime).isSame(moment(), 'day');
+			});
 			break;
 
 		case 'tomorrow':
-			var endTime = moment().startOf('day').add(2, 'days');
+			filteredEvents = _.filter(window.events, function(event) {
+				return moment(event.datetime).isSame(moment().add(1, 'days'), 'day');
+			});
 			break;
 
 		case 'nextsevendays':
@@ -95,7 +101,7 @@ function filterEventByDate(e) {
 			return
 	}
 
-	var filteredEvents = _.filter(window.events, function(event) {
+	var filteredEvents = filteredEvents || _.filter(window.events, function(event) {
 		return moment(event.datetime).isBefore(endTime);
 	});
 

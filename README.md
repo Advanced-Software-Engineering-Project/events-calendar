@@ -13,6 +13,38 @@ Backend: Postgres, Python, Flask
 
 ## Running the Web Application
 
-0. Set up the environment with a [instruction](https://github.com/Advanced-Software-Engineering-Project/events-calendar/blob/master/server/ready_for_server.md)
-1. Go to `\server` directory and type `python app.py`
-2. Go to `localhost:5000`
+#### Step 1: Setup Python and Postgres
+
+Run the following shell command to install:
+* Python 2.7.11 or above
+* Python pip 8 or above
+* Postgresql 9.3 or above
+* Postgresql Server 9.3 or above
+```
+sudo apt-get install python-dev python-pip postgresql-9.3 postgresql-server-dev-9.3
+```
+
+#### Step 2: Other Requirements
+
+Run the following shell command to pip install the Python packages including the updated psycopg2, SQLAlchemy, Flask, Flask-sqlalchemy, Flask-login.
+```
+sudo pip install -r requirements.txt
+```
+
+#### Step 3: Run it
+```
+cd server
+python app.py
+```
+Now, the application is available on `localhost:5000`
+
+Or you could use
+```
+cd server
+python app.py 0.0.0.0 8111 --threaded
+```
+Now, the application is available on `0.0.0.0:8111` running in a optimized threaded way.
+
+Or please visit http://columbia-events-calendar.herokuapp.com
+
+
