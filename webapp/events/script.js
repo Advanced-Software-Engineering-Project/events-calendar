@@ -13,9 +13,11 @@ $(function() {
                     Newdata.push(element);
             }});
             render(Newdata);
+            window.events = Newdata;
     });
     $('.all-events').click(function(){
             render(Data);
+            window.events = Data;
     });
 
 });
@@ -96,9 +98,9 @@ function filterEventByDate(e) {
 			var endTime = moment().startOf('day').add(7, 'days');
 			break;
 
-		case 'customdate':
-			render(window.events);
-			return
+		//case 'customdate':
+			//render(window.events);
+			//return
 	}
 
 	var filteredEvents = filteredEvents || _.filter(window.events, function(event) {
