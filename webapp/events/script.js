@@ -57,7 +57,10 @@ function render(events){
 function filterEventsByText() {
 	var text = $('#search').val();
 	var filteredEvents = _.filter(window.events, function(event) {
-		return (event.title.toLowerCase().indexOf(text.toLowerCase()) > -1)
+		return (
+			(event.title.toLowerCase().indexOf(text.toLowerCase()) > -1)||
+			(event.group.toLowerCase().indexOf(text.toLowerCase()) > -1)
+		)
 	})
 	$("#eventlist").html($("#eventTemplate").tmpl(filteredEvents));
 }
