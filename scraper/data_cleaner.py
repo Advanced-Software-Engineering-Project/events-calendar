@@ -2,8 +2,9 @@ import sqlalchemy
 from datetime import datetime
 
 from server.app import Event
+from server import config
 
-url = 'postgresql://ase4156:dbpass@104.196.133.79/eventscalendar'
+url = config.SQLALCHEMY_DATABASE_URI
 con = sqlalchemy.create_engine(url, client_encoding='utf8')
 meta = sqlalchemy.MetaData(bind=con, reflect=True)
 
