@@ -65,6 +65,12 @@ favorite_table = \
              db.Column('event_id', db.String(40), db.ForeignKey('event.id'))
             )
 
+rating_table = \
+    db.Table('rating',
+             db.Column('user_id', db.String(40), db.ForeignKey('person.id')),
+             db.Column('group_id', db.String(40), db.ForeignKey('group.id'))
+             )
+
 class Person(db.Model, UserMixin):
     """
     TABLE person(
@@ -80,6 +86,7 @@ class Person(db.Model, UserMixin):
     created_at = db.Column(db.DateTime)
     favorites = db.relationship("Event", secondary=favorite_table, back_populates="fans")
                                 # OPTIONALv0: child record delete on cascade
+    groups_rated = db.relationship("Group", secondary=rating_table, back_populates="raters")
 
     def __init__(self, email, password, firstname, lastname):
         self.id = "{}".format(int(time.time() * 1000))
@@ -102,6 +109,7 @@ class Group(db.Model):
     id = db.Column(db.String(40), primary_key=True)
     name = db.Column(db.String(100))
     rating = db.Column(db.Float)
+    raters = db.relationship("Person", secondary=rating_table, back_populates="groups_rated")
 
     def __init__(self, infodict):
         try:
