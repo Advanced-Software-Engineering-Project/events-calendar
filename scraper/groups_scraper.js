@@ -1,8 +1,16 @@
+// Usage:
+// phantomjs groups_scraper.js
+
+
 var fs = require('fs');
 var page = require('webpage').create();
 
 var images_dir = '/images/'
 
+// Keyword for query of groups to fetch
+var SEARCH_TERM = 'columbia';
+// Total number of pages of groups to fetch
+var MAX_PAGES = 20;
 
 page.open("http://www.facebook.com/login.php", function(status) {
 
@@ -22,17 +30,17 @@ page.open("http://www.facebook.com/login.php", function(status) {
       page.evaluate(function() {
         console.log('At Homepage');
       });
-//      page.render(images_dir + "home_page.png");
+      page.render(images_dir + "home_page.png");
 
       routeToSearch();
     }, 2000);
 
     function routeToSearch() {
-      page.evaluate(function() {
-        document.getElementsByClassName("_1frb")[0].value = "columbia";
+      page.evaluate(function(SEARCH_TERM) {
+        document.getElementsByClassName("_1frb")[0].value = SEARCH_TERM;
         document.getElementsByClassName("_42ft _4jy0 _4w98 _4jy3 _517h _51sy")[0].click();
         document.querySelector('button').click();
-      });
+      }, SEARCH_TERM);
 
       setTimeout(function() {
         page.evaluate(function() {
@@ -72,7 +80,7 @@ page.open("http://www.facebook.com/login.php", function(status) {
 
     var i = 1;
     function scrollLoop() {
-      if (i === 10) {
+      if (i === MAX_PAGES) {
         grabGroups();
       }
       page.evaluate(function() {
@@ -99,7 +107,7 @@ page.open("http://www.facebook.com/login.php", function(status) {
         for (var i = 0; i < pages_els.length; i++) {
           pages.push({
             group_id: JSON.parse(pages_els[i].getAttribute('data-bt')).id,
-            group: pages_els[i].querySelector('._5d-5').innerHTML,
+            group_name: pages_els[i].querySelector('._5d-5').innerHTML,
             group_url: pages_els[i].querySelector('a').href
           })
         }
@@ -114,7 +122,7 @@ page.open("http://www.facebook.com/login.php", function(status) {
 
     function writeResults(pages) {
       console.log(pages);
-      var path = '/data/pages_data.json';
+      var path = 'data/pages_data_2.json';
       fs.write(path, pages, 'w');
 
       phantom.exit();

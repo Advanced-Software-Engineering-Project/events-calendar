@@ -1,0 +1,216 @@
+➜  events-calendar git:(master) pylint scraper
+No config file found, using default configuration
+************* Module scraper.data_cleaner
+C:  1, 0: Missing module docstring (missing-docstring)
+W:  4, 0: Reimport 'datetime' (imported line 1) (reimported)
+C:  9, 0: Invalid constant name "url" (invalid-name)
+C: 10, 0: Invalid constant name "con" (invalid-name)
+C: 11, 0: Invalid constant name "meta" (invalid-name)
+C: 13, 0: Invalid constant name "events_table" (invalid-name)
+C: 18, 0: Missing function docstring (missing-docstring)
+W: 26,11: Catching too general exception Exception (broad-except)
+C: 26,24: Invalid variable name "e" (invalid-name)
+W:  3, 0: Unused delete imported from sqlalchemy (unused-import)
+C:  4, 0: standard import "from datetime import datetime" comes before "import sqlalchemy" (wrong-import-order)
+************* Module scraper.data_importer
+C: 30, 0: No space allowed around keyword argument assignment
+                id          = e['id'],
+                            ^ (bad-whitespace)
+C: 31, 0: No space allowed around keyword argument assignment
+                datetime    = e['datetime'],
+                            ^ (bad-whitespace)
+C: 32, 0: No space allowed around keyword argument assignment
+                location    = e['location'],
+                            ^ (bad-whitespace)
+C: 33, 0: No space allowed around keyword argument assignment
+                group_id    = e['group_id'],
+                            ^ (bad-whitespace)
+C: 34, 0: No space allowed around keyword argument assignment
+                title       = e['title'],
+                            ^ (bad-whitespace)
+C: 35, 0: No space allowed around keyword argument assignment
+                url         = e['url'],
+                            ^ (bad-whitespace)
+C: 36, 0: No space allowed around keyword argument assignment
+                photo_url   = e['photo_url']
+                            ^ (bad-whitespace)
+C: 57, 0: No space allowed around keyword argument assignment
+                id          = str(g['group_id']),
+                            ^ (bad-whitespace)
+C: 58, 0: No space allowed around keyword argument assignment
+                name        = g['group_name'],
+                            ^ (bad-whitespace)
+C: 59, 0: No space allowed around keyword argument assignment
+                rating      = 5.0
+                            ^ (bad-whitespace)
+C:  1, 0: Missing module docstring (missing-docstring)
+C:  7, 0: Invalid constant name "url" (invalid-name)
+C:  8, 0: Invalid constant name "con" (invalid-name)
+C:  9, 0: Invalid constant name "meta" (invalid-name)
+C: 11, 0: Invalid constant name "events_table" (invalid-name)
+C: 12, 0: Invalid constant name "groups_table" (invalid-name)
+C: 14, 0: Invalid constant name "json_data" (invalid-name)
+C: 15, 0: Invalid constant name "events" (invalid-name)
+C: 26, 0: Missing function docstring (missing-docstring)
+C: 27, 8: Invalid variable name "e" (invalid-name)
+W: 43,15: Catching too general exception Exception (broad-except)
+W: 43,28: Redefining name 'e' from outer scope (line 27) in exception handler (redefine-in-handler)
+C: 50, 0: Missing function docstring (missing-docstring)
+C: 51, 4: Invalid variable name "f" (invalid-name)
+C: 54, 8: Invalid variable name "g" (invalid-name)
+W: 66,15: Catching too general exception Exception (broad-except)
+C: 66,28: Invalid variable name "e" (invalid-name)
+************* Module scraper.events_scraper
+C: 14, 0: Line too long (142/100) (line-too-long)
+C: 25, 0: Line too long (183/100) (line-too-long)
+C: 26, 0: Exactly one space required before assignment
+key  = key_response.text.split('=')[1]
+     ^ (bad-whitespace)
+C: 45, 0: Line too long (195/100) (line-too-long)
+C: 50, 0: Unnecessary parens after 'print' keyword (superfluous-parens)
+C: 75, 0: Unnecessary parens after 'print' keyword (superfluous-parens)
+C: 76, 0: Unnecessary parens after 'print' keyword (superfluous-parens)
+C: 83, 0: Final newline missing (missing-final-newline)
+C:  1, 0: Missing module docstring (missing-docstring)
+C:  9, 0: Invalid constant name "headers" (invalid-name)
+C: 21, 0: Invalid constant name "fileDir" (invalid-name)
+C: 22, 0: Invalid constant name "pages_file" (invalid-name)
+C: 25, 0: Invalid constant name "key_response" (invalid-name)
+C: 26, 0: Invalid constant name "key" (invalid-name)
+C: 29, 0: Missing function docstring (missing-docstring)
+C: 56,16: Invalid variable name "d" (invalid-name)
+C:  4, 0: standard import "import json" comes before "import requests" (wrong-import-order)
+C:  5, 0: standard import "import os" comes before "import requests" (wrong-import-order)
+C:  6, 0: standard import "from pprint import pprint" comes before "import requests" (wrong-import-order)
+
+
+Report
+======
+97 statements analysed.
+
+Statistics by type
+------------------
+
++---------+-------+-----------+-----------+------------+---------+
+|type     |number |old number |difference |%documented |%badname |
++=========+=======+===========+===========+============+=========+
+|module   |4      |NC         |NC         |25.00       |0.00     |
++---------+-------+-----------+-----------+------------+---------+
+|class    |0      |NC         |NC         |0           |0        |
++---------+-------+-----------+-----------+------------+---------+
+|method   |0      |NC         |NC         |0           |0        |
++---------+-------+-----------+-----------+------------+---------+
+|function |4      |NC         |NC         |0.00        |0.00     |
++---------+-------+-----------+-----------+------------+---------+
+
+
+
+External dependencies
+---------------------
+::
+
+    requests (scraper.events_scraper)
+    server
+      \-app (scraper.data_cleaner)
+      \-config (scraper.data_importer,scraper.data_cleaner)
+    sqlalchemy (scraper.data_importer,scraper.data_cleaner)
+
+
+
+Raw metrics
+-----------
+
++----------+-------+------+---------+-----------+
+|type      |number |%     |previous |difference |
++==========+=======+======+=========+===========+
+|code      |113    |59.16 |NC       |NC         |
++----------+-------+------+---------+-----------+
+|docstring |17     |8.90  |NC       |NC         |
++----------+-------+------+---------+-----------+
+|comment   |15     |7.85  |NC       |NC         |
++----------+-------+------+---------+-----------+
+|empty     |46     |24.08 |NC       |NC         |
++----------+-------+------+---------+-----------+
+
+
+
+Duplication
+-----------
+
++-------------------------+------+---------+-----------+
+|                         |now   |previous |difference |
++=========================+======+=========+===========+
+|nb duplicated lines      |0     |NC       |NC         |
++-------------------------+------+---------+-----------+
+|percent duplicated lines |0.000 |NC       |NC         |
++-------------------------+------+---------+-----------+
+
+
+
+Messages by category
+--------------------
+
++-----------+-------+---------+-----------+
+|type       |number |previous |difference |
++===========+=======+=========+===========+
+|convention |51     |NC       |NC         |
++-----------+-------+---------+-----------+
+|refactor   |0      |NC       |NC         |
++-----------+-------+---------+-----------+
+|warning    |6      |NC       |NC         |
++-----------+-------+---------+-----------+
+|error      |0      |NC       |NC         |
++-----------+-------+---------+-----------+
+
+
+
+% errors / warnings by module
+-----------------------------
+
++-----------------------+------+--------+---------+-----------+
+|module                 |error |warning |refactor |convention |
++=======================+======+========+=========+===========+
+|scraper.data_importer  |0.00  |50.00   |0.00     |47.06      |
++-----------------------+------+--------+---------+-----------+
+|scraper.data_cleaner   |0.00  |50.00   |0.00     |15.69      |
++-----------------------+------+--------+---------+-----------+
+|scraper.events_scraper |0.00  |0.00    |0.00     |37.25      |
++-----------------------+------+--------+---------+-----------+
+
+
+
+Messages
+--------
+
++----------------------+------------+
+|message id            |occurrences |
++======================+============+
+|invalid-name          |22          |
++----------------------+------------+
+|bad-whitespace        |11          |
++----------------------+------------+
+|missing-docstring     |7           |
++----------------------+------------+
+|wrong-import-order    |4           |
++----------------------+------------+
+|superfluous-parens    |3           |
++----------------------+------------+
+|line-too-long         |3           |
++----------------------+------------+
+|broad-except          |3           |
++----------------------+------------+
+|unused-import         |1           |
++----------------------+------------+
+|reimported            |1           |
++----------------------+------------+
+|redefine-in-handler   |1           |
++----------------------+------------+
+|missing-final-newline |1           |
++----------------------+------------+
+
+
+
+Global evaluation
+-----------------
+Your code has been rated at 4.12/10
+

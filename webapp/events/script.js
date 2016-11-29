@@ -29,6 +29,9 @@ $(function() {
 $.get(
 	'/events',
 	function(data) { 
+		// Remove loading indicator
+		$('.mdl-spinner').remove();
+
         data.events.forEach(function(element){
             element.rating = Math.round(element.rating);
             return;
