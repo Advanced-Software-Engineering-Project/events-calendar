@@ -1,3 +1,38 @@
+1st static analysis
+dyn-160-39-179-59:webapp shanqingtan$ jshint .
+events/dateformat.js: line 23, col 48, Missing '()' invoking a constructor.
+
+events/rate.js: line 22, col 30, Use '!==' to compare with 'null'.
+events/rate.js: line 62, col 46, Expected an assignment or function call and instead saw an expression.
+events/rate.js: line 85, col 91, Expected an assignment or function call and instead saw an expression.
+
+events/script.js: line 1, col 13, Missing semicolon.
+events/script.js: line 34, col 19, Missing semicolon.
+events/script.js: line 35, col 11, Missing semicolon.
+events/script.js: line 50, col 15, Missing semicolon.
+events/script.js: line 62, col 15, Missing semicolon.
+events/script.js: line 73, col 10, Missing semicolon.
+events/script.js: line 74, col 7, Missing semicolon.
+events/script.js: line 85, col 19, Missing semicolon.
+events/script.js: line 108, col 9, 'filteredEvents' is already defined.
+events/script.js: line 122, col 106, Missing semicolon.
+events/script.js: line 124, col 111, Missing semicolon.
+events/script.js: line 136, col 11, Missing semicolon.
+events/script.js: line 144, col 11, Missing semicolon.
+events/script.js: line 166, col 17, Missing semicolon.
+
+login/login.js: line 50, col 21, Missing semicolon.
+login/login.js: line 53, col 20, Missing semicolon.
+login/login.js: line 61, col 33, Missing semicolon.
+login/login.js: line 66, col 42, Missing semicolon.
+login/login.js: line 73, col 85, Missing semicolon.
+login/login.js: line 92, col 17, Missing semicolon.
+login/login.js: line 99, col 63, Missing semicolon.
+login/login.js: line 119, col 17, Missing semicolon.
+
+26 errors
+
+2nd static analysis
 dyn-160-39-179-59:webapp shanqingtan$ jshint .
 events/dateformat.js: line 23, col 48, Missing '()' invoking a constructor.
 
@@ -5,3 +40,5 @@ events/rate.js: line 62, col 46, Expected an assignment or function call and ins
 events/rate.js: line 85, col 91, Expected an assignment or function call and instead saw an expression.
 
 3 errors
+
+fixed 22 missing semicolon errors, 1 variable duplicate error.
