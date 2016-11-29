@@ -22,6 +22,11 @@ $(function() {
             render(Data);
 		}
 	});
+	$('#clearFields').click(function(){
+	    $('#select-dates').val('alldates');
+	    $('#search').val("");
+	    filteredEventsByText();
+	});
 });
 
 
@@ -57,12 +62,16 @@ function render(events){
 function filterEventsByText() {
 	var text = $('#search').val();
 	var filteredEvents = _.filter(window.events, function(event) {
-		return (event.title.toLowerCase().indexOf(text.toLowerCase()) > -1)
+		return (
+			(event.title.toLowerCase().indexOf(text.toLowerCase()) > -1)||
+			(event.group.toLowerCase().indexOf(text.toLowerCase()) > -1)
+		)
 	})
 	$("#eventlist").html($("#eventTemplate").tmpl(filteredEvents));
 }
 
 function filterEventByDate(e) {
+	
 	var timerange = e.target.selectedOptions[0].value;
 
 	switch (timerange) {
@@ -136,8 +145,6 @@ function setFavorite(fav, id) {
 		render(window.events);
 	}
 }
-
-
 
 function logout() {
 	$.ajax({
