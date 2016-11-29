@@ -312,7 +312,9 @@ def events_check():
 @nocache
 def events_handler():
     favbuf = current_user.favorites
-    return jsonify(events=[o.todict(o in favbuf) for o in Event.query.all()])
+    return jsonify(name=(current_user.firstname+' '+current_user.lastname),
+                   email=current_user.email,
+                   events=[o.todict(o in favbuf) for o in Event.query.all()])
 
 
 @app.route('/logout', methods=['POST'])

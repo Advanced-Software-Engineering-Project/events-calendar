@@ -1,22 +1,29 @@
 'use-strict'
 
 window.events = [];
-
+var Data = [];
 $(function() {
 	$('input[name="daterange1"]').daterangepicker();
-	$('.my-favorites').click(function(){
+	$('.all-events').click(function(){
 		var $this = $(this);
 		$this.toggleClass('my-favorites');
 		if($this.hasClass('my-favorites')){
 			$this.text('My Favorites');
-			$this.value('my-favorites');         
+			$this.val('my-favorites');
+            var Newdata = [];
+            Data.forEach(function(element) {
+                if(element.favorite === true) {
+                    Newdata.push(element);
+            }});
+            render(Newdata);
 		} else {
 			$this.text('All Events');
-			$this.value('all-events');
+			$this.val('all-events');
+            render(Data);
 		}
 	});
 });
-var dummy;
+
 
 
 $.get(
@@ -27,7 +34,8 @@ $.get(
             return
         })
         window.events = data.events;
-        render(data.events); 
+        Data = data.events;
+        render(Data); 
     }
 );
 
