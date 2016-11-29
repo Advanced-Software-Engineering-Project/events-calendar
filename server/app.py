@@ -236,11 +236,11 @@ def signup():
 
     try:
         db.session.commit()
-        print 'You were successfully signed up.'
         login_user(new_user)
+        print 'Success: Sign up <{}>'.format(current_user.email)
         return jsonify(user_id=new_user.id)
     except sqlalchemy.exc.IntegrityError:
-        print "Integrity Error: Conflict email address!!!"
+        print "Integrity Error: Conflict email address"
         db.session.rollback()
         response = jsonify(error='user exists')
         response.status_code = 409
@@ -260,10 +260,10 @@ def login():
                                  ).all()
         if len(res) != 0:
             login_user(res[0])
-            print "Login successfully:", current_user
+            print "Success: Login <{}>".format(current_user.email)
             return jsonify(user_id=current_user.id)
         else:
-            print "Invalid email-password combination."
+            print "Error: Invalid email-password combination"
             response = jsonify(error='invalid combination')
             response.status_code = 400
             return response
@@ -274,10 +274,10 @@ def login():
 def favorite_handler():
     """Post or delete a favorite event for current user"""
     request_form = json.loads(request.data)
-    print request_form
+    #print request_form
     event_id = str(request_form['id'])
     favone = Event.query.filter(Event.id == event_id).one()
-    print favone
+    print 'Favorite_handler {}: {}'.format(request.method, favone)
 
     def favorite_exist(event_id):
         """Check if the event is current user's favorite"""
@@ -308,10 +308,10 @@ def rate_group():
     """Current_user rate a group"""
     request_form = json.loads(request.data)
     thegroup = Group.query.filter(Group.id == request_form['group_id']).one()
-    print '###', thegroup.rating
+    #print '###', thegroup.rating
     thegroup.rating = (thegroup.rating + request_form['rate_value'])*0.5
     db.session.commit()
-    print '###', thegroup.rating
+    #print '###', thegroup.rating
     return jsonify(rating=thegroup.rating)
     #todo: cannot rate duplicately
 
@@ -385,7 +385,7 @@ def unauthorized_handler():
 
 if __name__ == '__main__':
     db.create_all()
-    print 'Database initialized'
+    print 'Database initialized.'
 
     import click
 
