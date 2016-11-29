@@ -1,0 +1,60 @@
+1st static analysis for login index.html
+   index.html
+      L8 |    <link href='http://fonts.googleapis.com/css?family=Titillium+Web:400,300,600' rel='stylesheet' ty...
+                   ^ The value of attribute [ href ] must be in double quotes. (attr-value-double-quotes)
+      L8 |...om/css?family=Titillium+Web:400,300,600' rel='stylesheet' type='text/css'>
+                                                     ^ The value of attribute [ rel ] must be in double quotes. (attr-value-double-quotes)
+      L8 |...illium+Web:400,300,600' rel='stylesheet' type='text/css'>
+                                                     ^ The value of attribute [ type ] must be in double quotes. (attr-value-double-quotes)
+      L68 |..." onclick = "new_account()"/>Get Started</button>
+                                                      ^ Tag must be paired, no start tag: [ </button> ] (tag-pair)
+      L84 |            <input type="email"required autocomplete="off" id="exist_email"/>
+                       ^ Special characters must be escaped : [ < ]. (spec-char-escape)
+      L84 |...red autocomplete="off" id="exist_email"/>
+                                                      ^ Special characters must be escaped : [ > ]. (spec-char-escape)
+      L91 |            <input type="password"required autocomplete="off" id="exist_password"/>
+                       ^ Special characters must be escaped : [ < ]. (spec-char-escape)
+      L91 |... autocomplete="off" id="exist_password"/>
+                                                      ^ Special characters must be escaped : [ > ]. (spec-char-escape)
+      L96 |...utton-block" onclick = "login()"/>Log In</button>
+                                                      ^ Tag must be paired, no start tag: [ </button> ] (tag-pair)
+
+Scanned 1 files, found 9 errors in 1 files (20 ms)
+
+2nd static analysis for login index.html
+
+dyn-160-39-179-59:login shanqingtan$ htmlhint index.html
+
+Scanned 1 files, no errors found (18 ms).
+
+1st static analysis for event index.html
+dyn-160-39-179-59:events shanqingtan$ htmlhint index.html
+
+   index.html
+      L54 |        <button type="button"class="btn btn-link" onclick = "logout()"/>Log Out</button>
+                   ^ Special characters must be escaped : [ < ]. (spec-char-escape)
+      L54 |...ass="btn btn-link" onclick = "logout()"/>Log Out</button>
+                                                      ^ Special characters must be escaped : [ > ]. (spec-char-escape)
+      L54 |... btn-link" onclick = "logout()"/>Log Out</button>
+                                                      ^ Tag must be paired, no start tag: [ </button> ] (tag-pair)
+      L100 |    <form action"/" method="post" id="filterBar">
+                ^ Special characters must be escaped : [ < ]. (spec-char-escape)
+      L100 |...m action"/" method="post" id="filterBar">
+                                                       ^ Special characters must be escaped : [ > ]. (spec-char-escape)
+      L104 |... <input type="text" class="form-control" onInput="filterEventsByText()" name="search" id="search" pla...
+                                                       ^ The attribute name of [ onInput ] must be in lowercase. (attr-lowercase)
+      L107 |...="form-control select" id="select-dates" onChange="filterEventByDate(event)">
+                                                       ^ The attribute name of [ onChange ] must be in lowercase. (attr-lowercase)
+      L122 |    </form>
+                ^ Tag must be paired, no start tag: [ </form> ] (tag-pair)
+      L155 |  <script src='https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js'></script...
+                     ^ The value of attribute [ src ] must be in double quotes. (attr-value-double-quotes)
+      L165 |  <script src='https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js'></script...
+                     ^ The value of attribute [ src ] must be in double quotes. (attr-value-double-quotes)
+
+Scanned 1 files, found 10 errors in 1 files (21 ms)
+
+2nd static analysis for event index.html
+dyn-160-39-179-59:events shanqingtan$ htmlhint index.html
+
+Scanned 1 files, no errors found (17 ms).
