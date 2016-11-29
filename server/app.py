@@ -8,6 +8,7 @@ Go to http://localhost:5000 in your browser
 
 @ase4156-backend: Peng, Ian
 """
+#pylint: disable=E1101, E1120
 from datetime import datetime
 import os
 import time
@@ -304,7 +305,7 @@ def rate_group():
     db.session.commit()
     print '###', thegroup.rating
     return jsonify(rating=thegroup.rating)
-    #TODO: cannot rate duplicately
+    #todo: cannot rate duplicately
 
 
 @app.route('/events/index.html', methods=['GET'])
