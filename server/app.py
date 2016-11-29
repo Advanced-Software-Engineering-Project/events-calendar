@@ -296,7 +296,7 @@ def rate_group():
     thegroup.rating = (thegroup.rating + request_form['rate_value'])*0.5
     db.session.commit()
     print '###', thegroup.rating
-    return Response(jsonify(rating=thegroup.rating), status=200)
+    return jsonify(rating=thegroup.rating)
     #TODO: cannot rate duplicately
 
 

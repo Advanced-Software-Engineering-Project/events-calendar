@@ -97,8 +97,6 @@ var __slice = [].slice;
   });
 })(window.jQuery, window);
 
-
-
 $( document ).ready(function() {
       
   $('.starrr').on('starrr:change');

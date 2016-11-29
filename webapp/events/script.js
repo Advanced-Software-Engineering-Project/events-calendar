@@ -22,6 +22,10 @@ var dummy;
 $.get(
 	'/events',
 	function(data) { 
+        data.events.forEach(function(element){
+            element.rating = Math.round(element.rating);
+            return
+        })
         window.events = data.events;
         render(data.events); 
     }
@@ -29,16 +33,17 @@ $.get(
 
 function render(events){
 	$("#eventlist").html($("#eventTemplate").tmpl(events));
-    $('.starrr').starrr(); 
+    $('.starrr').starrr();
     $('.starrr').on('starrr:change', function(e, value){
-        var group_id = $(e).currentTarget.id;
+        var group_id = $(e).attr("currentTarget").id;
+        console.log(group_id);
         $.ajax({
 			method: 'POST',
 			url: '/rate',
 			data: JSON.stringify({group_id: group_id, rate_value: value}),
 			contentType: "application/json; charset=utf-8",
 		})
-})
+});
 }
 
 function filterEventsByText() {
