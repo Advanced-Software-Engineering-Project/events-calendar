@@ -45,16 +45,13 @@
 					</a>
 					<ul class="dropdown-menu">
 						<li>
-							<div class="navbar-content" id = "user_name">
-                            </div>
-                                <div id = "email">
-                                </div>
-								<!-- <div class="col-md-6">
-										<a href="#" class="btn btn-default btn-sm">Change Passoword</a>
-								</div> -->
-                                <div>
-								<button type="button" class="btn btn-link" onclick = "logout()">Log Out</button>
-                                </div>
+							<div class="navbar-content">
+								<div id = "user_name"></div>
+	              <div id = "email"> </div>
+	             </div>
+              <div>
+								<button type="button"class="btn btn-link" onclick = "logout()"/>Log Out</button>
+              </div>
 						</li>
 					</ul>
 				</li>
@@ -64,64 +61,30 @@
 
 		<!-- Page Content -->
 		<div class="container-fluid">
-				 <!-- SECTION: Search Bar -->
-				<!-- <div class="row-fluid">
-					<div class="form-section col-centered">
-						<div class="row">
- 							<form role="form">
- 								<div class="col-md-4">
- 									<div class="form-group">
- 										<label class="sr-only" for="eventname">Event</label>
- 										<input type="text" class="form-control" id="eventname"/>
- 									</div>
- 									</div>
- 								<div class="col-md-2">
- 									<div class="form-group">
- 										<label class="sr-only" for="daterange">Date</label>
- 										<div class="input-group">
- 												<input type="text" class="form-control" name="daterange" />
- 											</div>
- 									</div>
- 								</div>
- 								<div class="col-md-2">
- 									<div class="form-group">
- 										<label class="sr-only" for="timerange">Time</label>
- 											<div class="input-group">
- 												<input type="text" class="form-control" name="timerange" value = "12 AM-12PM"/>
- 											</div>
- 									</div>
- 								</div>
- 								<div class="col-md-2">
- 									<button type="submit" id="submit"class="button button-block">Search</button>
- 								</div>
- 							</form>
- 						</div>
- 					</div>
- 				</div> -->
 				<!-- SECTION: New Filter Bar -->
-				<form  method="post" id="filterBar">
-					<div class="container">
-						<div class="row">
-							<div class="form-group col-sm-8 col-md-8 col-lg-8">
-								<input type="text" class="form-control" oninput="filterEventsByText()" name="search" id="search" placeholder="Search event" value=""> 
-							</div>
-							<div class="form-group col-sm-4 col-md-4 col-lg-4">
-								<select class="form-control select" id="select-dates" onchange="filterEventByDate(event)">
-								  <option value="alldates">All Dates</option>
-								  <option value="today">Today</option>
-								  <option value="tomorrow">Tomorrow</option>
-								  <option value="nextsevendays">Upcoming</option>
-								</select>
-							</div>
+			<form action"/" method="post" id="filterBar">
+				<div class="container">
+					<div class="row">
+						<div class="form-group col-sm-8 col-md-8 col-lg-8">
+							<input type="text" class="form-control" onInput="filterEventsByText()" name="search" id="search" placeholder="Search event" value=""> 
 						</div>
-						<div class="row" id="custom-date" style="display:none;">
-							<div class="form-inline form-group col-sm-6 col-md-6 col-lg-6 pull-right">
-								<label>Select Dates: </label>
-								<input type="text" class="form-control" name="daterange1" id="daterange1" style="width:70%"/>
-							</div>
+						<div class="form-group col-sm-4 col-md-4 col-lg-4">
+							<select class="form-control select" id="select-dates" onChange="filterEventByDate(event)">
+							  <option value="alldates">All Dates</option>
+							  <option value="today">Today</option>
+							  <option value="tomorrow">Tomorrow</option>
+							  <option value="nextsevendays">Upcoming</option>
+							</select>
 						</div>
 					</div>
-				</form>
+					<div class="row" id="custom-date" style="display:none;">
+						<div class="form-inline form-group col-sm-6 col-md-6 col-lg-6 pull-right">
+							<label>Select Dates: </label>
+							<input type="text" class="form-control" name="daterange1" id="daterange1" style="width:70%"/>
+						</div>
+					</div>
+				</div>
+			</form>
 
 
 				<!-- SECTION: events -->
@@ -158,6 +121,7 @@
     	<script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.templates/beta1/jquery.tmpl.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
 
+
 		<!-- Material Design Lite -->
 		<script src="https://code.getmdl.io/1.2.1/material.min.js"></script>
 
@@ -169,7 +133,7 @@
   	<script src="dateformat.js"></script>
 
     <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.templates/beta1/jquery.tmpl.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js'></script>
 
 		<script id="eventTemplate" type="text/x-jQuery-tmpl">
 			<div id=${id} class="col-sm-4 col-lg-4 col-md-4">
