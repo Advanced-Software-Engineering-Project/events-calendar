@@ -47,10 +47,10 @@ $('.tab a').on('click', function (e) {
 function validateSignup(){
     if($('#password').val() != $('#confirm_password').val()) {
         $('#head').html('<p style="color:red;text-align:center">Passwords Don\'t Match</p>');
-        return false
+        return false;
     } else {
         $('#head').html('<h2>Sign Up</h2>');
-        return true
+        return true;
     }
 }
 
@@ -58,19 +58,19 @@ function validateSignup(){
 
 // Prevent form submission
 jQuery("form").submit(function(e){
-    console.log('preventsubmit')
+    console.log('preventsubmit');
     e.preventDefault();
 });
 
 function new_account(){
-    if (!validateSignup()) { return false }
+    if (!validateSignup()) { return false; }
 
     var obj ={};
     obj.firstname = $("#firstname").val();
     obj.lastname = $("#lastname").val();
     obj.email = $("#email").val();
     obj.password = $("#password").val();
-    if (!obj.firstname || !obj.lastname || !obj.email || !obj.password) return false
+    if (!obj.firstname || !obj.lastname || !obj.email || !obj.password) return false;
 
     $.ajax({
         url: '/signup',
@@ -89,14 +89,14 @@ function new_account(){
             $('#head').html('<p style="color:red;text-align:center">Email has been used</p>');
         }
     });
-    return false
+    return false;
 }
 
 function login(){
     var obj ={};
     obj.exist_email = $("#exist_email").val();
     obj.exist_password = $("#exist_password").val();
-    if (!obj.exist_email || !obj.exist_password ) return false
+    if (!obj.exist_email || !obj.exist_password ) return false;
     $.ajax({
         url:  "/login",
         method: 'POST',
@@ -116,5 +116,5 @@ function login(){
             
         }
     });
-    return false
+    return false;
 }

@@ -1,4 +1,4 @@
-'use-strict'
+'use-strict';
 
 window.events = [];
 var Data = [];
@@ -34,8 +34,8 @@ $.get(
 
         data.events.forEach(function(element){
             element.rating = Math.round(element.rating);
-            return
-        })
+            return;
+        });
         window.events = data.events;
         Data = data.events;
         render(Data); 
@@ -50,7 +50,7 @@ function render(events){
     if(events.length === 0) {
         console.log(0);
         $("#eventlist").html('<p align="center">Sorry, none of the events matched your search!</p>');
-        return
+        return;
     }
     else{
         $("#eventlist").html($("#eventTemplate").tmpl(events));
@@ -62,7 +62,7 @@ function render(events){
 			 url: '/rate',
 			 data: JSON.stringify({group_id: group_id, rate_value: value}),
 			 contentType: "application/json; charset=utf-8",
-		    })
+		    });
         });
     }
 }
@@ -73,8 +73,8 @@ function filterEventsByText() {
 		return (
 			(event.title.toLowerCase().indexOf(text.toLowerCase()) > -1)||
 			(event.group.toLowerCase().indexOf(text.toLowerCase()) > -1)
-		)
-	})
+		);
+	});
 	render(filteredEvents);
 }
 
@@ -85,7 +85,7 @@ function filterEventByDate(e) {
 	switch (timerange) {
 		case 'alldates':
 			render(window.events);
-			return
+			return;
 
 		case 'today':
 			filteredEvents = _.filter(window.events, function(event) {
@@ -108,7 +108,7 @@ function filterEventByDate(e) {
 			//return
 	}
 
-	var filteredEvents = filteredEvents || _.filter(window.events, function(event) {
+	filteredEvents = filteredEvents || _.filter(window.events, function(event) {
 		return moment(event.datetime).isBefore(endTime);
 	});
 
@@ -122,9 +122,9 @@ function formatDate(datetime) {
 
 function favor(favorite, id) {
 	if (favorite) {
-		return '<span class="glyphicon glyphicon-heart" onClick="setFavorite(false, ' + id + ')"></span>'
+		return '<span class="glyphicon glyphicon-heart" onClick="setFavorite(false, ' + id + ')"></span>';
 	} else {
-		return '<span class="glyphicon glyphicon-heart-empty" onClick="setFavorite(true, ' + id + ')"></span>'
+		return '<span class="glyphicon glyphicon-heart-empty" onClick="setFavorite(true, ' + id + ')"></span>';
 	}
 }
 
@@ -136,7 +136,7 @@ function setFavorite(fav, id) {
 			data: JSON.stringify({id: id}),
 			contentType: "application/json; charset=utf-8",
 			success: favSuccess
-		})
+		});
 	} else {
 		$.ajax({
 			method: 'DELETE',
@@ -144,7 +144,7 @@ function setFavorite(fav, id) {
 			contentType: "application/json; charset=utf-8",
 			data: JSON.stringify({id: id}),
 			success: favSuccess
-		})
+		});
 	}
 
 	function favSuccess() {
@@ -166,7 +166,7 @@ function logout() {
 				window.location.href = "../login/index.html";
 			}
 	});
-	return false
+	return false;
 }
 
 
