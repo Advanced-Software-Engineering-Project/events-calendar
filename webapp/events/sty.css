@@ -25,7 +25,8 @@ body {
 }
 
 .event-date-time {
-  color: #79797a;
+  color: #444444;
+  font-size: 14px ;
 }
 
 .organizer {

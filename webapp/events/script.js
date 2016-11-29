@@ -71,7 +71,6 @@ function filterEventsByText() {
 }
 
 function filterEventByDate(e) {
-	
 	var timerange = e.target.selectedOptions[0].value;
 
 	switch (timerange) {
