@@ -6,29 +6,18 @@ var email;
 var name;
 $(function() {
 	$('input[name="daterange1"]').daterangepicker();
-	$('.all-events').click(function(){
-		var $this = $(this);
-		$this.toggleClass('my-favorites');
-		if($this.hasClass('my-favorites')){
-			$this.text('My Favorites');
-			$this.val('my-favorites');
+	$('.favorites').click(function(){
             var Newdata = [];
             Data.forEach(function(element) {
                 if(element.favorite === true) {
                     Newdata.push(element);
             }});
             render(Newdata);
-		} else {
-			$this.text('All Events');
-			$this.val('all-events');
+    });
+    $('.all-events').click(function(){
             render(Data);
-		}
-	});
-	$('#clearFields').click(function(){
-	    $('#select-dates').val('alldates');
-	    $('#search').val("");
-	    filteredEventsByText();
-	});
+    });
+
 });
 
 
