@@ -8,12 +8,14 @@ Go to http://localhost:5000 in your browser
 
 @ase4156-backend: Peng, Ian
 """
+#pylint: disable=E1101, E1120
 from datetime import datetime
 import os
 import time
 import json
+from functools import wraps, update_wrapper
 import sqlalchemy
-from flask import Flask, Response, request, jsonify, redirect
+from flask import Flask, Response, request, jsonify, redirect, make_response
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, UserMixin,\
                 login_required, login_user, logout_user, current_user
@@ -30,8 +32,6 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 
 #%%
-from flask import make_response
-from functools import wraps, update_wrapper
 
 def nocache(view):
     """
@@ -39,9 +39,12 @@ def nocache(view):
     """
     @wraps(view)
     def no_cache(*args, **kwargs):
+        """Rudimentary no cache"""
         response = make_response(view(*args, **kwargs))
         response.headers['Last-Modified'] = datetime.now()
-        response.headers['Cache-Control'] = 'no-store, no-cache, must-revalidate, post-check=0, pre-check=0, max-age=0'
+        response.headers['Cache-Control'] = 'no-store, no-cache, \
+                                            must-revalidate, post-check=0, \
+                                            pre-check=0, max-age=0'
         response.headers['Pragma'] = 'no-cache'
         response.headers['Expires'] = '-1'
         return response
@@ -50,12 +53,12 @@ def nocache(view):
 
 #%% <DATABASE SCHEMA>
 
-"""
-Table favorite(
-    user_id string FOREIGN KEY REFERENCES person(userid),
-    event_id string FOREIGN KEY REFERENCES event(eventid)
-)
-"""
+#"""
+#Table favorite(
+#    user_id string FOREIGN KEY REFERENCES person(userid),
+#    event_id string FOREIGN KEY REFERENCES event(eventid)
+#)
+#"""
 favorite_table = \
     db.Table('favorite',
              db.Column('user_id', db.String(40), db.ForeignKey('person.id')),
@@ -75,10 +78,8 @@ class Person(db.Model, UserMixin):
     lastname = db.Column(db.String(40))
     username = db.Column(db.String(80), unique=True)
     created_at = db.Column(db.DateTime)
-    favorites = db.relationship("Event",
-                                secondary=favorite_table,
+    favorites = db.relationship("Event", secondary=favorite_table, back_populates="fans")
                                 # OPTIONALv0: child record delete on cascade
-            				back_populates="fans")
 
     def __init__(self, email, password, firstname, lastname):
         self.id = "{}".format(int(time.time() * 1000))
@@ -134,7 +135,6 @@ class Event(db.Model):
     def __init__(self, infodict):
         self.id = infodict['id']
         try:
-            #self.datetime = datetime.strptime(infodict['datetime'][:infodict['datetime'].rindex(':')+3],"%Y-%m-%dT%H:%M:%S")
             self.datetime = infodict['datetime']
         except KeyError:
             self.datetime = None
@@ -180,11 +180,6 @@ class Event(db.Model):
 
 #%% <SERVER API>
 
-@app.route('/eventjson')
-def mytest():
-    return jsonify(events=[o.todict(False) for o in Event.query.all()])
-
-
 @login_manager.user_loader
 def user_loader(id):
     """Core part of login_manager"""
@@ -194,12 +189,17 @@ def user_loader(id):
 
 @app.route('/')
 def root():
+    """Index Page: Login"""
     return redirect('/login/index.html')
 
 
 @app.route('/login/index.html')
 @nocache
 def cannotbeacurrentuser():
+    """
+    If a user is authenticated,
+    login page will automatically
+    redirect the user to the event page."""
     if not current_user.is_authenticated:
         return app.send_static_file('./login/index.html')
     else:
@@ -208,6 +208,7 @@ def cannotbeacurrentuser():
 
 @app.route('/signup', methods=['POST'])
 def signup():
+    """sign up"""
     request_form = json.loads(request.data)
 
     if not 'email' in request_form:
@@ -238,8 +239,12 @@ def signup():
         return response
 
 
-@app.route('/login', methods=['POST', 'GET'])
+@app.route('/login', methods=['POST'])
 def login():
+    """
+    login:
+    Every ip address allows to login a user as a current user
+    """
     if request.method == 'POST':
         request_form = json.loads(request.data)
         res = Person.query.filter(Person.email == request_form['exist_email'],
@@ -251,7 +256,7 @@ def login():
             return jsonify(user_id=current_user.id)
         else:
             print "Invalid email-password combination."
-            response=jsonify(error='invalid combination')
+            response = jsonify(error='invalid combination')
             response.status_code = 400
             return response
 
@@ -259,6 +264,7 @@ def login():
 @app.route('/favorite', methods=['POST', 'DELETE'])
 @login_required
 def favorite_handler():
+    """Post or delete a favorite event for current user"""
     request_form = json.loads(request.data)
     print request_form
     event_id = str(request_form['id'])
@@ -266,19 +272,20 @@ def favorite_handler():
     print favone
 
     def favorite_exist(event_id):
+        """Check if the event is current user's favorite"""
         cmd = """SELECT * FROM favorite WHERE user_id = :uid and event_id = :eid"""
         cursor = db.session.execute(cmd, dict(uid=current_user.id, eid=event_id))
-        if cursor.fetchone() == None:
+        if cursor.fetchone() is None:
             return False
         return True
-    
+
     if request.method == 'POST':
-        # todo - 409 for duplicate favorites
+        # 409 for duplicate favorites
         if favorite_exist(favone.id):
             return Response('duplicate favorites', status=409)
         current_user.favorites.append(favone)
     elif request.method == 'DELETE':
-        # todo - 404 for delete nonexistant favorite
+        # 404 for delete nonexistant favorite
         if not favorite_exist(favone.id):
             return Response('nonexistant favorite', status=404)
         current_user.favorites.remove(favone)
@@ -290,6 +297,7 @@ def favorite_handler():
 @app.route('/rate', methods=['POST'])
 @login_required
 def rate_group():
+    """Current_user rate a group"""
     request_form = json.loads(request.data)
     thegroup = Group.query.filter(Group.id == request_form['group_id']).one()
     print '###', thegroup.rating
@@ -297,13 +305,14 @@ def rate_group():
     db.session.commit()
     print '###', thegroup.rating
     return jsonify(rating=thegroup.rating)
-    #TODO: cannot rate duplicately
+    #todo: cannot rate duplicately
 
 
 @app.route('/events/index.html', methods=['GET'])
 @login_required
 @nocache
 def events_check():
+    """A temp direction"""
     return app.send_static_file('./events/index.html')
 
 
@@ -311,6 +320,7 @@ def events_check():
 @login_required
 @nocache
 def events_handler():
+    """Return info for main event page"""
     favbuf = current_user.favorites
     return jsonify(name=(current_user.firstname+' '+current_user.lastname),
                    email=current_user.email,
@@ -319,16 +329,16 @@ def events_handler():
 
 @app.route('/logout', methods=['POST'])
 def logout():
+    """log out the current user for the ip sending this request"""
     if not current_user.is_authenticated:
         # 404 for duplicate logout
         return Response(status=404)
     logout_user()
     return redirect('/')
 
-    
 @login_manager.unauthorized_handler
 def unauthorized_handler():
-    print 'Unauthorized action'
+    """Unauthorized action"""
     return """
         <html>
           <meta http-equiv="refresh" content="3;url=/" />
@@ -340,31 +350,28 @@ def unauthorized_handler():
         """
 
 
-@app.route('/refresh/<int:count>')
-def refresh_event(count):
-    f = open('../scraper/data/events_data.json', 'r')
-    eventsdata = json.load(f)
-    f.close()
-    for i in range(0, count):
-        db.session.add(Event(eventsdata[i]))
-        try:
-            db.session.commit()
-            print 'One event added. ID:{}'.format(eventsdata[i]['id'])
-        except sqlalchemy.exc.IntegrityError:
-            print "Integrity Error: Event exists."
-            db.session.rollback()
-        #
-        db.session.add(Group(eventsdata[i]))
-        try:
-            db.session.commit()
-            print 'New group added. ID:{}'.format(eventsdata[i]['group_id'])
-        except sqlalchemy.exc.IntegrityError:
-            print "Integrity Error: Group exists."
-            db.session.rollback()
-    return redirect('login/index.html')
-
-
-
+#@app.route('/refresh/<int:count>')
+#def refresh_event(count):
+#    f = open('../scraper/data/events_data.json', 'r')
+#    eventsdata = json.load(f)
+#    f.close()
+#    for i in range(0, count):
+#        db.session.add(Event(eventsdata[i]))
+#        try:
+#            db.session.commit()
+#            print 'One event added. ID:{}'.format(eventsdata[i]['id'])
+#        except sqlalchemy.exc.IntegrityError:
+#            print "Integrity Error: Event exists."
+#            db.session.rollback()
+#        #
+#        db.session.add(Group(eventsdata[i]))
+#        try:
+#            db.session.commit()
+#            print 'New group added. ID:{}'.format(eventsdata[i]['group_id'])
+#        except sqlalchemy.exc.IntegrityError:
+#            print "Integrity Error: Group exists."
+#            db.session.rollback()
+#    return redirect('login/index.html')
 
 
 
@@ -373,13 +380,12 @@ if __name__ == '__main__':
     print 'Database initialized'
 
     import click
-    env_port = int(os.environ.get("PORT", 5000))
 
     @click.command()
     @click.option('--debug', is_flag=True)
     @click.option('--threaded', is_flag=True) #RECOMMENDED
     @click.argument('HOST', default='0.0.0.0')
-    @click.argument('PORT', default=env_port, type=int)
+    @click.argument('PORT', default=5000, type=int)
     def run(debug, threaded, host, port):
         """
         This function handles command line parameters.
@@ -391,7 +397,14 @@ if __name__ == '__main__':
             python app.py --help
         """
 
-        HOST, PORT = host, port
+        # Note: prioirity for setting port:
+        # 1. PORT environment variable (for Heroku)
+        # 2. Command line argument
+        # 3. Defaults to 5000
+        env_port = int(os.environ.get("PORT", port))
+
+        HOST, PORT = host, env_port
+
         print "running on %s:%d" % (HOST, PORT)
         app.run(host=HOST, port=PORT, debug=debug, threaded=threaded)
 
