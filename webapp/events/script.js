@@ -43,8 +43,6 @@ $.get(
         window.events = data.events;
         Data = data.events;
         render(Data); 
-        console.log(data.email);
-        console.log(data.name);
         $(document).ready(function(){
             $("#user_name").text(data.name);
             $("#email").html('<p class="text-muted small" id = "email">'+data.email+'</p>');
@@ -53,18 +51,24 @@ $.get(
 );
 
 function render(events){
-	$("#eventlist").html($("#eventTemplate").tmpl(events));
-    $('.starrr').starrr();
-    $('.starrr').on('starrr:change', function(e, value){
-        var group_id = $(e).attr("currentTarget").id;
-        console.log(group_id);
-        $.ajax({
-			method: 'POST',
-			url: '/rate',
-			data: JSON.stringify({group_id: group_id, rate_value: value}),
-			contentType: "application/json; charset=utf-8",
-		})
-});
+    if(events.length === 0) {
+        console.log(0);
+        $("#eventlist").html('<p align="center">Sorry, none of the events matched your search!</p>');
+        return
+    }
+    else{
+        $("#eventlist").html($("#eventTemplate").tmpl(events));
+        $('.starrr').starrr();
+        $('.starrr').on('starrr:change', function(e, value){
+            var group_id = $(e).attr("currentTarget").id;
+            $.ajax({
+			 method: 'POST',
+			 url: '/rate',
+			 data: JSON.stringify({group_id: group_id, rate_value: value}),
+			 contentType: "application/json; charset=utf-8",
+		    })
+        });
+    }
 }
 
 function filterEventsByText() {
@@ -75,7 +79,7 @@ function filterEventsByText() {
 			(event.group.toLowerCase().indexOf(text.toLowerCase()) > -1)
 		)
 	})
-	$("#eventlist").html($("#eventTemplate").tmpl(filteredEvents));
+	render(filteredEvents);
 }
 
 function filterEventByDate(e) {
