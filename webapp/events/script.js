@@ -14,10 +14,12 @@ $(function() {
             }});
             render(Newdata);
             window.events = Newdata;
+            $('#filterBar')[0].reset();
     });
     $('.all-events').click(function(){
             render(Data);
             window.events = Data;
+            $('#filterBar')[0].reset();
     });
 
 });
