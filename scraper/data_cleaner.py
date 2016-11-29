@@ -1,4 +1,6 @@
+from datetime import datetime
 import sqlalchemy
+from sqlalchemy import delete
 from datetime import datetime
 
 from server.app import Event
@@ -15,12 +17,11 @@ Delete past events from our DB
 '''
 def do_clean():
     try:
-        time = datetime.now()
-
-        clause = events_table.delete(Event.datetime < time)
-        con.execute(clause)
-
-        print 'Deleted old events'
+        now_time = datetime.now()
+        stmt = events_table.delete(Event.datetime < now_time)
+        result = con.execute(stmt)
+        
+        print 'Deleted <' + str(result.rowcount) + '> old events'
 
     except Exception as e:
         print "Import Exception: {}".format(e)
