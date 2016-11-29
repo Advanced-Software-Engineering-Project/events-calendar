@@ -36,7 +36,7 @@ class SignupTestCase(unittest.TestCase):
         )))
         assert response.status_code == 200
 
-    def test_exist(self):
+    def test_existant_user(self):
         self.app.post('/signup', data = json.dumps(dict(
             email='abc@columbia.edu',
             password='passwd',
@@ -186,7 +186,7 @@ class EventsTestCase(unittest.TestCase):
         # Add an event to test DB
         db.session.add(Event({
             'id': '123',
-            'datetime': '1-23-45',
+            'datetime': '1993-11-17T12:00:00',
             'location': 'mars',
             'group_id': '456',
             'title': 'a new event',
@@ -225,7 +225,7 @@ class FavoritesTestCase(unittest.TestCase):
         db.session.add(new_user)
         db.session.add(Event({
                 'id': '123',
-                'datetime': '1-23-45',
+                'datetime': '1993-11-17T12:00:00',
                 'location': 'mars',
                 'group': 'columbiagroup',
                 'title': 'a new event',
@@ -254,6 +254,72 @@ class FavoritesTestCase(unittest.TestCase):
             id='123'
         )))
         assert response.status_code == 200
+
+class RatingTestCase(unittest.TestCase):
+
+    def setUp(self):
+        """
+        Creates a new database for the unit test to use
+        """
+        app.config.from_pyfile('test_config.py')
+        db.init_app(app)
+        db.create_all()
+
+        self.app = app.test_client()
+
+        new_user = Person(
+            'asdf123@columbia.edu',
+            'asdf',
+            'test',
+            'testerson'
+        )
+
+        db.session.add(new_user)
+        db.session.add(Event({
+            'id': '123',
+            'datetime': '1993-11-17T12:00:00',
+            'location': 'mars',
+            'group_id': '12345',
+            'title': 'a new event',
+            'url': 'http://www.testevent.com',
+            'photo_url': 'http://www.testphotourl.com'
+        }))
+        
+        db.session.add(Group({
+                              'group_id':'12345',
+                              'group':'groupname'
+                              }))
+        db.session.commit()
+
+        self.app.post('/login', data = json.dumps(dict(
+            exist_email='asdf123@columbia.edu',
+            exist_password='asdf'
+        )))
+
+        return self.app
+
+    def tearDown(self):
+        db.drop_all()
+
+    def test_show_default_rating(self):
+        response = self.app.get('/events',
+            content_type='application/json'
+        )
+        data = json.loads(response.data)
+        assert data['events'][0]['rating'] == 5
+
+    def test_rate(self):
+        response = self.app.post('/rate', data = json.dumps(dict(
+            group_id='12345',
+            rate_value=1
+        )))
+        assert response.status_code == 200
+
+        response = self.app.get('/events',
+            content_type='application/json'
+        )
+        data = json.loads(response.data)
+        assert data['events'][0]['rating'] == 3
 
 
 if __name__ == '__main__':
