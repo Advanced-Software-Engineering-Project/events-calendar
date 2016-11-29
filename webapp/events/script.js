@@ -71,8 +71,8 @@ function filterEventsByText() {
 }
 
 function filterEventByDate(e) {
-	
 	var timerange = e.target.selectedOptions[0].value;
+	var filteredEvents;
 
 	switch (timerange) {
 		case 'alldates':
@@ -80,11 +80,15 @@ function filterEventByDate(e) {
 			return
 
 		case 'today':
-			var endTime = moment().startOf('day').add(1, 'days');
+			filteredEvents = _.filter(window.events, function(event) {
+				return moment(event.datetime).isSame(moment(), 'day');
+			});
 			break;
 
 		case 'tomorrow':
-			var endTime = moment().startOf('day').add(2, 'days');
+			filteredEvents = _.filter(window.events, function(event) {
+				return moment(event.datetime).isSame(moment().add(1, 'days'), 'day');
+			});
 			break;
 
 		case 'nextsevendays':
@@ -96,7 +100,7 @@ function filterEventByDate(e) {
 			return
 	}
 
-	var filteredEvents = _.filter(window.events, function(event) {
+	var filteredEvents = filteredEvents || _.filter(window.events, function(event) {
 		return moment(event.datetime).isBefore(endTime);
 	});
 
