@@ -5,7 +5,8 @@
 var fs = require('fs');
 var page = require('webpage').create();
 
-var images_dir = '/images/'
+var images_dir = 'images/';
+var save_images = true;
 
 // Keyword for query of groups to fetch
 var SEARCH_TERM = 'columbia';
@@ -21,8 +22,8 @@ page.open("http://www.facebook.com/login.php", function(status) {
     };
 
     page.evaluate(function() {
-      document.getElementById("email").value = "";
-      document.getElementById("pass").value = "";
+      document.getElementById("email").value = "ionox0@gmail.com";
+      document.getElementById("pass").value = "***REMOVED***";
       document.getElementById("loginbutton").click();
     });
 
@@ -30,9 +31,14 @@ page.open("http://www.facebook.com/login.php", function(status) {
       page.evaluate(function() {
         console.log('At Homepage');
       });
-      page.render(images_dir + "home_page.png");
 
-      routeToSearch();
+      if (save_images) {
+        page.render(images_dir + "home_page.png");
+      }
+
+     // Wait for page to render
+     setTimeout(routeToSearch, 2000);
+
     }, 2000);
 
     function routeToSearch() {
@@ -46,9 +52,13 @@ page.open("http://www.facebook.com/login.php", function(status) {
         page.evaluate(function() {
           console.log('At Search Page');
         });
-//        page.render(images_dir + "search_page.png");
 
-        routeToPages();
+        if (save_images) {
+          page.render(images_dir + "search_page.png");
+        }
+
+        // Wait for page to render
+        setTimeout(routeToPages, 2000);
       }, 5000)
     }
 
@@ -72,9 +82,13 @@ page.open("http://www.facebook.com/login.php", function(status) {
         page.evaluate(function() {
           console.log('At Pages Page');
         });
-//        page.render(images_dir + "pages_page.png");
 
-        scrollLoop();
+        if (save_images) {
+          page.render(images_dir + "pages_page.png");
+        }
+
+        // Wait for page to render
+        setTimeout(scrollLoop, 2000);
       }, 5000)
     }
 
@@ -93,9 +107,13 @@ page.open("http://www.facebook.com/login.php", function(status) {
         page.evaluate(function() {
           console.log('Scrolling iteration...');
         });
-//        page.render(images_dir + "pages_page_scroll_" + i + ".png");
 
-        scrollLoop();
+        if (save_images) {
+          page.render(images_dir + "pages_page_scroll_" + i + ".png");
+        }
+
+        // Wait for page to render
+        setTimeout(scrollLoop, 2000);
       }, 5000)
     }
 
@@ -122,6 +140,7 @@ page.open("http://www.facebook.com/login.php", function(status) {
 
     function writeResults(pages) {
       console.log(pages);
+      console.log('Data saved in data/pages_data_2.json')
       var path = 'data/pages_data_2.json';
       fs.write(path, pages, 'w');
 
