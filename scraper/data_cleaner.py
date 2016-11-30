@@ -10,7 +10,7 @@ from datetime import datetime
 import sqlalchemy
 
 # from server.app import Event
-from server import config
+from server import config, app
 
 
 URL = config.SQLALCHEMY_DATABASE_URI
