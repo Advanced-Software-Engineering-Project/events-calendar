@@ -9,7 +9,7 @@ Module for clearing past events from our database
 from datetime import datetime
 import sqlalchemy
 
-from server.app import Event
+# from server.app import Event
 from server import config
 
 
@@ -26,7 +26,7 @@ def do_clean():
     """
     try:
         now_time = datetime.now()
-        stmt = EVENTS_TABLE.delete(Event.datetime < now_time)
+        stmt = EVENTS_TABLE.delete(app.Event.datetime < now_time)
         result = CON.execute(stmt)
 
         print 'Deleted <' + str(result.rowcount) + '> old events'
