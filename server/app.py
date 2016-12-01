@@ -68,8 +68,9 @@ favorite_table = \
 rating_table = \
     db.Table('rating',
              db.Column('user_id', db.String(40), db.ForeignKey('person.id')),
-             db.Column('group_id', db.String(40), db.ForeignKey('group.id'))
-             )
+             db.Column('group_id', db.String(40), db.ForeignKey('group.id')),
+             db.Column('rate_value', db.Integer)
+            )
 
 class Person(db.Model, UserMixin):
     """
@@ -184,7 +185,8 @@ class Event(db.Model):
                 'photo_url':self.photo_url,
                 'favorite': bool_fav,
                 'group':thegroup.name,
-                'rating':thegroup.rating}
+                'rating':thegroup.rating,
+                'popularity':len(self.fans)}
 
 #%% <SERVER API>
 
@@ -284,7 +286,9 @@ def favorite_handler():
         cmd = """SELECT * FROM favorite WHERE user_id = :uid and event_id = :eid"""
         cursor = db.session.execute(cmd, dict(uid=current_user.id, eid=event_id))
         if cursor.fetchone() is None:
+            cursor.close()
             return False
+        cursor.close()
         return True
 
     if request.method == 'POST':
@@ -306,14 +310,71 @@ def favorite_handler():
 @login_required
 def rate_group():
     """Current_user rate a group"""
+    # Request the group_id and rate_value
     request_form = json.loads(request.data)
+    # Check the rate_value
+    try:
+        if request_form['rate_value'] not in [1, 2, 3, 4, 5]:
+            return Response('Error: invalid rate_value', status=400)
+    except KeyError:
+        return Response('Error: request rate_value', status=404)
+    # Retrieve the group object
     thegroup = Group.query.filter(Group.id == request_form['group_id']).one()
-    #print '###', thegroup.rating
-    thegroup.rating = (thegroup.rating + request_form['rate_value'])*0.5
-    db.session.commit()
-    #print '###', thegroup.rating
-    return jsonify(rating=thegroup.rating)
-    #todo: cannot rate duplicately
+    num_raters = len(thegroup.raters) + 1 #+1 for default 5 stars
+
+    def rating_exist(group_id):
+        """Check if the group has been rated by current user"""
+        cmd = """SELECT * FROM rating WHERE user_id = :uid and group_id = :gid"""
+        cursor = db.session.execute(cmd, dict(uid=current_user.id, gid=group_id))
+        res = cursor.fetchone()
+        if res is None:
+            cursor.close()
+            return False
+        request_form['rate_value_old'] = res['rate_value']
+        cursor.close()
+        return True
+
+    # If the current_user hasn't rated this group yet
+    if not rating_exist(thegroup.id):
+        # current_user becomes a rater of this group
+        thegroup.raters.append(current_user)
+        db.session.add(thegroup)
+        db.session.commit()
+        # store the rate_value
+        cmd = """
+              UPDATE rating 
+              SET rate_value = :rate_value 
+              WHERE user_id = :uid and group_id = :gid
+              """
+        db.session.execute(cmd, dict(uid=current_user.id,
+                                     gid=thegroup.id,
+                                     rate_value=int(request_form['rate_value'])
+                                    ))
+        db.session.commit()
+        # update the rating of group
+        thegroup.rating = (thegroup.rating * num_raters \
+                           + request_form['rate_value'])*1.0 \
+                           /(num_raters+1)
+        db.session.commit()
+    else: # the current_user has rated this group before
+        # store the rate_value
+        cmd = """
+              UPDATE rating 
+              SET rate_value = :rate_value 
+              WHERE user_id = :uid and group_id = :gid
+              """
+        db.session.execute(cmd, dict(uid=current_user.id,
+                                     gid=thegroup.id,
+                                     rate_value=int(request_form['rate_value'])
+                                    ))
+        db.session.commit()
+        # update the raing of group
+        thegroup.rating = (thegroup.rating * num_raters - request_form['rate_value_old'] \
+                           + request_form['rate_value'])*1.0 \
+                           /num_raters
+        db.session.commit()
+    #print thegroup.rating
+    return Response('success', status=200)
 
 
 @app.route('/events/index.html', methods=['GET'])
@@ -333,7 +394,7 @@ def events_handler():
     return jsonify(name=(current_user.firstname+' '+current_user.lastname),
                    email=current_user.email,
                    events=[o.todict(o in favbuf) for o in Event.query
-                    .order_by(Event.datetime).all()])
+                           .order_by(Event.datetime).all()])
 
 
 @app.route('/logout', methods=['POST'])

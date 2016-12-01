@@ -254,6 +254,23 @@ class FavoritesTestCase(unittest.TestCase):
             id='123'
         )))
         assert response.status_code == 200
+    
+    def test_dup_set_fav(self):
+        response = self.app.post('/favorite', data = json.dumps(dict(
+            id='123'
+        )))
+        assert response.status_code == 200
+
+        response = self.app.post('/favorite', data = json.dumps(dict(
+            id='123'
+        )))
+        assert response.status_code == 409
+    
+    def test_unset_nothing(self):
+        response = self.app.delete('/favorite', data = json.dumps(dict(
+            id='123'
+        )))
+        assert response.status_code == 404
 
 class RatingTestCase(unittest.TestCase):
 
@@ -320,7 +337,31 @@ class RatingTestCase(unittest.TestCase):
         )
         data = json.loads(response.data)
         assert data['events'][0]['rating'] == 3
+    
+    def test_duprate(self):
+        response = self.app.post('/rate', data = json.dumps(dict(
+            group_id='12345',
+            rate_value=1
+        )))
+        assert response.status_code == 200
 
+        response = self.app.get('/events',
+            content_type='application/json'
+        )
+        data = json.loads(response.data)
+        assert data['events'][0]['rating'] == 3
+        
+        response = self.app.post('/rate', data = json.dumps(dict(
+            group_id='12345',
+            rate_value=3
+        )))
+        assert response.status_code == 200
+
+        response = self.app.get('/events',
+            content_type='application/json'
+        )
+        data = json.loads(response.data)
+        assert data['events'][0]['rating'] == 4
 
 if __name__ == '__main__':
     with open('test_app.py') as f:
