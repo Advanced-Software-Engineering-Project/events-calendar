@@ -1,4 +1,4 @@
-# Scraper
+# Component 2: Scraper
 
 ### Info
 *Files:
