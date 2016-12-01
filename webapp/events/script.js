@@ -5,6 +5,7 @@ var Data = [];
 var email;
 var name;
 $(function() {
+	document.getElementById('all-events').style.background = "#a4defc";
 	$('input[name="daterange1"]').daterangepicker();
 	$('.favorites').click(function(){
             var Newdata = [];
@@ -15,11 +16,15 @@ $(function() {
             render(Newdata);
             window.events = Newdata;
             $('#filterBar')[0].reset();
+            document.getElementById('favorites').style.background = "#a4defc";
+            document.getElementById('all-events').style.background = "transparent";
     });
     $('.all-events').click(function(){
             render(Data);
             window.events = Data;
             $('#filterBar')[0].reset();
+            document.getElementById('all-events').style.background = "#a4defc";
+            document.getElementById('favorites').style.background = "transparent";
     });
 
 });
