@@ -13,7 +13,12 @@ $(function() {
                 if(element.favorite === true) {
                     Newdata.push(element);
             }});
-            render(Newdata);
+            if(Newdata.length === 0) {
+				$("#eventlist").html('<p align="center">You do not have any favorite events!</p>');
+			}	
+			else {
+         	   render(Newdata);
+        	}
             window.events = Newdata;
             $('#filterBar')[0].reset();
             document.getElementById('favorites').style.background = "#a4defc";
