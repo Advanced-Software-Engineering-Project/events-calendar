@@ -188,10 +188,10 @@ p {
   margin: 0;
 }
 
-#all-events, #favorites{
+#all-events, #favorites, #dropdown-toggle{
   color: black;
 }
 
-#all-events:hover, #favorites:hover{
+#all-events:hover, #favorites:hover, #dropdown-toggle:hover{
   background: #6bcdff;
 }
