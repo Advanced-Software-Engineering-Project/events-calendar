@@ -155,30 +155,6 @@ margin-right: 15px !important;
   text-decoration: none;
 }
 
-.button {
-  border: 0;
-  outline: none;
-  border-radius: 0;
-  padding: 4px 4px;
-  font-size: 2rem;
-  font-weight: 400;
-  text-transform: uppercase;
-  letter-spacing: .1em;
-  background: #a4defc;
-  color: #ffffff;
-  -webkit-transition: all 0.5s ease;
-  transition: all 0.5s ease;
-  -webkit-appearance: none;
-}
-.button:hover, .button:focus {
-  background: #6bcdff;
-}
-
-.button-block {
-  display: block;
-  width: 100%;
-}
-
 .select{
   border-radius: 0;
   -webkit-appearance: none;
@@ -210,4 +186,12 @@ h4 {
 
 p {
   margin: 0;
+}
+
+#all-events, #favorites, #dropdown-toggle{
+  color: black;
+}
+
+#all-events:hover, #favorites:hover, #dropdown-toggle:hover{
+  background: #6bcdff;
 }
