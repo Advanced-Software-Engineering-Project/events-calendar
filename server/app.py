@@ -136,7 +136,7 @@ class Event(db.Model):
     id = db.Column(db.String(40), primary_key=True)
     datetime = db.Column(db.DateTime)
     location = db.Column(db.String(100))
-    group_id = db.Column(db.String(40))
+    group_id = db.Column(db.String(40), db.ForeignKey('group.id'))
     title = db.Column(db.String(100))
     url = db.Column(db.Text)
     photo_url = db.Column(db.Text)
