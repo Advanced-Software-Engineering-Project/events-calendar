@@ -136,7 +136,8 @@ function filterEventByDate(e) {
 }
 
 function formatDate(datetime) {
-	var time = new Date(datetime);
+	var time = moment(datetime);
+
 	return time.format();
 }
 
