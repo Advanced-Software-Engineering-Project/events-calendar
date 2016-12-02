@@ -195,3 +195,10 @@ p {
 #all-events:hover, #favorites:hover, #dropdown-toggle:hover{
   background: #6bcdff;
 }
+
+.no-result {
+  color: #6bcdff;
+  font-size: 2rem;
+  text-align: center;
+  padding: 15px 0;
+}
