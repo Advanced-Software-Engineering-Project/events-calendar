@@ -190,6 +190,17 @@ class Event(db.Model):
 
 #%% <SERVER API>
 
+@app.route('/mydeletetest')
+def deleleachildrecord():
+    events = Event.query.filter(Event.datetime < datetime.now()).all()
+    theevent = events[0]
+    print theevent.fans
+    print theevent
+    db.session.delete(theevent)
+    db.session.commit()
+    return 'Deleted a event record: \n{}\nON DELETE CASCADE WITH relationship'.format(theevent.title)
+
+
 @login_manager.user_loader
 def user_loader(id):
     """Core part of login_manager"""
