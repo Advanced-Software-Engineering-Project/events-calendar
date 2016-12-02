@@ -6,7 +6,7 @@ var email;
 var name;
 $(function() {
 	document.getElementById('all-events').style.background = "#a4defc";
-	$('input[name="daterange1"]').daterangepicker();
+	// $('input[name="daterange1"]').daterangepicker();
 	$('.favorites').click(function(){
             var Newdata = [];
             Data.forEach(function(element) {
@@ -78,6 +78,7 @@ function render(events){
 }
 
 function filterEventsByText() {
+	document.getElementById("select-dates").value = "alldates";
 	var text = $('#search').val();
 	var filteredEvents = _.filter(window.events, function(event) {
 		return (
@@ -94,22 +95,26 @@ function filterEventByDate(e) {
 
 	switch (timerange) {
 		case 'alldates':
+			document.getElementById("search").value = "";
 			render(window.events);
 			return;
 
 		case 'today':
+			document.getElementById("search").value = "";
 			filteredEvents = _.filter(window.events, function(event) {
 				return moment(event.datetime).isSame(moment(), 'day');
 			});
 			break;
 
 		case 'tomorrow':
+			document.getElementById("search").value = "";
 			filteredEvents = _.filter(window.events, function(event) {
 				return moment(event.datetime).isSame(moment().add(1, 'days'), 'day');
 			});
 			break;
 
 		case 'nextsevendays':
+			document.getElementById("search").value = "";
 			var endTime = moment().startOf('day').add(7, 'days');
 			break;
 
