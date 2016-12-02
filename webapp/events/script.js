@@ -5,21 +5,31 @@ var Data = [];
 var email;
 var name;
 $(function() {
-	$('input[name="daterange1"]').daterangepicker();
+	document.getElementById('all-events').style.background = "#a4defc";
+	// $('input[name="daterange1"]').daterangepicker();
 	$('.favorites').click(function(){
             var Newdata = [];
             Data.forEach(function(element) {
                 if(element.favorite === true) {
                     Newdata.push(element);
             }});
-            render(Newdata);
+            if(Newdata.length === 0) {
+				$("#eventlist").html('<p align="center">You do not have any favorite events!</p>');
+			}	
+			else {
+         	   render(Newdata);
+        	}
             window.events = Newdata;
             $('#filterBar')[0].reset();
+            document.getElementById('favorites').style.background = "#a4defc";
+            document.getElementById('all-events').style.background = "transparent";
     });
     $('.all-events').click(function(){
             render(Data);
             window.events = Data;
             $('#filterBar')[0].reset();
+            document.getElementById('all-events').style.background = "#a4defc";
+            document.getElementById('favorites').style.background = "transparent";
     });
 
 });
@@ -68,6 +78,7 @@ function render(events){
 }
 
 function filterEventsByText() {
+	document.getElementById("select-dates").value = "alldates";
 	var text = $('#search').val();
 	var filteredEvents = _.filter(window.events, function(event) {
 		return (
@@ -84,22 +95,26 @@ function filterEventByDate(e) {
 
 	switch (timerange) {
 		case 'alldates':
+			document.getElementById("search").value = "";
 			render(window.events);
 			return;
 
 		case 'today':
+			document.getElementById("search").value = "";
 			filteredEvents = _.filter(window.events, function(event) {
 				return moment(event.datetime).isSame(moment(), 'day');
 			});
 			break;
 
 		case 'tomorrow':
+			document.getElementById("search").value = "";
 			filteredEvents = _.filter(window.events, function(event) {
 				return moment(event.datetime).isSame(moment().add(1, 'days'), 'day');
 			});
 			break;
 
 		case 'nextsevendays':
+			document.getElementById("search").value = "";
 			var endTime = moment().startOf('day').add(7, 'days');
 			break;
 
