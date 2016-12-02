@@ -61,8 +61,8 @@ def nocache(view):
 #"""
 favorite_table = \
     db.Table('favorite',
-             db.Column('user_id', db.String(40), db.ForeignKey('person.id')),
-             db.Column('event_id', db.String(40), db.ForeignKey('event.id'))
+             db.Column('user_id', db.String(40), db.ForeignKey('person.id',  ondelete="CASCADE")),
+             db.Column('event_id', db.String(40), db.ForeignKey('event.id',  ondelete="CASCADE"))
             )
 
 rating_table = \
@@ -85,7 +85,8 @@ class Person(db.Model, UserMixin):
     lastname = db.Column(db.String(40))
     username = db.Column(db.String(80), unique=True)
     created_at = db.Column(db.DateTime)
-    favorites = db.relationship("Event", secondary=favorite_table, back_populates="fans")
+    favorites = db.relationship("Event", secondary=favorite_table, back_populates="fans", cascade="all, delete-orphan",
+                    passive_deletes=True)
                                 # OPTIONALv0: child record delete on cascade
     groups_rated = db.relationship("Group", secondary=rating_table, back_populates="raters")
 
@@ -139,7 +140,8 @@ class Event(db.Model):
     title = db.Column(db.String(100))
     url = db.Column(db.Text)
     photo_url = db.Column(db.Text)
-    fans = db.relationship("Person", secondary=favorite_table, back_populates="favorites", cascade="all, delete-orphan")
+    fans = db.relationship("Person", secondary=favorite_table, back_populates="favorites", cascade="all, delete-orphan",
+                    passive_deletes=True)
 
     def __init__(self, infodict):
         self.id = infodict['id']
