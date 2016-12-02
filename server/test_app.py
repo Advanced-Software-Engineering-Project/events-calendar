@@ -182,8 +182,9 @@ class EventsTestCase(unittest.TestCase):
             'group_id': '456',
             'group': 'testgroup'
         }))
-
         # Add an event to test DB
+        db.session.commit()
+        
         db.session.add(Event({
             'id': '123',
             'datetime': '1993-11-17T12:00:00',
@@ -223,10 +224,16 @@ class FavoritesTestCase(unittest.TestCase):
         )
 
         db.session.add(new_user)
+        db.session.add(Group({
+                              'group_id':'12345',
+                              'group':'groupname'
+                              }))
+        db.session.commit()
         db.session.add(Event({
                 'id': '123',
                 'datetime': '1993-11-17T12:00:00',
                 'location': 'mars',
+                'group_id':'12345',
                 'group': 'columbiagroup',
                 'title': 'a new event',
                 'group_url': 'http://www.google.com'
@@ -292,6 +299,11 @@ class RatingTestCase(unittest.TestCase):
         )
 
         db.session.add(new_user)
+        db.session.add(Group({
+                              'group_id':'12345',
+                              'group':'groupname'
+                              }))
+        db.session.commit()
         db.session.add(Event({
             'id': '123',
             'datetime': '1993-11-17T12:00:00',
@@ -302,10 +314,6 @@ class RatingTestCase(unittest.TestCase):
             'photo_url': 'http://www.testphotourl.com'
         }))
         
-        db.session.add(Group({
-                              'group_id':'12345',
-                              'group':'groupname'
-                              }))
         db.session.commit()
 
         self.app.post('/login', data = json.dumps(dict(
