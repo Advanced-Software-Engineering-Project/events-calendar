@@ -14,7 +14,7 @@ $(function() {
                     Newdata.push(element);
             }});
             if(Newdata.length === 0) {
-				$("#eventlist").html('<p align="center">You do not have any favorite events!</p>');
+				$("#eventlist").html('<p class="no-result">You do not have any favorite events!</p>');
 			}	
 			else {
          	   render(Newdata);
@@ -25,7 +25,12 @@ $(function() {
             document.getElementById('all-events').style.background = "transparent";
     });
     $('.all-events').click(function(){
-            render(Data);
+    	 	if(Data.length === 0) {
+				$("#eventlist").html('<p class="no-result">There are no events happening at Columbia!</p>');
+			}	
+			else {
+            	render(Data);
+        	}
             window.events = Data;
             $('#filterBar')[0].reset();
             document.getElementById('all-events').style.background = "#a4defc";
@@ -59,7 +64,7 @@ $.get(
 function render(events){
     if(events.length === 0) {
         console.log(0);
-        $("#eventlist").html('<p align="center">Sorry, none of the events matched your search!</p>');
+        $("#eventlist").html('<p class="no-result">Sorry, none of the events matched your search!</p>');
         return;
     }
     else{
