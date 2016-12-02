@@ -86,7 +86,7 @@ class Person(db.Model, UserMixin):
     username = db.Column(db.String(80), unique=True)
     created_at = db.Column(db.DateTime)
     favorites = db.relationship("Event", secondary=favorite_table, back_populates="fans", cascade="all, delete-orphan",
-                    passive_deletes=True)
+                    passive_deletes=True, single_parent=True)
                                 # OPTIONALv0: child record delete on cascade
     groups_rated = db.relationship("Group", secondary=rating_table, back_populates="raters")
 
@@ -141,7 +141,7 @@ class Event(db.Model):
     url = db.Column(db.Text)
     photo_url = db.Column(db.Text)
     fans = db.relationship("Person", secondary=favorite_table, back_populates="favorites", cascade="all, delete-orphan",
-                    passive_deletes=True)
+                    passive_deletes=True, single_parent=True)
 
     def __init__(self, infodict):
         self.id = infodict['id']
