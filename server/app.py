@@ -139,7 +139,7 @@ class Event(db.Model):
     title = db.Column(db.String(100))
     url = db.Column(db.Text)
     photo_url = db.Column(db.Text)
-    fans = db.relationship("Person", secondary=favorite_table, back_populates="favorites")
+    fans = db.relationship("Person", secondary=favorite_table, back_populates="favorites", cascade="all, delete-orphan")
 
     def __init__(self, infodict):
         self.id = infodict['id']
