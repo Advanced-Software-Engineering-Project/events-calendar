@@ -1,3 +1,6 @@
+
+    
+
 body {
   padding-top: 70px; /* Required padding for .navbar-fixed-top. Remove if using .navbar-static-top. Change if height of navigation changes. */
 }
@@ -181,11 +184,13 @@ margin-right: 15px !important;
 h4 {
   font-size: 19px;
   line-height: 20px;
-  margin: 10px 0;
+
 }
 
 p {
   margin: 0;
+    line-height: 20px;
+    
 }
 
 #all-events, #favorites, #dropdown-toggle{
@@ -194,4 +199,19 @@ p {
 
 #all-events:hover, #favorites:hover, #dropdown-toggle:hover{
   background: #6bcdff;
+}
+
+
+.no-result {
+  color: #6bcdff;
+  font-size: 2rem;
+  text-align: center;
+    padding: 15px 0;}
+
+@media screen and (max-width: 900px) {
+    h4, p {
+        line-height: 18px;
+        margin: 8x 0;
+    }
+
 }
