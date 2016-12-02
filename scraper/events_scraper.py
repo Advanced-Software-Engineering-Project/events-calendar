@@ -29,7 +29,7 @@ HEADERS = {
 }
 
 FILE_DIR = os.path.dirname(os.path.realpath('__file__'))
-PAGES_FILE = os.path.join(FILE_DIR, 'scraper/data/pages_data.json')
+PAGES_FILE = os.path.join(FILE_DIR, 'scraper/data/pages_data_2.json')
 
 # Grab API key
 KEY_RESPONSE = requests.get('https://graph.facebook.com/oauth/access_'
