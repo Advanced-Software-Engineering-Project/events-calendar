@@ -76,7 +76,7 @@ def import_groups():
             )
             CON.execute(clause)
 
-            print 'One group added. ID: {}'.format(group['id'])
+            print 'One group added. ID: {}'.format(group['group_id'])
 
         except Exception as error:
             print "Import Exception: {}".format(error)
