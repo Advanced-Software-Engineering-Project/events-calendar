@@ -98,6 +98,8 @@ def get_events():
                 with open('scraper/data/events_data.json', 'w') as outfile:
                     json.dump(events, outfile)
 
+    return events
+
 
 if __name__ == "__main__":
     get_events()
