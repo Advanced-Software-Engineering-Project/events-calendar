@@ -63,7 +63,7 @@ def import_groups():
     Use data/pages_data.json file to import Columbia groups data into db
     :return:
     """
-    data_file = open('scraper/data/pages_data_2.json', 'r')
+    data_file = open('scraper/data/pages_data_3.json', 'r')
     groups_json = json.load(data_file)
 
     for group in groups_json:
