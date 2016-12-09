@@ -7,9 +7,10 @@ Created on Thu Oct 27 14:47:36 2016
 
 import unittest
 import json
-
 from app import db, app, Person, Event, Group
-
+import coverage
+cov = coverage.Coverage(branch=True)
+cov.start()
 
 class SignupTestCase(unittest.TestCase):
 
@@ -376,4 +377,11 @@ if __name__ == '__main__':
         for l in f:
             if 'def test_' in l and 'if' not in l:
                 print l.strip()
+
+    
+    # -- call your code for coverage test --
     unittest.main()
+    cov.report()
+    cov.stop()
+    cov.save()
+    cov.html_report()
