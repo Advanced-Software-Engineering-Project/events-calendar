@@ -24,15 +24,19 @@ def do_clean():
     Delete events older than today from our DB
     :return:
     """
+    deleted_count = 0
     try:
         now_time = datetime.now()
         stmt = EVENTS_TABLE.delete(app.Event.datetime < now_time)
         result = CON.execute(stmt)
 
+        deleted_count = result.rowcount
         print 'Deleted <' + str(result.rowcount) + '> old events'
 
     except Exception as error:
         print "Import Exception: {}".format(error)
+
+    return {'deleted_count': deleted_count}
 
 
 if __name__ == "__main__":

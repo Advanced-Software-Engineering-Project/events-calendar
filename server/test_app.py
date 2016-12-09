@@ -5,12 +5,15 @@ Created on Thu Oct 27 14:47:36 2016
 @author: peng
 """
 
+from coverage import coverage
+cov = coverage(branch=True, omit=['/usr/local/lib/python2.7/site-packages/*', 'test_app.py', 'config.py', 'test_config.py'])
+cov.start()
+
 import unittest
 import json
 from app import db, app, Person, Event, Group
-import coverage
-cov = coverage.Coverage(branch=True)
-cov.start()
+
+
 
 class SignupTestCase(unittest.TestCase):
 
@@ -373,15 +376,19 @@ class RatingTestCase(unittest.TestCase):
         assert data['events'][0]['rating'] == 4
 
 if __name__ == '__main__':
-    with open('test_app.py') as f:
-        for l in f:
-            if 'def test_' in l and 'if' not in l:
-                print l.strip()
+    # with open('test_app.py') as f:
+    #     for l in f:
+    #         if 'def test_' in l and 'if' not in l:
+    #             print l.strip()
 
-    
-    # -- call your code for coverage test --
-    unittest.main()
-    cov.report()
+    try:
+        unittest.main()
+    except:
+        pass
     cov.stop()
     cov.save()
+    print("\n\nCoverage Report:\n")
+    cov.report()
+
     cov.html_report()
+    cov.erase()
