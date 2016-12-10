@@ -6,14 +6,15 @@ Created on Thu Oct 27 14:47:36 2016
 """
 
 from coverage import coverage
-cov = coverage(branch=True, omit=['/usr/local/lib/python2.7/site-packages/*', 'test_app.py', 'config.py', 'test_config.py'])
+cov = coverage(branch=True, omit=['/usr/local/lib/python2.7/dist-packages/*',
+                                  '/usr/local/lib/python2.7/site-packages/*', 
+                                  'test_app.py', 'config.py', 'test_config.py'])
 cov.start()
+cov.exclude('pragma')
 
 import unittest
 import json
 from app import db, app, Person, Event, Group
-
-
 
 class SignupTestCase(unittest.TestCase):
 
@@ -138,7 +139,28 @@ class LoginTestCase(unittest.TestCase):
         )))
         assert response.status_code == 400
 
+class BrowseTestCase(unittest.TestCase):
+    
+    def setUp(self):
+        """
+        Creates a new database for the unit test to use
+        """
+        app.config.from_pyfile('test_config.py')
+        db.init_app(app)
+        db.create_all()
 
+        self.app = app.test_client()
+        return self.app
+
+    def tearDown(self):
+        db.drop_all()
+    
+    def test_root_unlogined(self):
+        response = self.app.get('/')
+        assert response.location == 'http://localhost/login/index.html'
+    
+        
+        
 
 class EventsTestCase(unittest.TestCase):
 
@@ -171,7 +193,7 @@ class EventsTestCase(unittest.TestCase):
     def tearDown(self):
         db.drop_all()
 
-
+ 
     def test_no_events(self):
         response = self.app.get('/events',
             content_type='application/json'
@@ -179,13 +201,34 @@ class EventsTestCase(unittest.TestCase):
         data = json.loads(response.data)
         assert len(data['events']) == 0
 
-
-    def test_events_returned(self):
+    def test_insert_event_lackinfo(self):
         # Add a group to test DB
         db.session.add(Group({
             'group_id': '456',
             'group': 'testgroup'
         }))
+        # Add an event to test DB
+        db.session.commit()
+        
+        db.session.add(Event({
+            'id': '000',
+            'group_id': '456'
+        }))
+        db.session.commit()
+        response = self.app.get('/events',
+            content_type='application/json'
+        )
+        data = json.loads(response.data)
+        assert len(data['events']) == 1
+
+    def test_events_returned(self):
+        # Add a group to test DB
+        agroup = Group({
+            'group_id': '456',
+            'group': 'testgroup'
+        })
+        print agroup
+        db.session.add(agroup)
         # Add an event to test DB
         db.session.commit()
         
