@@ -53,6 +53,7 @@ $.get(
         });
         window.events = data.events;
         Data = data.events;
+        console.log(Data);
         render(Data); 
         $(document).ready(function(){
             $("#user_name").text(data.name);
