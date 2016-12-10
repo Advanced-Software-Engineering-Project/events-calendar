@@ -6,35 +6,34 @@ var email;
 var name;
 $(function() {
 	document.getElementById('all-events').style.background = "#a4defc";
-	// $('input[name="daterange1"]').daterangepicker();
 	$('.favorites').click(function(){
-            var Newdata = [];
-            Data.forEach(function(element) {
-                if(element.favorite === true) {
-                    Newdata.push(element);
-            }});
-            if(Newdata.length === 0) {
-				$("#eventlist").html('<p class="no-result">You do not have any favorite events!</p>');
-			}	
-			else {
-         	   render(Newdata);
-        	}
-            window.events = Newdata;
-            $('#filterBar')[0].reset();
-            document.getElementById('favorites').style.background = "#a4defc";
-            document.getElementById('all-events').style.background = "transparent";
+        var Newdata = [];
+        Data.forEach(function(element) {
+            if(element.favorite === true) {
+                Newdata.push(element);
+        }});
+        if(Newdata.length === 0) {
+			$("#eventlist").html('<p class="no-result">You do not have any favorite events!</p>');
+		}	
+		else {
+     	   render(Newdata);
+    	}
+        window.events = Newdata;
+        $('#filterBar')[0].reset();
+        document.getElementById('favorites').style.background = "#a4defc";
+        document.getElementById('all-events').style.background = "transparent";
     });
     $('.all-events').click(function(){
-    	 	if(Data.length === 0) {
-				$("#eventlist").html('<p class="no-result">There are no events happening at Columbia!</p>');
-			}	
-			else {
-            	render(Data);
-        	}
-            window.events = Data;
-            $('#filterBar')[0].reset();
-            document.getElementById('all-events').style.background = "#a4defc";
-            document.getElementById('favorites').style.background = "transparent";
+	 	if(Data.length === 0) {
+			$("#eventlist").html('<p class="no-result">There are no events happening at Columbia!</p>');
+		}	
+		else {
+        	render(Data);
+    	}
+        window.events = Data;
+        $('#filterBar')[0].reset();
+        document.getElementById('all-events').style.background = "#a4defc";
+        document.getElementById('favorites').style.background = "transparent";
     });
 
 });

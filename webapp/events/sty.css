@@ -118,8 +118,7 @@ footer {
 
 .navbar-content
 {
-  width:150px;
-  padding: 5px 5px;
+  padding: 5px 8px;
   padding-bottom: 1px;
 }
 .navbar-content:before, .navbar-content:after
@@ -199,7 +198,7 @@ p {
 }
 
 #all-events:hover, #favorites:hover, #dropdown-toggle:hover{
-  background: #6bcdff;
+  color: #6bcdff;
 }
 
 
