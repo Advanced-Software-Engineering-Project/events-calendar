@@ -22,7 +22,6 @@ psql eventscalendar -U ase4156 -h 35.185.1.150
   * [Black-box tests](https://github.com/Advanced-Software-Engineering-Project/events-calendar/wiki/Black-Box-Test-Cases)
   * White-box static tests: `/static_analysis_report` and `/code_inspection_report`
   * White-box dynamic tests: coverage report `/server/htmlcov` and [system tests](https://github.com/Advanced-Software-Engineering-Project/events-calendar/wiki/Full-System-Test)
-```
 
 ## Introduction
 
