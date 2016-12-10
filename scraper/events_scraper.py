@@ -59,10 +59,7 @@ def get_events():
             url += '/events?'
             url += 'since='
             url += start_date
-            url += '&access_token=' + 'EAAFC6csNd2kBAA38gHLzPeR4rNpMYgKaecy9K' \
-                                      'ejLFWTOsx1RznYgHSBlvJBbslS5XTcdVFHPpOmMFu' \
-                                      'JuoDLjEfAYZCIIxKQ13T2ZCWrVa03KdgGyITlHTUQPYgW' \
-                                      'fZBFUln0ZBaTwpbqrQ0YgZBOJC'
+            url += '&access_token=' + 'EAACEdEose0cBADH1hb9g3wXR1lKMkiJf8yIhiQle2l0213h5B3Pg6NiZCfQZAhET7rI5EtmtJA9TStoUGMTWZBmoQJpXVJOaGOcagZCMZCZCngVe8nutwKV5zxK83QLQGBf45ZBNI78FebJEdlNwYcrVQVZByKORuBoj8oT08BFLdAZDZD'
             url += '&debug=all&format=json&method=get&pretty=0&suppress_http_code=1'
             url += '&fields=name,place,start_time,description,cover,photos.limit(1),picture'
 
