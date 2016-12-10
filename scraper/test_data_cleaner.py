@@ -1,12 +1,20 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+"""
+Tests for Data Cleaner module
+
+@ase4156-backend: Ian
+"""
+#pylint: disable=E1101, E1120
+
+from datetime import datetime, timedelta
 import unittest
-import json
-from datetime import datetime
 
-from app import db, app, Person, Event, Group
+from data_cleaner import DataCleaner
+from server.app import db, app, Event, Group
+from server import test_config
 
-from server import config
-
-import data_cleaner
 
 
 class DataCleanerTestCase(unittest.TestCase):
@@ -19,18 +27,9 @@ class DataCleanerTestCase(unittest.TestCase):
         db.init_app(app)
         db.create_all()
 
+        self.dataCleaner = DataCleaner(test_config.SQLALCHEMY_DATABASE_URI)
+
         self.app = app.test_client()
-
-        # Create test user
-        new_user = Person(
-            'validuser@columbia.edu',
-            'validpassword',
-            'test',
-            'testerson'
-        )
-        db.session.add(new_user)
-        db.session.commit()
-
         return self.app
 
     def tearDown(self):
@@ -42,6 +41,7 @@ class DataCleanerTestCase(unittest.TestCase):
             'group_id': '456',
             'group': 'testgroup'
         }))
+        db.session.commit()
 
         # Add two expired and one current event to test DB
         db.session.add(Event({
@@ -54,7 +54,7 @@ class DataCleanerTestCase(unittest.TestCase):
             'photo_url': 'http://www.testphotourl.com'
         }))
         db.session.add(Event({
-            'id': '123',
+            'id': '124',
             'datetime': '1993-11-17T12:00:00',
             'location': 'mars',
             'group_id': '456',
@@ -63,8 +63,8 @@ class DataCleanerTestCase(unittest.TestCase):
             'photo_url': 'http://www.testphotourl.com'
         }))
         db.session.add(Event({
-            'id': '123',
-            'datetime': datetime.now(),
+            'id': '125',
+            'datetime': datetime.now() + timedelta(days = 2),
             'location': 'mars',
             'group_id': '456',
             'title': 'a new event',
@@ -73,5 +73,5 @@ class DataCleanerTestCase(unittest.TestCase):
         }))
         db.session.commit()
 
-        response = data_cleaner.do_clean()
-        assert response.deleted_count == 2
+        response = self.dataCleaner.do_clean()
+        assert response['deleted_count'] == 2

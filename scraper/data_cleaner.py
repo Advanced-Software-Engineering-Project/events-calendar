@@ -13,31 +13,40 @@ import sqlalchemy
 from server import config, app
 
 
-URL = config.SQLALCHEMY_DATABASE_URI
-CON = sqlalchemy.create_engine(URL, client_encoding='utf8')
-META = sqlalchemy.MetaData(bind=CON, reflect=True)
 
-EVENTS_TABLE = META.tables['event']
+class DataCleaner():
 
-def do_clean():
-    """
-    Delete events older than today from our DB
-    :return:
-    """
-    deleted_count = 0
-    try:
-        now_time = datetime.now()
-        stmt = EVENTS_TABLE.delete(app.Event.datetime < now_time)
-        result = CON.execute(stmt)
+    def __init__(self, test_db_url):
+        URL = config.SQLALCHEMY_DATABASE_URI
 
-        deleted_count = result.rowcount
-        print 'Deleted <' + str(result.rowcount) + '> old events'
+        # For testing
+        if test_db_url:
+            URL = test_db_url
 
-    except Exception as error:
-        print "Import Exception: {}".format(error)
+        self.CON = sqlalchemy.create_engine(URL, client_encoding='utf8')
+        META = sqlalchemy.MetaData(bind=self.CON, reflect=True)
 
-    return {'deleted_count': deleted_count}
+        self.EVENTS_TABLE = META.tables['event']
+
+    def do_clean(self):
+        """
+        Delete events older than today from our DB
+        :return:
+        """
+        deleted_count = 0
+        try:
+            now_time = datetime.now()
+            stmt = self.EVENTS_TABLE.delete(app.Event.datetime < now_time)
+            result = self.CON.execute(stmt)
+
+            deleted_count = result.rowcount
+            print 'Deleted <' + str(result.rowcount) + '> old events'
+
+        except Exception as error:
+            print "Import Exception: {}".format(error)
+
+        return {'deleted_count': deleted_count}
 
 
 if __name__ == "__main__":
-    do_clean()
+    DataCleaner().do_clean()

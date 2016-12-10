@@ -39,64 +39,77 @@ KEY_RESPONSE = requests.get('https://graph.facebook.com/oauth/access_'
 KEY = KEY_RESPONSE.text.split('=')[1]
 
 
-def get_events():
-    """
-    Starts the scrape process from the FB api
-    :return:
-    """
-    start_date = datetime.datetime.now().strftime("%Y-%m-%d")
-    events = []
+class EventsScraper():
 
-    with open(PAGES_FILE) as data_file:
-        pages_data = json.load(data_file)
+    def __init__(self, test_pages_file):
+        '''
+        Initialize the EventsScraper
+        :param test_pages_file: optional test data file with pages data for testing purposes
+        :return:
+        '''
+        self.pages_file = PAGES_FILE
+        if test_pages_file:
+            self.pages_file = test_pages_file
 
-        # For every Columbia Page:
-        for i, page in enumerate(pages_data):
-            pprint(page['group_name'])
+    def get_events(self):
+        """
+        Starts the scrape process from the FB api
+        :return:
+        """
+        start_date = datetime.datetime.now().strftime("%Y-%m-%d")
+        events = []
 
-            url = 'https://graph.facebook.com/v2.8/'
-            url += str(page['group_id'])
-            url += '/events?'
-            url += 'since='
-            url += start_date
-            url += '&access_token=' + 'EAACEdEose0cBADH1hb9g3wXR1lKMkiJf8yIhiQle2l0213h5B3Pg6NiZCfQZAhET7rI5EtmtJA9TStoUGMTWZBmoQJpXVJOaGOcagZCMZCZCngVe8nutwKV5zxK83QLQGBf45ZBNI78FebJEdlNwYcrVQVZByKORuBoj8oT08BFLdAZDZD'
-            url += '&debug=all&format=json&method=get&pretty=0&suppress_http_code=1'
-            url += '&fields=name,place,start_time,description,cover,photos.limit(1),picture'
+        with open(self.pages_file) as data_file:
+            pages_data = json.load(data_file)
 
-            response_data = requests.get(url, headers=HEADERS).json()
-            print response_data
+            # For every Columbia Page:
+            for i, page in enumerate(pages_data):
+                pprint(page['group_name'])
 
-            if 'error' in response_data:
-                continue
+                url = 'https://graph.facebook.com/v2.8/'
+                url += str(page['group_id'])
+                url += '/events?'
+                url += 'since='
+                url += start_date
+                url += '&access_token=' + 'EAAFC6csNd2kBAJs3VexPZCK4s7O0esoMlbBFCYjveV3BMbn1N2Rwu46WkcZAD1Ai6HLRVZBLCADKk5ZCmse61ZB9AnWUwwESqfindZCR4tCBFQOWABp7P3xoJpCndZBiOISkCU109dHZA2hB1RhtT7mjIyvJP4Wn4XexqI0lcAhMJwZDZD'
+                url += '&debug=all&format=json&method=get&pretty=0&suppress_http_code=1'
+                url += '&fields=name,place,start_time,description,cover,photos.limit(1),picture'
 
-            # Add all that Page's events:
-            for dat in response_data['data']:
-                event = {
-                    'id': dat['id'],
-                    'title': dat['name'],
-                    'datetime': dat['start_time'],
-                    'group_id': page['group_id'],
-                    'url': 'https://www.facebook.com/events/' + dat['id'],
-                }
+                response_data = requests.get(url, headers=HEADERS).json()
+                print response_data
 
-                if 'description' in dat:
-                    event['description'] = dat['description']
-                if 'place' in dat:
-                    event['location'] = dat['place']['name']
-                if 'cover' in dat:
-                    event['photo_url'] = dat['cover']['source']
+                if 'error' in response_data:
+                    continue
 
-                events.append(event)
+                # Add all that Page's events:
+                for dat in response_data['data']:
+                    event = {
+                        'id': dat['id'],
+                        'title': dat['name'],
+                        'datetime': dat['start_time'],
+                        'group_id': page['group_id'],
+                        'url': 'https://www.facebook.com/events/' + dat['id'],
+                    }
 
-            if i % 10 == 0:
-                print '\n\n\nFinished ' + str(i) + ' pages'
-                print 'Events count: ' + str(len(events)) + '\n\n\n'
+                    if 'description' in dat:
+                        event['description'] = dat['description']
+                    if 'place' in dat:
+                        event['location'] = dat['place']['name']
+                    if 'cover' in dat:
+                        event['photo_url'] = dat['cover']['source']
 
-                with open('scraper/data/events_data.json', 'w') as outfile:
-                    json.dump(events, outfile)
+                    events.append(event)
 
-    return events
+                if i % 10 == 0:
+                    print '\n\n\nFinished ' + str(i) + ' pages'
+                    print 'Events count: ' + str(len(events)) + '\n\n\n'
+
+                    with open('scraper/data/events_data.json', 'w') as outfile:
+                        json.dump(events, outfile)
+
+        return events
+
 
 
 if __name__ == "__main__":
-    get_events()
+    EventsScraper().get_events()
