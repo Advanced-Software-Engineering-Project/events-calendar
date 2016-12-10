@@ -1,8 +1,8 @@
 from apscheduler.schedulers.blocking import BlockingScheduler
 
-from scraper import events_scraper
-from scraper import data_importer
-from scraper import data_cleaner
+from scraper.events_scraper import EventsScraper
+from scraper.data_importer import DataImporter
+from scraper.data_cleaner import DataCleaner
 
 sched = BlockingScheduler()
 
@@ -12,35 +12,17 @@ sched = BlockingScheduler()
 @sched.scheduled_job('cron', hour=6, minute=30)
 def scheduled_job():
     print('Job: Fetching events')
-    events_scraper.get_events()
+    EventsScraper(None).get_events()
 
 @sched.scheduled_job('cron', hour=7, minute=30)
 def scheduled_job():
     print('Job: Importing events')
-    data_importer.import_events()
+    DataImporter(None).import_events()
 
 @sched.scheduled_job('cron', hour=8, minute=30)
 def scheduled_job():
     print('Job: Cleaning up old events')
-    data_cleaner.do_clean()
-
-
-# Test jobs:
-#
-# @sched.scheduled_job('cron', hour=18, minute=18)
-# def scheduled_job():
-#     print('Job: Fetching events')
-#     events_scraper.get_events()
-#
-# @sched.scheduled_job('cron', hour=18, minute=19)
-# def scheduled_job():
-#     print('Job: Importing events')
-#     data_importer.import_events()
-#
-# @sched.scheduled_job('cron', hour=18, minute=20)
-# def scheduled_job():
-#     print('Job: Cleaning up old events')
-#     data_cleaner.do_clean()
+    DataCleaner(None).do_clean()
 
 
 sched.start()

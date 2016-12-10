@@ -105,8 +105,9 @@ class DataImporter():
         print "Imported <{}> groups".format(imported_count)
         return {'imported_count': imported_count}
 
+
 # For running with clock.py
 if __name__ == "__main__":
-    dataImporter = DataImporter()
+    dataImporter = DataImporter(None)
     dataImporter.import_groups('scraper/data/pages_data_3.json')
     dataImporter.import_events('scraper/data/events_data.json')

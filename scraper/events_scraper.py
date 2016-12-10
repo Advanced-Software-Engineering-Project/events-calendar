@@ -112,4 +112,4 @@ class EventsScraper():
 
 
 if __name__ == "__main__":
-    EventsScraper().get_events()
+    EventsScraper(None).get_events()

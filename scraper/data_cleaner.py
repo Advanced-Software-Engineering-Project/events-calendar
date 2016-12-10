@@ -49,4 +49,4 @@ class DataCleaner():
 
 
 if __name__ == "__main__":
-    DataCleaner().do_clean()
+    DataCleaner(None).do_clean()
