@@ -114,15 +114,9 @@ class Group(db.Model):
     raters = db.relationship("Person", secondary=rating_table, back_populates="groups_rated")
 
     def __init__(self, infodict):
-        try:
-            self.id = infodict['group_id']
-            self.name = infodict['group']
-            self.rating = 5.0
-        except KeyError:
-            print 'New event does not belong to any group.'
-            self.id = '0'
-            self.name = None
-            self.rating = 0.0
+        self.id = infodict['group_id']
+        self.name = infodict['group']
+        self.rating = 5.0
 
     def __repr__(self):
         return "<GROUP {}, RATING {}>".format(self.id, self.rating)
@@ -145,18 +139,15 @@ class Event(db.Model):
 
     def __init__(self, infodict):
         self.id = infodict['id']
+        self.group_id = infodict['group_id']
         try:
             self.datetime = infodict['datetime']
         except KeyError:
-            self.datetime = None
+            self.datetime = datetime.now()
         try:
             self.location = infodict['location']
         except KeyError:
             self.location = 'TBA'
-        try:
-            self.group_id = infodict['group_id']
-        except KeyError:
-            self.group_id = None
         try:
             self.title = infodict['title']
         except KeyError:
@@ -177,30 +168,30 @@ class Event(db.Model):
     def todict(self, bool_fav):
         """Output dictionary"""
         thegroup = Group.query.filter(Group.id == self.group_id).one()
-        #print thegroup
+            
         return {'id':self.id,
                 'datetime':self.datetime.strftime("%Y-%m-%dT%H:%M:%S"),
                 'location':self.location,
-                'group_id':self.group_id,
                 'title':self.title,
                 'url':self.url,
                 'photo_url':self.photo_url,
                 'favorite': bool_fav,
+                'group_id':thegroup.id,
                 'group':thegroup.name,
                 'rating':thegroup.rating,
                 'popularity':len(self.fans)}
 
 #%% <SERVER API>
 
-@app.route('/mydeletetest')
-def deleleachildrecord():
-    events = Event.query.filter(Event.datetime < datetime.now()).all()
-    theevent = events[0]
-    print theevent.fans
-    print theevent
-    db.session.delete(theevent)
-    db.session.commit()
-    return 'Deleted a event record: \n{}\nON DELETE CASCADE WITH relationship'.format(theevent.title)
+#@app.route('/mydeletetest')
+#def deleleachildrecord():
+#    events = Event.query.filter(Event.datetime < datetime.now()).all()
+#    theevent = events[0]
+#    print theevent.fans
+#    print theevent
+#    db.session.delete(theevent)
+#    db.session.commit()
+#    return 'Deleted a event record: \n{}\nON DELETE CASCADE WITH relationship'.format(theevent.title)
 
 
 @login_manager.user_loader
@@ -275,7 +266,7 @@ def login():
                                  ).all()
         if len(res) != 0:
             login_user(res[0])
-            print "Success: Login <{}>".format(current_user.email)
+            print "Success: Login {}".format(current_user)
             return jsonify(user_id=current_user.id)
         else:
             print "Error: Invalid email-password combination"
@@ -458,7 +449,7 @@ def unauthorized_handler():
 
 
 
-if __name__ == '__main__':
+if __name__ == '__main__':# pragma: no cover
     db.create_all()
     print 'Database initialized.'
 
