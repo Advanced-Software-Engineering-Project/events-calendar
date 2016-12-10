@@ -14,7 +14,7 @@ fabfile.py
 * Data sets: 
 ```
 /scraper/data
-psql eventscalendar -U ase4156 -h 104.196.136.43
+psql eventscalendar -U ase4156 -h 35.185.1.150
 ```
 * Reports:
 ```
