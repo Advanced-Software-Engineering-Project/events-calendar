@@ -1,0 +1,57 @@
+{
+  "data": [
+    {
+      "name": "SEAS 2020 Winter Study Break",
+      "place": {
+        "name": "John Jay Lounge",
+        "location": {
+          "city": "New York",
+          "country": "United States",
+          "latitude": 40.805526327899,
+          "longitude": -73.964231014252,
+          "state": "NY",
+          "zip": "10025"
+        },
+        "id": "407080276014032"
+      },
+      "start_time": "2016-12-09T22:30:00-0500",
+      "description": "Join ESC this Friday night for a late-night study break! Come listen to Christmas music while feasting on FREE cookies & pastries (from Hungarian!), with a cup of chocolate milk and/or hot cocoa!! Take a break from your not-studying and meet some of your fellow classmates!",
+      "cover": {
+        "offset_x": 0,
+        "offset_y": 0,
+        "source": "https://scontent.xx.fbcdn.net/v/t1.0-9/15350591_626347560885957_6091072552967869619_n.jpg?oh=0944a366a30e2b73789df98981eec05e&oe=58F0AEC5",
+        "id": "626347560885957"
+      },
+      "photos": {
+        "data": [
+          {
+            "created_time": "2016-12-07T00:38:39+0000",
+            "id": "626347560885957"
+          }
+        ],
+        "paging": {
+          "cursors": {
+            "before": "NjI2MzQ3NTYwODg1OTU3",
+            "after": "NjI2MzQ3NTYwODg1OTU3"
+          },
+          "next": "https://graph.facebook.com/v2.8/1293386657369812/photos?access_token=EAAFC6csNd2kBAJs3VexPZCK4s7O0esoMlbBFCYjveV3BMbn1N2Rwu46WkcZAD1Ai6HLRVZBLCADKk5ZCmse61ZB9AnWUwwESqfindZCR4tCBFQOWABp7P3xoJpCndZBiOISkCU109dHZA2hB1RhtT7mjIyvJP4Wn4XexqI0lcAhMJwZDZD&pretty=0&limit=1&after=NjI2MzQ3NTYwODg1OTU3"
+        }
+      },
+      "picture": {
+        "data": {
+          "is_silhouette": false,
+          "url": "https://scontent.xx.fbcdn.net/v/t1.0-0/c15.0.50.50/p50x50/15350591_626347560885957_6091072552967869619_n.jpg?oh=0e70f96299aa9d477dff569b475beb7a&oe=58B46844"
+        }
+      },
+      "id": "1293386657369812"
+    }
+  ],
+  "paging": {
+    "cursors": {
+      "before": "MTI5MzM4NjY1NzM2OTgxMgZDZD",
+      "after": "MTI5MzM4NjY1NzM2OTgxMgZDZD"
+    }
+  },
+  "__debug__": {
+  }
+}
