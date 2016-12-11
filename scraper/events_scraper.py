@@ -71,7 +71,7 @@ class EventsScraper():
                 url += '/events?'
                 url += 'since='
                 url += start_date
-                url += '&access_token=' + 'EAAFC6csNd2kBAJs3VexPZCK4s7O0esoMlbBFCYjveV3BMbn1N2Rwu46WkcZAD1Ai6HLRVZBLCADKk5ZCmse61ZB9AnWUwwESqfindZCR4tCBFQOWABp7P3xoJpCndZBiOISkCU109dHZA2hB1RhtT7mjIyvJP4Wn4XexqI0lcAhMJwZDZD'
+                url += '&access_token=' + '355046878181225|hoplLUPRx-cCdXfqDOByCujc4-w'
                 url += '&debug=all&format=json&method=get&pretty=0&suppress_http_code=1'
                 url += '&fields=name,place,start_time,description,cover,photos.limit(1),picture'
 

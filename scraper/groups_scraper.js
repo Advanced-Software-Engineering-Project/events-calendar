@@ -23,7 +23,7 @@ page.open("http://www.facebook.com/login.php", function(status) {
 
     page.evaluate(function() {
       document.getElementById("email").value = "ionox0@gmail.com";
-      document.getElementById("pass").value = "afX4dN65q3Vc";
+      document.getElementById("pass").value = "";
       document.getElementById("loginbutton").click();
     });
 
