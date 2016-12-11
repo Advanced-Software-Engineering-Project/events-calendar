@@ -4,29 +4,27 @@
 """
 Module for clearing past events from our database
 """
-#pylint: disable=E1101, E1120
+# pylint: disable=E1101, E1120
 
 from datetime import datetime
 import sqlalchemy
 
-# from server.app import Event
 from server import config, app
 
 
-
-class DataCleaner():
+class DataCleaner:
 
     def __init__(self, test_db_url):
-        URL = config.SQLALCHEMY_DATABASE_URI
+        url = config.SQLALCHEMY_DATABASE_URI
 
         # For testing
         if test_db_url:
-            URL = test_db_url
+            url = test_db_url
 
-        self.CON = sqlalchemy.create_engine(URL, client_encoding='utf8')
-        META = sqlalchemy.MetaData(bind=self.CON, reflect=True)
+        self.connection = sqlalchemy.create_engine(url, client_encoding='utf8')
+        meta = sqlalchemy.MetaData(bind=self.connection, reflect=True)
 
-        self.EVENTS_TABLE = META.tables['event']
+        self.EVENTS_TABLE = meta.tables['event']
 
     def do_clean(self):
         """
@@ -37,7 +35,7 @@ class DataCleaner():
         try:
             now_time = datetime.now()
             stmt = self.EVENTS_TABLE.delete(app.Event.datetime < now_time)
-            result = self.CON.execute(stmt)
+            result = self.connection.execute(stmt)
 
             deleted_count = result.rowcount
             print 'Deleted <' + str(result.rowcount) + '> old events'

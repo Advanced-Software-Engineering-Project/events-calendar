@@ -4,7 +4,7 @@
 """
 Module for fetching new Columbia Events from Facebook
 """
-#pylint: disable=E1101, E1120
+# pylint: disable=E1101, E1120
 
 import datetime
 import json
@@ -39,14 +39,14 @@ KEY_RESPONSE = requests.get('https://graph.facebook.com/oauth/access_'
 KEY = KEY_RESPONSE.text.split('=')[1]
 
 
-class EventsScraper():
+class EventsScraper:
 
     def __init__(self, test_pages_file):
-        '''
+        """
         Initialize the EventsScraper
         :param test_pages_file: optional test data file with pages data for testing purposes
         :return:
-        '''
+        """
         self.pages_file = PAGES_FILE
         if test_pages_file:
             self.pages_file = test_pages_file
@@ -108,7 +108,6 @@ class EventsScraper():
                         json.dump(events, outfile)
 
         return events
-
 
 
 if __name__ == "__main__":

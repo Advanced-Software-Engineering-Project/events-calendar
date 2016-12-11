@@ -10,7 +10,7 @@ Includes:
 
 @ase4156-backend: Ian
 """
-#pylint: disable=E1101, E1120
+# pylint: disable=E1101, E1120
 
 
 # Code coverage start
@@ -46,7 +46,7 @@ mock_event_response = json.load(data_file)
 
 
 # Mocking for Requests.get()
-def mocked_requests_get(*args, **kwargs):
+def mocked_requests_get():
     class MockResponse:
         def __init__(self, json_data, status_code):
             self.json_data = json_data
@@ -59,9 +59,9 @@ def mocked_requests_get(*args, **kwargs):
 
 
 class EventsScraperTestCase(unittest.TestCase):
-    '''
+    """
     Class for running tests related to the Events Scraper
-    '''
+    """
 
     def setUp(self):
         """
@@ -79,7 +79,7 @@ class EventsScraperTestCase(unittest.TestCase):
     def tearDown(self):
         db.drop_all()
 
-    @mock.patch('requests.get', mock.Mock(side_effect = mocked_requests_get))
+    @mock.patch('requests.get', mock.Mock(side_effect=mocked_requests_get))
     def test_scrape_events(self):
         response = self.eventsScraper.get_events()
 
@@ -96,9 +96,9 @@ class EventsScraperTestCase(unittest.TestCase):
 
 
 class DataImporterTestCase(unittest.TestCase):
-    '''
+    """
     Class for running test for the Data Importer
-    '''
+    """
 
     def setUp(self):
         """
@@ -117,11 +117,11 @@ class DataImporterTestCase(unittest.TestCase):
         db.drop_all()
 
     def test_import_groups_events(self):
-        '''
+        """
         Test importing groups and events
         Must be run in same test as events have constraint to have associated group
         :return:
-        '''
+        """
         response = self.dataImporter.import_groups('scraper/test_data/test_pages_data.json')
         assert response['imported_count'] == 6
 
@@ -176,7 +176,7 @@ class DataCleanerTestCase(unittest.TestCase):
         }))
         db.session.add(Event({
             'id': '125',
-            'datetime': datetime.now() + timedelta(days = 2),
+            'datetime': datetime.now() + timedelta(days=2),
             'location': 'mars',
             'group_id': '456',
             'title': 'a new event',
@@ -191,7 +191,6 @@ class DataCleanerTestCase(unittest.TestCase):
 
 
 if __name__ == "__main__":
-
     print 'here'
     try:
         unittest.main()
