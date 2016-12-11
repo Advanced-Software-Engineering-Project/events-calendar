@@ -1,5 +1,7 @@
 # Columbia Events Calendar
 
+[![Build Status](https://travis-ci.org/Advanced-Software-Engineering-Project/events-calendar.svg?branch=master)](https://travis-ci.org/Advanced-Software-Engineering-Project/events-calendar)
+
 ## In repository
 * Scripts:
 ```
