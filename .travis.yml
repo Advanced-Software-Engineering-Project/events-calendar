@@ -1,4 +1,6 @@
 language: python
+before_script:
+- export PYTHONPATH=$PYTHONPATH:$(pwd)
 python:
 - '2.7'
 install:
