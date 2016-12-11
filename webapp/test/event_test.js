@@ -1,10 +1,12 @@
+
 var assert = require("assert");
+/* istanbul ignore next */
 var _ = require('underscore');
+/* istanbul ignore next */
 var moment = require('moment');
 var events_none = [];
 var events = require('./data.json');
 var text = 'baptist';
-
 function render(events) {
     if(events.length == 0) {
         return 'Sorry, none of the events matched your search!';
@@ -14,6 +16,7 @@ function render(events) {
     }
 }
 function filterEventsByText(text, events) {
+
     var filteredEvents = _.filter(events, function(event) {
 		return (
 			(event.title.toLowerCase().indexOf(text.toLowerCase()) > -1)||
