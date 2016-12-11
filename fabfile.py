@@ -12,9 +12,7 @@ def deploy(skip_tests=False):
         local("pwd")
         local("python server/test_app.py")
         local("pwd")
-        local("python scraper/test_events_scraper.py")
-        local("python scraper/test_data_importer.py")
-        local("python scraper/test_data_cleaner.py")
+        local("python scraper/test_scraper.py")
 
     local("git add -p && git commit --allow-empty")
     local("git push heroku master:master")
