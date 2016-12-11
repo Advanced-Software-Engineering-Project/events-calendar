@@ -46,7 +46,7 @@ mock_event_response = json.load(data_file)
 
 
 # Mocking for Requests.get()
-def mocked_requests_get():
+def mocked_requests_get(*args, **kwargs):
     class MockResponse:
         def __init__(self, json_data, status_code):
             self.json_data = json_data
