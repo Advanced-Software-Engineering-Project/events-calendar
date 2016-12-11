@@ -1,15 +1,12 @@
 language: python
 python:
-  - "2.7"
+- '2.7'
 install:
-  # Build/test dependencies
-  - pip install -r requirements.txt
-  # Get fab to test fab
-  #- pip install -e .
-script: 
-  # Test server
-  - python server/test_app.py
+- pip install -r requirements.txt
+script:
+- python server/test_app.py
+- python scraper/test_scraper.py
 deploy:
   provider: heroku
-  #api_key:
-  #  secure: "YOUR ENCRYPTED API KEY"
+  api_key:
+    secure: GyqAO42STR0hCuKsd1tHNIn68MNFkRlcfa6+lzO0h5ZPkquju81jizpstDIC2Xk+cNQxMFH+nQdebu99KsT3WfBwgo0XWQYMkELQ4koDrCe5OMLQ7xtuZoy8ClkmfPdn77b4CBduzc2sQ4Fk3IAGlFpFgS1LctNf4WHKfQ9BCfhFvrpnvtX4aLK2Wyfsa2XmHhVXva9ATUoAUznv/T+jtS/+JtWmemXWXuUQqXaY1vJfuyeoFrkccNbqG8oGhprrTE5kRRqsk6x6yxVfd5pYJ0K9Xz6/PaQCvepQMi3LEgLcI0CpGSll9WRrmmTuaraehGskKuJaJPdRcDWTzBtgCixWcOwdj8+Ddly7XgIAz/q9yH31SfPFqGTMsvMQK3CCcsQ3mOcyRwtL8sAUGwQirGG02KY12Az8TTciD5nn/sVIdU7NPNHxeLQGxtkjBhGO5YcdzCBURUDD9CrQPuIL+UBmG2tNy3xFBjEXhwRud7c1Vj09CeitkLsS/a+F5CsLNqO+s1Fo+a1tk022CZGF2QpQuDQmmjBijswTn4LlBUmS1lSOZ8Z4tr01/KBwIR562TLvStTt6oPn9U1GO8zOTNXItNDy/r4Ulw7B9sjp6/gQO8/DTvmAmkAjzg7145ILxOd1hl2LVggJKBrfbGgKqbEGzgZCrCDHzumGBirrPs0=
