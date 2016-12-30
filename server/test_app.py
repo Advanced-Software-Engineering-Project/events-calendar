@@ -8,6 +8,7 @@ Created on Thu Oct 27 14:47:36 2016
 from coverage import coverage
 cov = coverage(branch=True, omit=['/usr/local/lib/python2.7/dist-packages/*',
                                   '/usr/local/lib/python2.7/site-packages/*', 
+                                  '/home/travis/virtualenv/python2.7.9/lib/python2.7/site-packages/*',
                                   'test_app.py', 'config.py', 'test_config.py'])
 cov.start()
 cov.exclude('pragma')
