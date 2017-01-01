@@ -4,3 +4,6 @@ npm-debug.log*
 scraper/data/events_data.json
 server/*.pyc
 *.pyc
+
+htmlcov
+scraper/coverage_report
