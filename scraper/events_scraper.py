@@ -36,8 +36,9 @@ KEY_RESPONSE = requests.get('https://graph.facebook.com/oauth/access_'
                             'token?type=client_cred&client_id=355046878'
                             '181225&client_secret=c6f4a196e8184f469515fd'
                             'ad16ff486d', headers=HEADERS)
-KEY = KEY_RESPONSE.text.split('=')[1]
 
+json_resp = json.loads(KEY_RESPONSE.text)
+KEY = json_resp['access_token']
 
 class EventsScraper:
 
