@@ -2,6 +2,8 @@
 
 [![Build Status](https://travis-ci.org/Advanced-Software-Engineering-Project/events-calendar.svg?branch=master)](https://travis-ci.org/Advanced-Software-Engineering-Project/events-calendar)
 
+http://columbia-events-calendar.herokuapp.com
+
 ## In repository
 * Scripts:
 ```
